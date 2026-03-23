@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Veil — Tarot & Astrology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a12;
+    --parchment: #f5ede0;
+    --gold: #c9a84c;
+    --gold-light: #e8c97e;
+    --gold-dim: #7a6228;
+    --crimson: #7c2035;
+    --violet: #2e1a4a;
+    --smoke: #1a1226;
+    --card-bg: #130d1e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(46,26,74,0.9) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(124,32,53,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(13,10,18,1) 0%, transparent 100%);
+    z-index: -2;
+  }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(255,255,220,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 8%, rgba(255,255,220,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 67% 30%, rgba(255,255,220,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 15%, rgba(255,255,220,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 5% 55%, rgba(201,168,76,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,220,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 65%, rgba(255,255,220,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 93% 80%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 88%, rgba(255,255,220,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 92%, rgba(255,255,220,0.4) 0%, transparent 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  header {
+    text-align: center;
+    padding: 52px 20px 32px;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 340px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 18px auto 0;
+  }
+
+  .site-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    color: var(--gold-light);
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2);
+    line-height: 1.15;
+  }
+
+  .site-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 20px 20px 0;
+  }
+
+  .nav-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1px;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--gold-light);
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+    text-shadow: 0 0 12px rgba(201,168,76,0.4);
+  }
+
+  .section {
+    display: none;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 44px 20px 60px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section.visible { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    text-align: center;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+
+  .section-desc {
+    text-align: center;
+    color: rgba(245,237,224,0.55);
+    font-style: italic;
+    margin-bottom: 36px;
+    font-size: 1rem;
+  }
+
+  .ornament {
+    text-align: center;
+    color: var(--gold-dim);
+    font-size: 1.4rem;
+    margin: 0 0 28px;
+    opacity: 0.7;
+  }
+
+  .spread-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .spread-card {
+    border: 1px solid rgba(201,168,76,0.22);
+    padding: 18px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    background: rgba(201,168,76,0.03);
+    border-radius: 2px;
+  }
+
+  .spread-card:hover, .spread-card.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    box-shadow: 0 0 20px rgba(201,168,76,0.1);
+  }
+
+  .spread-card .spread-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+
+  .spread-card .spread-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .spread-card .spread-count {
+    font-size: 0.78rem;
+    color: rgba(245,237,224,0.45);
+    font-style: italic;
+  }
+
+  .draw-btn {
+    display: block;
+    margin: 0 auto 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    border: none;
+    padding: 14px 42px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 24px rgba(201,168,76,0.35);
+  }
+
+  .draw-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 36px rgba(201,168,76,0.5);
+  }
+
+  .draw-btn:disabled {
+    opacity: 0.5; cursor: not-allowed; transform: none;
+  }
+
+  .cards-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .fan-area {
+    position: relative;
+    height: 320px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 40px;
+    overflow: visible;
+  }
+
+  .fan-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .fan-card {
+    position: absolute;
+    bottom: 0;
+    width: 70px; height: 115px;
+    background: linear-gradient(160deg, #1e1233 0%, #130d1e 100%);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+    transform-origin: bottom center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .fan-card::before {
+    content: 'ᛟ';
+    color: rgba(201,168,76,0.35);
+    font-size: 1.2rem;
+  }
+
+  .fan-card:hover {
+    box-shadow: 0 -8px 30px rgba(201,168,76,0.4);
+    border-color: var(--gold);
+    z-index: 20 !important;
+  }
+
+  .fan-card.chosen {
+    border-color: var(--gold-light);
+    box-shadow: 0 -12px 40px rgba(201,168,76,0.6);
+    background: linear-gradient(160deg, #2e1a4a 0%, #1a1226 100%);
+  }
+
+  .fan-instruction {
+    text-align: center;
+    color: rgba(245,237,224,0.5);
+    font-style: italic;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+  }
+
+  .tarot-card-wrap {
+    text-align: center;
+    animation: revealCard 0.6s ease both;
+  }
+
+  .tarot-card-wrap .position-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  @keyframes revealCard {
+    from { opacity: 0; transform: scale(0.85) rotateY(90deg); }
+    to { opacity: 1; transform: scale(1) rotateY(0deg); }
+  }
+
+  .tarot-card-inner {
+    width: 130px;
+    background: linear-gradient(160deg, #1e1233 0%, #130d1e 100%);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 6px;
+    padding: 10px 8px 12px;
+    display: inline-block;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1) inset;
+    cursor: pointer;
+  }
+
+  .tarot-card-inner.reversed {
+    transform: rotate(180deg);
+    border-color: rgba(124,32,53,0.6);
+  }
+
+  .card-img-wrap {
+    width: 114px; height: 190px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #0a0612;
+    margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-img-wrap .card-no-img {
+    font-size: 2.5rem;
+    color: rgba(201,168,76,0.3);
+  }
+
+  .card-name-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .reversed-tag {
+    font-size: 0.58rem;
+    color: var(--crimson);
+    display: block;
+    letter-spacing: 0.15em;
+    margin-top: 2px;
+  }
+
+  .tarot-card-wrap .card-meaning {
+    width: 130px;
+    font-size: 0.78rem;
+    color: rgba(245,237,224,0.55);
+    font-style: italic;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .reading-panel {
+    background: rgba(46,26,74,0.3);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 28px 30px;
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reading-panel::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+
+  .reading-panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .reading-panel-title::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: rgba(201,168,76,0.15);
+  }
+
+  .reading-text {
+    line-height: 1.85;
+    color: rgba(245,237,224,0.85);
+    font-size: 1rem;
+  }
+
+  .reading-text p { margin-bottom: 1em; }
+
+  .loading-dots span {
+    display: inline-block;
+    animation: blink 1.4s infinite both;
+    color: var(--gold);
+    font-size: 1.4rem;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  .library-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lib-filter-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold-dim);
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .lib-filter-btn:hover, .lib-filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .lib-search {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--parchment);
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    width: 260px;
+    outline: none;
+    transition: border 0.25s;
+  }
+
+  .lib-search:focus { border-color: var(--gold); }
+  .lib-search::placeholder { color: rgba(245,237,224,0.3); font-style: italic; }
+
+  .lib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .lib-card {
+    border: 1px solid rgba(201,168,76,0.18);
+    background: rgba(201,168,76,0.02);
+    padding: 12px 10px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s;
+    border-radius: 2px;
+  }
+
+  .lib-card:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+
+  .lib-card .lc-img {
+    width: 70px; height: 116px;
+    margin: 0 auto 10px;
+    background: #0a0612;
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .lib-card .lc-img img { width: 100%; height: 100%; object-fit: cover; }
+  .lib-card .lc-img span { color: rgba(201,168,76,0.3); font-size: 1.5rem; }
+
+  .lib-card .lc-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.67rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .lib-card .lc-suit {
+    font-size: 0.7rem;
+    color: rgba(245,237,224,0.35);
+    font-style: italic;
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--smoke);
+    border: 1px solid rgba(201,168,76,0.4);
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 36px;
+    position: relative;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none;
+    color: var(--gold-dim); font-size: 1.4rem; cursor: pointer;
+  }
+
+  .modal-close:hover { color: var(--gold); }
+
+  .modal-card-header {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+  }
+
+  .modal-img-wrap {
+    width: 110px; min-width: 110px; height: 184px;
+    background: #0a0612;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-img-wrap span { color: rgba(201,168,76,0.3); font-size: 2rem; }
+
+  .modal-card-info h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold-light);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-card-info .badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.15em;
+    padding: 3px 10px;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-dim);
+    margin-right: 6px;
+    margin-bottom: 12px;
+  }
+
+  .modal-card-info p {
+    font-size: 0.92rem;
+    color: rgba(245,237,224,0.7);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .modal-meanings h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin: 20px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .modal-meanings p {
+    font-size: 0.9rem;
+    color: rgba(245,237,224,0.75);
+    line-height: 1.7;
+  }
+
+  .astro-form {
+    max-width: 400px;
+    margin: 0 auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--parchment);
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border 0.25s;
+    border-radius: 1px;
+  }
+
+  .form-group input:focus { border-color: var(--gold); }
+
+  .zodiac-display {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .zodiac-symbol {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.5));
+  }
+
+  .zodiac-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    letter-spacing: 0.12em;
+  }
+
+  .zodiac-dates {
+    font-size: 0.85rem;
+    color: rgba(245,237,224,0.45);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .horoscope-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .horoscope-text {
+    background: rgba(46,26,74,0.3);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 24px 28px;
+    line-height: 1.85;
+    color: rgba(245,237,224,0.85);
+    font-size: 1rem;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: rgba(245,237,224,0.2);
+    font-size: 0.78rem;
+    font-style: italic;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+
+  @media(max-width:600px) {
+    .spread-grid { grid-template-columns: repeat(2, 1fr); }
+    .lib-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .modal-card-header { flex-direction: column; align-items: center; }
+    .tarot-card-inner { width: 110px; }
+    .card-img-wrap { width: 94px; height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site-title">The Veil</div>
+  <div class="site-sub">Tarot · Astrology · Divination</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('draws', this)">✦ Readings</button>
+  <button class="nav-btn" onclick="showSection('fan', this)">Fan Draw</button>
+  <button class="nav-btn" onclick="showSection('library', this)">Card Library</button>
+  <button class="nav-btn" onclick="showSection('astrology', this)">Astrology</button>
+</nav>
+
+<!-- READINGS -->
+<section class="section visible" id="draws">
+  <div class="section-title">Choose Your Spread</div>
+  <div class="section-desc">Select a spread, then draw the cards</div>
+  <div class="spread-grid">
+    <div class="spread-card selected" onclick="selectSpread('single', this)">
+      <span class="spread-icon">🌙</span>
+      <span class="spread-name">Daily Card</span>
+      <span class="spread-count">1 card · Daily guidance</span>
+    </div>
+    <div class="spread-card" onclick="selectSpread('three', this)">
+      <span class="spread-icon">⚖️</span>
+      <span class="spread-name">Three Card</span>
+      <span class="spread-count">3 cards · Past · Present · Future</span>
+    </div>
+    <div class="spread-card" onclick="selectSpread('celtic', this)">
+      <span class="spread-icon">✙</span>
+      <span class="spread-name">Celtic Cross</span>
+      <span class="spread-count">10 cards · Full reading</span>
+    </div>
+    <div class="spread-card" onclick="selectSpread('horseshoe', this)">
+      <span class="spread-icon">🌟</span>
+      <span class="spread-name">Horseshoe</span>
+      <span class="spread-count">7 cards · Life overview</span>
+    </div>
+    <div class="spread-card" onclick="selectSpread('relationship', this)">
+      <span class="spread-icon">🔮</span>
+      <span class="spread-name">Relationship</span>
+      <span class="spread-count">6 cards · Partnership</span>
+    </div>
+    <div class="spread-card" onclick="selectSpread('yesno', this)">
+      <span class="spread-icon">⚡</span>
+      <span class="spread-name">Yes / No</span>
+      <span class="spread-count">5 cards · Quick answer</span>
+    </div>
+  </div>
+  <div class="ornament">— ✦ —</div>
+  <button class="draw-btn" id="drawBtn" onclick="drawSpread()">✦ Draw the Cards ✦</button>
+  <div class="cards-area" id="cardsArea"></div>
+  <div class="reading-panel" id="readingPanel" style="display:none">
+    <div class="reading-panel-title">✦ The Reading</div>
+    <div class="reading-text" id="readingText"></div>
+  </div>
+</section>
+
+<!-- FAN DRAW -->
+<section class="section" id="fan">
+  <div class="section-title">The Fan Method</div>
+  <div class="section-desc">The deck is spread before you. Trust your intuition — touch the card that calls to you.</div>
+  <p class="fan-instruction" id="fanInstruction">The cards await your touch...</p>
+  <div class="fan-area">
+    <div class="fan-wrapper" id="fanWrapper"></div>
+  </div>
+  <div style="text-align:center;">
+    <button class="draw-btn" onclick="initFan()" style="margin-bottom:20px">✦ Shuffle and Spread ✦</button>
+  </div>
+  <div class="cards-area" id="fanRevealArea"></div>
+  <div class="reading-panel" id="fanReadingPanel" style="display:none">
+    <div class="reading-panel-title">✦ Your Card's Message</div>
+    <div class="reading-text" id="fanReadingText"></div>
+  </div>
+</section>
+
+<!-- LIBRARY -->
+<section class="section" id="library">
+  <div class="section-title">Card Library</div>
+  <div class="section-desc">Browse all 78 cards of the Rider-Waite-Smith deck</div>
+  <div class="library-controls">
+    <input class="lib-search" type="text" placeholder="Search cards..." id="libSearch" oninput="filterLibrary()">
+    <button class="lib-filter-btn active" onclick="setLibFilter('all', this)">All</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('major', this)">Major Arcana</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('minor', this)">Minor Arcana</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('wands', this)">Wands</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('cups', this)">Cups</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('swords', this)">Swords</button>
+    <button class="lib-filter-btn" onclick="setLibFilter('pentacles', this)">Pentacles</button>
+  </div>
+  <div class="lib-grid" id="libGrid">
+    <div style="text-align:center;color:var(--gold-dim);font-style:italic;padding:40px;grid-column:1/-1">
+      Loading the deck...
+    </div>
+  </div>
+</section>
+
+<!-- ASTROLOGY -->
+<section class="section" id="astrology">
+  <div class="section-title">Daily Astrology</div>
+  <div class="section-desc">Enter your birthday to discover your sign and today's cosmic guidance</div>
+  <div class="astro-form">
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" id="birthdayInput">
+    </div>
+    <button class="draw-btn" style="margin:0" onclick="loadHoroscope()">✦ Read the Stars ✦</button>
+  </div>
+  <div id="astroResult" style="display:none">
+    <div class="zodiac-display">
+      <span class="zodiac-symbol" id="zodiacSymbol"></span>
+      <div class="zodiac-name" id="zodiacName"></div>
+      <div class="zodiac-dates" id="zodiacDates"></div>
+    </div>
+    <div class="horoscope-tabs">
+      <button class="nav-btn active" id="tabDaily" onclick="switchHoroTab('daily', this)">Daily</button>
+      <button class="nav-btn" id="tabWeekly" onclick="switchHoroTab('weekly', this)">Weekly</button>
+      <button class="nav-btn" id="tabMonthly" onclick="switchHoroTab('monthly', this)">Monthly</button>
+    </div>
+    <div class="horoscope-text" id="horoscopeText">
+      <div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>
+    </div>
+    <div class="reading-panel" id="astroAiPanel" style="display:none;margin-top:28px">
+      <div class="reading-panel-title">✦ Your Cosmic Reading</div>
+      <div class="reading-text" id="astroAiText"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="cardModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">X</button>
+    <div class="modal-card-header">
+      <div class="modal-img-wrap" id="modalImg"><span>✦</span></div>
+      <div class="modal-card-info">
+        <h2 id="modalName">—</h2>
+        <div id="modalBadges"></div>
+        <p id="modalDesc">—</p>
+      </div>
+    </div>
+    <div class="modal-meanings">
+      <h3>Upright Meaning</h3>
+      <p id="modalUpright">—</p>
+      <h3>Reversed Meaning</h3>
+      <p id="modalReversed">—</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:16px">
+    The Veil · Tarot and Astrology · For entertainment and personal reflection only
+  </div>
+  <div style="margin-bottom:10px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold-dim)">
+    SUPPORT THE VEIL
+  </div>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
+    <a href="https://cash.app/$toyz4me" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
+      ✦ CashApp
+    </a>
+    <a href="https://venmo.com/u/the_funko_deity" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
+      ✦ Venmo
+    </a>
+    <a href="https://www.paypal.me/thefunkodeity" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
+      ✦ PayPal
+    </a>
+  </div>
+</footer>
+
+<script>
+var TAROT_API = 'https://tarotapi.dev/api/v1';
+var AI_API = '/api/ai-reading';
+
+var allCards = [];
+var libFilter = 'all';
+var currentSpread = 'single';
+var horoCache = {};
+var currentZodiac = null;
+var currentHoroTab = 'daily';
+var fanDeck = [];
+
+var SPREAD_CONFIGS = {
+  single:       { n: 1,  positions: ['Your card for today'] },
+  three:        { n: 3,  positions: ['Past', 'Present', 'Future'] },
+  celtic:       { n: 10, positions: ['The Present','The Challenge','The Foundation','The Past','Possible Outcome','Near Future','Your Attitude','External Influences','Hopes and Fears','Final Outcome'] },
+  horseshoe:    { n: 7,  positions: ['Past Influences','Present Situation','Hidden Influences','Obstacles','External Influences','Best Course','Most Likely Outcome'] },
+  relationship: { n: 6,  positions: ['You','Your Partner','The Connection','Strengths','Challenges','Potential'] },
+  yesno:        { n: 5,  positions: ['The Situation','What Helps','What Hinders','Hidden Factor','Answer'] }
+};
+
+var ZODIAC_DATA = [
+  { name:'Capricorn',   symbol:'♑', dates:'Dec 22 - Jan 19' },
+  { name:'Aquarius',    symbol:'♒', dates:'Jan 20 - Feb 18' },
+  { name:'Pisces',      symbol:'♓', dates:'Feb 19 - Mar 20' },
+  { name:'Aries',       symbol:'♈', dates:'Mar 21 - Apr 19' },
+  { name:'Taurus',      symbol:'♉', dates:'Apr 20 - May 20' },
+  { name:'Gemini',      symbol:'♊', dates:'May 21 - Jun 20' },
+  { name:'Cancer',      symbol:'♋', dates:'Jun 21 - Jul 22' },
+  { name:'Leo',         symbol:'♌', dates:'Jul 23 - Aug 22' },
+  { name:'Virgo',       symbol:'♍', dates:'Aug 23 - Sep 22' },
+  { name:'Libra',       symbol:'♎', dates:'Sep 23 - Oct 22' },
+  { name:'Scorpio',     symbol:'♏', dates:'Oct 23 - Nov 21' },
+  { name:'Sagittarius', symbol:'♐', dates:'Nov 22 - Dec 21' }
+];
+
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('visible'); });
+  document.querySelectorAll('nav .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('visible');
+  if (btn) btn.classList.add('active');
+  if (id === 'library' && allCards.length === 0) loadLibrary();
+  if (id === 'fan') initFan();
+}
+
+function selectSpread(key, el) {
+  document.querySelectorAll('.spread-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  currentSpread = key;
+  document.getElementById('cardsArea').innerHTML = '';
+  document.getElementById('readingPanel').style.display = 'none';
+}
+
+async function fetchCards(n) {
+  var res = await fetch(TAROT_API + '/cards/random?n=' + n);
+  var data = await res.json();
+  return data.cards;
+}
+
+async function fetchAllCards() {
+  var res = await fetch(TAROT_API + '/cards');
+  var data = await res.json();
+  return data.cards;
+}
+
+function getCardImage(card) {
+  var name = card.name_short || card.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  return 'https://sacred-texts.com/tarot/xr/' + name + '.jpg';
+}
+
+function isReversed() {
+  return Math.random() < 0.3;
+}
+
+function cardHtml(card, position, reversed) {
+  var imgSrc = getCardImage(card);
+  var meaning = reversed ? (card.meaning_rev || '') : (card.meaning_up || '');
+  var truncated = meaning.length > 80 ? meaning.slice(0,80) + '...' : meaning;
+  var cardData = JSON.stringify(card).replace(/"/g, '&quot;');
+  return '<div class="tarot-card-wrap" onclick="openCardModal(this)"  data-card="' + cardData + '" data-reversed="' + reversed + '">'
+    + (position ? '<div class="position-label">' + position + '</div>' : '')
+    + '<div class="tarot-card-inner' + (reversed ? ' reversed' : '') + '">'
+    + '<div class="card-img-wrap">'
+    + '<img src="' + imgSrc + '" alt="' + card.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+    + '<div class="card-no-img" style="display:none">✦</div>'
+    + '</div>'
+    + '<div class="card-name-tag">' + card.name + (reversed ? '<span class="reversed-tag">REVERSED</span>' : '') + '</div>'
+    + '</div>'
+    + '<div class="card-meaning">' + truncated + '</div>'
+    + '</div>';
+}
+
+async function drawSpread() {
+  var btn = document.getElementById('drawBtn');
+  btn.disabled = true;
+  var area = document.getElementById('cardsArea');
+  area.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;text-align:center;width:100%;padding:20px">Shuffling the deck...</div>';
+  document.getElementById('readingPanel').style.display = 'none';
+  var cfg = SPREAD_CONFIGS[currentSpread];
+  try {
+    var cards = await fetchCards(cfg.n);
+    var draws = cards.map(function(c) { return { card: c, reversed: isReversed() }; });
+    area.innerHTML = draws.map(function(d, i) {
+      return cardHtml(d.card, cfg.positions[i] || '', d.reversed);
+    }).join('');
+    document.getElementById('readingPanel').style.display = 'block';
+    document.getElementById('readingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+    var aiText = await getAIReading(currentSpread, draws, cfg.positions);
+    document.getElementById('readingText').innerHTML = aiText;
+  } catch(e) {
+    area.innerHTML = '<div style="color:var(--crimson);text-align:center;padding:20px">Unable to fetch cards. Please try again.</div>';
+  }
+  btn.disabled = false;
+}
+
+async function initFan() {
+  var wrapper = document.getElementById('fanWrapper');
+  document.getElementById('fanRevealArea').innerHTML = '';
+  document.getElementById('fanReadingPanel').style.display = 'none';
+  document.getElementById('fanInstruction').textContent = 'Hover over the cards and feel for the one calling to you...';
+  wrapper.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;padding:20px">Preparing the deck...</div>';
+  try {
+    if (allCards.length === 0) allCards = await fetchAllCards();
+    fanDeck = allCards.slice().sort(function() { return Math.random() - 0.5; });
+    var total = Math.min(fanDeck.length, 40);
+    var spread = 340;
+    var startAngle = -spread / 2;
+    var step = spread / (total - 1);
+    wrapper.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      (function(idx) {
+        var angle = startAngle + step * idx;
+        var card = document.createElement('div');
+        card.className = 'fan-card';
+        card.style.transform = 'rotate(' + angle + 'deg) translateY(-20px)';
+        card.style.left = 'calc(50% - 35px + ' + (idx * (660/total) - 330) + 'px)';
+        card.style.zIndex = idx;
+        card.dataset.index = idx;
+        card.dataset.angle = angle;
+        card.onclick = function() { fanPick(idx); };
+        card.onmouseenter = function() {
+          card.style.transform = 'rotate(' + angle + 'deg) translateY(-45px)';
+        };
+        card.onmouseleave = function() {
+          if (!card.classList.contains('chosen')) {
+            card.style.transform = 'rotate(' + angle + 'deg) translateY(-20px)';
+          }
+        };
+        wrapper.appendChild(card);
+      })(i);
+    }
+  } catch(e) {
+    wrapper.innerHTML = '<div style="color:var(--crimson)">Could not load deck.</div>';
+  }
+}
+
+async function fanPick(index) {
+  var wrapper = document.getElementById('fanWrapper');
+  var cards = wrapper.querySelectorAll('.fan-card');
+  cards.forEach(function(c) { c.onclick = null; c.onmouseenter = null; c.onmouseleave = null; });
+  cards[index].classList.add('chosen');
+  document.getElementById('fanInstruction').textContent = 'The cards have chosen...';
+  var chosenCard = fanDeck[index];
+  var rev = isReversed();
+  var area = document.getElementById('fanRevealArea');
+  area.innerHTML = cardHtml(chosenCard, '', rev);
+  document.getElementById('fanReadingPanel').style.display = 'block';
+  document.getElementById('fanReadingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+  var draws = [{ card: chosenCard, reversed: rev }];
+  var aiText = await getAIReading('fan', draws, ['Your Chosen Card']);
+  document.getElementById('fanReadingText').innerHTML = aiText;
+}
+
+async function loadLibrary() {
+  try {
+    if (allCards.length === 0) allCards = await fetchAllCards();
+    renderLibrary();
+  } catch(e) {
+    document.getElementById('libGrid').innerHTML = '<div style="color:var(--crimson);text-align:center;grid-column:1/-1">Could not load library.</div>';
+  }
+}
+
+function setLibFilter(f, el) {
+  libFilter = f;
+  document.querySelectorAll('.lib-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  el.classList.add('active');
+  renderLibrary();
+}
+
+function filterLibrary() { renderLibrary(); }
+
+function renderLibrary() {
+  var q = document.getElementById('libSearch').value.toLowerCase();
+  var cards = allCards.slice();
+  if (libFilter === 'major') cards = cards.filter(function(c) { return c.type === 'major'; });
+  else if (libFilter === 'minor') cards = cards.filter(function(c) { return c.type === 'minor'; });
+  else if (['wands','cups','swords','pentacles'].indexOf(libFilter) > -1)
+    cards = cards.filter(function(c) { return c.suit === libFilter; });
+  if (q) cards = cards.filter(function(c) { return c.name.toLowerCase().indexOf(q) > -1; });
+  var grid = document.getElementById('libGrid');
+  if (cards.length === 0) {
+    grid.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;text-align:center;grid-column:1/-1;padding:40px">No cards found.</div>';
+    return;
+  }
+  grid.innerHTML = cards.map(function(c) {
+    var imgSrc = getCardImage(c);
+    var cardData = JSON.stringify(c).replace(/"/g, '&quot;');
+    return '<div class="lib-card" onclick="openCardModal(this)" data-card="' + cardData + '" data-reversed="false">'
+      + '<div class="lc-img"><img src="' + imgSrc + '" alt="' + c.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><span style="display:none">✦</span></div>'
+      + '<div class="lc-name">' + c.name + '</div>'
+      + '<div class="lc-suit">' + (c.suit ? c.suit.charAt(0).toUpperCase()+c.suit.slice(1) : c.type === 'major' ? 'Major Arcana' : '') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openCardModal(el) {
+  var card = JSON.parse(el.dataset.card.replace(/&quot;/g, '"'));
+  var reversed = el.dataset.reversed === 'true';
+  var imgSrc = getCardImage(card);
+  document.getElementById('modalImg').innerHTML = '<img src="' + imgSrc + '" alt="' + card.name + '" onerror="this.outerHTML=\'<span>✦</span>\'">';
+  document.getElementById('modalName').textContent = card.name + (reversed ? ' (Reversed)' : '');
+  var suit = card.suit ? card.suit.charAt(0).toUpperCase()+card.suit.slice(1) : '';
+  var arcana = card.type === 'major' ? 'Major Arcana' : 'Minor Arcana';
+  document.getElementById('modalBadges').innerHTML = '<span class="badge">' + arcana + '</span>' + (suit ? '<span class="badge">' + suit + '</span>' : '');
+  document.getElementById('modalDesc').textContent = card.desc || 'A card of the Rider-Waite-Smith deck.';
+  document.getElementById('modalUpright').textContent = card.meaning_up || '—';
+  document.getElementById('modalReversed').textContent = card.meaning_rev || '—';
+  document.getElementById('cardModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('cardModal').classList.remove('open');
+}
+
+document.getElementById('cardModal').addEventListener('click', function(e) {
+  if (e.target === document.getElementById('cardModal')) closeModal();
+});
+
+function getZodiacSign(month, day) {
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'Pisces';
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+  return 'Sagittarius';
+}
+
+async function loadHoroscope() {
+  var val = document.getElementById('birthdayInput').value;
+  if (!val) { alert('Please enter your birthday first.'); return; }
+  var d = new Date(val + 'T00:00:00');
+  var m = d.getMonth() + 1;
+  var day = d.getDate();
+  var signName = getZodiacSign(m, day);
+  currentZodiac = ZODIAC_DATA.find(function(z) { return z.name === signName; });
+  document.getElementById('astroResult').style.display = 'block';
+  document.getElementById('zodiacSymbol').textContent = currentZodiac.symbol;
+  document.getElementById('zodiacName').textContent = currentZodiac.name;
+  document.getElementById('zodiacDates').textContent = currentZodiac.dates;
+  currentHoroTab = 'daily';
+  document.querySelectorAll('.horoscope-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('tabDaily').classList.add('active');
+  await fetchAndShowHoroscope('daily');
+}
+
+async function switchHoroTab(tab, btn) {
+  currentHoroTab = tab;
+  document.querySelectorAll('.horoscope-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  await fetchAndShowHoroscope(tab);
+}
+
+async function fetchAndShowHoroscope(period) {
+  if (!currentZodiac) return;
+  var key = currentZodiac.name + '_' + period;
+  var el = document.getElementById('horoscopeText');
+  el.innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+  document.getElementById('astroAiPanel').style.display = 'none';
+  var horoText = '';
+  if (horoCache[key]) {
+    horoText = horoCache[key];
+  } else {
+    try {
+      var res = await fetch('https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + currentZodiac.name.toLowerCase());
+      var data = await res.json();
+      horoText = (data && data.data && data.data.horoscope) ? data.data.horoscope : '';
+      if (!horoText) throw new Error('empty');
+      horoCache[key] = horoText;
+    } catch(e) {
+      horoText = generateFallbackHoroscope(currentZodiac.name, period);
+      horoCache[key] = horoText;
+    }
+  }
+  el.innerHTML = '<p>' + horoText + '</p>';
+  if (period === 'daily') {
+    document.getElementById('astroAiPanel').style.display = 'block';
+    document.getElementById('astroAiText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+    var aiText = await getAstroAIReading(currentZodiac, horoText);
+    document.getElementById('astroAiText').innerHTML = aiText;
+  }
+}
+
+function generateFallbackHoroscope(sign, period) {
+  var fallbacks = {
+    daily: 'The cosmic energies surrounding ' + sign + ' today invite reflection and intentional action. Pay attention to subtle signs and trust your inner guidance as you navigate the day ahead.',
+    weekly: 'This week brings opportunities for growth and connection for ' + sign + '. The planetary alignments favor thoughtful communication and creative endeavors.',
+    monthly: 'The month ahead holds significant potential for ' + sign + '. Embrace change as a catalyst for transformation and remain open to unexpected blessings.'
+  };
+  return fallbacks[period] || fallbacks.daily;
+}
+
+async function getAIReading(spreadType, draws, positions) {
+  var spreadNames = {
+    single: 'Daily Card', three: 'Three-Card Spread (Past/Present/Future)',
+    celtic: 'Celtic Cross', horseshoe: 'Horseshoe Spread',
+    relationship: 'Relationship Spread', yesno: 'Yes/No Oracle', fan: 'Fan Draw'
+  };
+  var cardList = draws.map(function(d, i) {
+    var pos = positions[i] || ('Card ' + (i+1));
+    var orient = d.reversed ? 'Reversed' : 'Upright';
+    var meaning = d.reversed ? d.card.meaning_rev : d.card.meaning_up;
+    return '- ' + pos + ': ' + d.card.name + ' (' + orient + ') — ' + meaning;
+  }).join('\n');
+
+  var prompt = 'You are a wise, poetic tarot reader with deep knowledge of the Rider-Waite-Smith tradition.\n'
+    + 'A querent has drawn the following cards in a ' + (spreadNames[spreadType] || spreadType) + ':\n\n'
+    + cardList + '\n\n'
+    + 'Provide a brief, insightful reading in 2-3 sentences total. Speak directly to the querent in second person. '
+    + 'Be evocative but concise. Write in HTML using only <p> tags. No more than 60 words.';
+
+  try {
+    var res = await fetch(AI_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    var data = await res.json();
+    var text = data && data.content && data.content[0] ? data.content[0].text : '';
+    return text.trim() || '<p>The cards speak in silence today.</p>';
+  } catch(e) {
+    return '<p>The reading could not be completed. Please try again.</p>';
+  }
+}
+
+async function getAstroAIReading(zodiac, horoText) {
+  var today = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  var prompt = 'You are a thoughtful astrologer. Today is ' + today + '.\n\n'
+    + 'A ' + zodiac.name + ' (' + zodiac.dates + ') has this horoscope today: "' + horoText + '"\n\n'
+    + 'Write a personal 2-3 sentence cosmic insight for them. Mention one key focus for today. '
+    + 'Speak in second person, be genuine and concise. Use <p> tags only. No more than 60 words.';
+
+  try {
+    var res = await fetch(AI_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    var data = await res.json();
+    var text = data && data.content && data.content[0] ? data.content[0].text : '';
+    return text.trim() || '<p>The stars are contemplating.</p>';
+  } catch(e) {
+    return '<p>The cosmic reading could not be completed.</p>';
+  }
+}
+
+setTimeout(function() {
+  fetchAllCards().then(function(cards) { allCards = cards; }).catch(function() {});
+}, 800);
+</script>
+</body>
+</html>
