@@ -1083,6 +1083,64 @@
     .candle-grid, .ref-grid, .deity-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
   }
 
+
+  /* ── GRIMOIRE PDF PRINT STYLES ── */
+  .export-btn {
+    display: none;
+    margin: 20px auto 0;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .export-btn:hover {
+    color: var(--gold-light);
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+  }
+  .export-btn.visible { display: block; }
+
+  @media print {
+    @page { size: A4; margin: 15mm; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: #0d0a12 !important; color: #f5ede0 !important; }
+    body::before, body::after { display: none !important; }
+    header, nav, .spread-grid, .draw-btn, .ornament, .fan-area,
+    .export-btn, footer, .section:not(.print-target),
+    .chart-tabs, #bcPlanetsView, .birth-chart-form { display: none !important; }
+    .section.print-target { display: block !important; padding: 0 !important; max-width: 100% !important; }
+    .grimoire-page { background: #0d0a12 !important; color: #f5ede0 !important; padding: 0; }
+    .grimoire-header { text-align: center; border-bottom: 1px solid #c9a84c; padding-bottom: 16px; margin-bottom: 24px; }
+    .grimoire-header .g-title { font-family: 'Cinzel Decorative', serif; font-size: 22pt; color: #e8c97e !important; letter-spacing: 0.1em; }
+    .grimoire-header .g-subtitle { font-family: 'Cinzel', serif; font-size: 9pt; letter-spacing: 0.3em; color: #7a6228 !important; text-transform: uppercase; margin-top: 4px; }
+    .grimoire-header .g-date { font-family: 'EB Garamond', serif; font-size: 10pt; color: rgba(245,237,224,0.5) !important; font-style: italic; margin-top: 6px; }
+    .grimoire-spread-name { font-family: 'Cinzel', serif; font-size: 13pt; color: #c9a84c !important; letter-spacing: 0.12em; text-align: center; margin: 20px 0 16px; }
+    .grimoire-cards { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 24px; }
+    .grimoire-card-item { text-align: center; width: 100px; }
+    .grimoire-card-item .g-position { font-family: 'Cinzel', serif; font-size: 6.5pt; letter-spacing: 0.15em; color: #7a6228 !important; text-transform: uppercase; margin-bottom: 5px; }
+    .grimoire-card-item .g-card-box { border: 1px solid #c9a84c; background: #130d1e !important; border-radius: 4px; padding: 8px 6px; margin-bottom: 6px; }
+    .grimoire-card-item .g-card-name { font-family: 'Cinzel', serif; font-size: 7pt; color: #e8c97e !important; line-height: 1.4; }
+    .grimoire-card-item .g-card-orient { font-size: 6pt; color: #7c2035 !important; font-style: italic; margin-top: 2px; }
+    .grimoire-divider { width: 200px; height: 1px; background: #7a6228 !important; margin: 20px auto; }
+    .grimoire-reading-title { font-family: 'Cinzel', serif; font-size: 9pt; letter-spacing: 0.2em; color: #7a6228 !important; text-transform: uppercase; text-align: center; margin-bottom: 12px; }
+    .grimoire-reading-text { font-family: 'EB Garamond', serif; font-size: 11pt; line-height: 1.8; color: rgba(245,237,224,0.9) !important; text-align: justify; }
+    .grimoire-reading-text p { margin-bottom: 0.8em; }
+    .grimoire-bc-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; font-size: 10pt; }
+    .grimoire-bc-detail-item label { font-family: 'Cinzel', serif; font-size: 7pt; letter-spacing: 0.15em; color: #7a6228 !important; text-transform: uppercase; display: block; margin-bottom: 2px; }
+    .grimoire-bc-detail-item span { color: rgba(245,237,224,0.85) !important; font-family: 'EB Garamond', serif; }
+    .grimoire-dominants { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
+    .grimoire-dominant-pill { font-family: 'Cinzel', serif; font-size: 7pt; letter-spacing: 0.12em; border: 1px solid #7a6228; color: #c9a84c !important; padding: 4px 12px; }
+    .grimoire-wheel { display: flex; justify-content: center; margin: 16px 0; page-break-inside: avoid; }
+    .grimoire-wheel svg { width: 320px !important; height: 320px !important; }
+    .grimoire-footer { text-align: center; margin-top: 30px; padding-top: 12px; border-top: 1px solid #7a6228; font-family: 'Cinzel', serif; font-size: 7pt; letter-spacing: 0.2em; color: #7a6228 !important; text-transform: uppercase; }
+  }
+
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--ink); }
   ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
@@ -1163,6 +1221,9 @@
   <div class="reading-panel" id="readingPanel" style="display:none">
     <div class="reading-panel-title">✦ The Reading</div>
     <div class="reading-text" id="readingText"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="export-btn" id="exportReadingBtn" onclick="exportReadingPDF()">Save to Grimoire (PDF)</button>
   </div>
 </section>
 
@@ -1282,6 +1343,9 @@
     <div class="reading-panel" id="bcAiPanel" style="display:none;margin-top:28px">
       <div class="reading-panel-title">✦ Your Natal Reading</div>
       <div class="reading-text" id="bcAiText"></div>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <button class="export-btn" id="exportChartBtn" onclick="exportChartPDF()">Save to Grimoire (PDF)</button>
     </div>
   </div>
 </section>
@@ -1419,6 +1483,9 @@ function selectSpread(key, el) {
   currentSpread = key;
   document.getElementById('cardsArea').innerHTML = '';
   document.getElementById('readingPanel').style.display = 'none';
+  var eb = document.getElementById('exportReadingBtn');
+  if (eb) eb.classList.remove('visible');
+  lastDrawData = null;
 }
 
 async function fetchCards(n) {
@@ -1478,6 +1545,8 @@ async function drawSpread() {
     document.getElementById('readingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
     var aiText = await getAIReading(currentSpread, draws, cfg.positions);
     document.getElementById('readingText').innerHTML = aiText;
+    lastDrawData = { spreadType: currentSpread, draws: draws, positions: cfg.positions };
+    showExportBtn('exportReadingBtn');
   } catch(e) {
     area.innerHTML = '<div style="color:var(--crimson);text-align:center;padding:20px">Unable to fetch cards. Please try again.</div>';
   }
@@ -2072,6 +2141,7 @@ function renderBirthChart(data) {
   document.getElementById('bcAiText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
   getBirthChartAIReading(data).then(function(text) {
     document.getElementById('bcAiText').innerHTML = text;
+    showExportBtn('exportChartBtn');
   });
 }
 
@@ -2348,6 +2418,145 @@ function openRefModalByIndex(idx) {
 
 function closeRefModal() {
   document.getElementById('refModal').classList.remove('open');
+}
+
+
+/* ─── GRIMOIRE PDF EXPORTER ─── */
+var lastDrawData = null;
+var SPREAD_DISPLAY_NAMES = {
+  single:'Daily Card Reading', three:'Three Card Spread', celtic:'Celtic Cross',
+  horseshoe:'Horseshoe Spread', relationship:'Relationship Spread',
+  yesno:'Yes / No Oracle', fan:'Fan Draw'
+};
+
+function showExportBtn(id) {
+  var b = document.getElementById(id);
+  if (b) b.classList.add('visible');
+}
+
+function buildGrimoirePage(html) {
+  var old = document.getElementById('grimoirePrintPage');
+  if (old) old.remove();
+  var div = document.createElement('div');
+  div.id = 'grimoirePrintPage';
+  div.className = 'section print-target grimoire-page';
+  div.innerHTML = html;
+  document.body.appendChild(div);
+}
+
+function openGrimoireWindow(subtitle, dateStr, bodyContent) {
+  var w = window.open('', '_blank', 'width=900,height=700');
+  if (!w) { alert('Please allow popups for this site to export PDFs.'); return; }
+  var html = '<!DOCTYPE html><html><head>'
+    +'<meta charset="UTF-8">'
+    +'<title>The Veil - Grimoire</title>'
+    +'<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">'
+    +'<style>'
+    +'*{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}'
+    +'@page{size:A4;margin:15mm}'
+    +'body{background:#0d0a12;color:#f5ede0;font-family:"EB Garamond",Georgia,serif;font-size:12pt;padding:20px}'
+    +'.grimoire-header{text-align:center;border-bottom:1px solid #c9a84c;padding-bottom:16px;margin-bottom:24px}'
+    +'.g-title{font-family:"Cinzel Decorative",serif;font-size:26pt;color:#e8c97e;letter-spacing:0.1em}'
+    +'.g-subtitle{font-family:"Cinzel",serif;font-size:9pt;letter-spacing:0.3em;color:#7a6228;text-transform:uppercase;margin-top:6px}'
+    +'.g-date{font-family:"EB Garamond",serif;font-size:10pt;color:rgba(245,237,224,0.5);font-style:italic;margin-top:6px}'
+    +'.grimoire-spread-name{font-family:"Cinzel",serif;font-size:14pt;color:#c9a84c;letter-spacing:0.12em;text-align:center;margin:20px 0 16px}'
+    +'.grimoire-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:24px}'
+    +'.grimoire-card-item{text-align:center;width:110px}'
+    +'.g-position{font-family:"Cinzel",serif;font-size:7pt;letter-spacing:0.15em;color:#7a6228;text-transform:uppercase;margin-bottom:5px}'
+    +'.g-card-box{border:1px solid #c9a84c;background:#130d1e;border-radius:4px;padding:10px 8px;margin-bottom:6px}'
+    +'.g-card-name{font-family:"Cinzel",serif;font-size:8pt;color:#e8c97e;line-height:1.4}'
+    +'.g-card-orient{font-size:7pt;color:#7c2035;font-style:italic;margin-top:3px}'
+    +'.grimoire-divider{width:200px;height:1px;background:#7a6228;margin:20px auto}'
+    +'.grimoire-reading-title{font-family:"Cinzel",serif;font-size:9pt;letter-spacing:0.2em;color:#7a6228;text-transform:uppercase;text-align:center;margin-bottom:14px}'
+    +'.grimoire-reading-text{font-family:"EB Garamond",serif;font-size:12pt;line-height:1.85;color:rgba(245,237,224,0.9);text-align:justify}'
+    +'.grimoire-reading-text p{margin-bottom:0.8em}'
+    +'.grimoire-bc-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;border:1px solid rgba(201,168,76,0.2);padding:16px}'
+    +'.grimoire-bc-detail-item label{font-family:"Cinzel",serif;font-size:7pt;letter-spacing:0.15em;color:#7a6228;text-transform:uppercase;display:block;margin-bottom:3px}'
+    +'.grimoire-bc-detail-item span{color:rgba(245,237,224,0.85);font-size:11pt}'
+    +'.grimoire-dominants{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}'
+    +'.grimoire-dominant-pill{font-family:"Cinzel",serif;font-size:8pt;letter-spacing:0.1em;border:1px solid #7a6228;color:#c9a84c;padding:5px 14px}'
+    +'.grimoire-wheel{display:flex;justify-content:center;margin:16px 0}'
+    +'.grimoire-wheel svg{width:360px!important;height:360px!important}'
+    +'.grimoire-footer{text-align:center;margin-top:30px;padding-top:12px;border-top:1px solid #7a6228;font-family:"Cinzel",serif;font-size:7pt;letter-spacing:0.2em;color:#7a6228;text-transform:uppercase}'
+    +'@media print{'
+    +'body{background:#0d0a12!important}'
+    +'.no-print{display:none!important}'
+    +'}'
+    +'</style>'
+    +'</head><body>'
+    +'<div class="no-print" style="text-align:center;padding:12px 0 20px">'
+    +'<button onclick="window.print()" style="font-family:Cinzel,serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#0d0a12;background:linear-gradient(135deg,#c9a84c,#e8c97e,#c9a84c);border:none;padding:12px 32px;cursor:pointer;margin-right:12px">Print / Save PDF</button>'
+    +'<button onclick="window.close()" style="font-family:Cinzel,serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#7a6228;background:transparent;border:1px solid rgba(201,168,76,0.3);padding:12px 24px;cursor:pointer">Close</button>'
+    +'<p style="font-family:EB Garamond,serif;font-size:0.8rem;color:rgba(245,237,224,0.35);font-style:italic;margin-top:8px">Tip: In the print dialog, enable <strong style=\'color:rgba(245,237,224,0.5)\'>Background graphics</strong> for the full dark design</p>'
+    +'</div>'
+    +'<div class="grimoire-header">'
+    +'<div class="g-title">The Veil</div>'
+    +'<div class="g-subtitle">'+subtitle+'</div>'
+    +'<div class="g-date">'+dateStr+'</div>'
+    +'</div>'
+    + bodyContent
+    +'<div class="grimoire-footer">The Veil &nbsp;·&nbsp; Tarot &amp; Astrology &nbsp;·&nbsp; For personal reflection only</div>'
+    +'</body></html>';
+  w.document.write(html);
+  w.document.close();
+}
+
+function exportReadingPDF() {
+  if (!lastDrawData) return;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var timeStr = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  var spreadName = SPREAD_DISPLAY_NAMES[lastDrawData.spreadType] || 'Tarot Reading';
+  var aiText = document.getElementById('readingText').innerHTML || '';
+  var cardsHtml = lastDrawData.draws.map(function(d,i) {
+    var pos = lastDrawData.positions[i] || '';
+    return '<div class="grimoire-card-item">'
+      +(pos?'<div class="g-position">'+pos+'</div>':'')
+      +'<div class="g-card-box"><div class="g-card-name">'+d.card.name+'</div>'
+      +(d.reversed?'<div class="g-card-orient">Reversed</div>':'')
+      +'</div></div>';
+  }).join('');
+  openGrimoireWindow(
+    'Grimoire of Readings',
+    dateStr + ' &nbsp;·&nbsp; ' + timeStr,
+    '<div class="grimoire-spread-name">'+spreadName+'</div>'
+    +'<div class="grimoire-cards">'+cardsHtml+'</div>'
+    +'<div class="grimoire-divider"></div>'
+    +'<div class="grimoire-reading-title">The Reading</div>'
+    +'<div class="grimoire-reading-text">'+aiText+'</div>'
+  );
+}
+
+function exportChartPDF() {
+  if (!bcData) return;
+  var dateInput = document.getElementById('bcDate').value;
+  var timeInput = document.getElementById('bcTime').value;
+  var cityInput = document.getElementById('bcCity').value;
+  var dateDisplay = dateInput ? new Date(dateInput+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : 'Unknown';
+  var aiText = document.getElementById('bcAiText').innerHTML || '';
+  var dominantsHtml = '';
+  document.querySelectorAll('#bcDominants .dominant-pill').forEach(function(p){
+    dominantsHtml += '<div class="grimoire-dominant-pill">'+p.textContent+'</div>';
+  });
+  var wheelHtml = document.getElementById('bcWheel') ? document.getElementById('bcWheel').innerHTML : '';
+  var exportDate = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  openGrimoireWindow(
+    'Natal Chart Grimoire',
+    'Exported ' + exportDate,
+    '<div class="grimoire-spread-name">Natal Birth Chart</div>'
+    +'<div class="grimoire-bc-details">'
+    +'<div class="grimoire-bc-detail-item"><label>Date of Birth</label><span>'+dateDisplay+'</span></div>'
+    +'<div class="grimoire-bc-detail-item"><label>Time of Birth</label><span>'+(timeInput||'Not provided')+'</span></div>'
+    +'<div class="grimoire-bc-detail-item"><label>Place of Birth</label><span>'+(cityInput||bcData.city||'Unknown')+'</span></div>'
+    +'<div class="grimoire-bc-detail-item"><label>Rising Sign</label><span>'+(bcData.hasTime?'Included':'Not calculated')+'</span></div>'
+    +'</div>'
+    +'<div class="grimoire-dominants">'+dominantsHtml+'</div>'
+    +'<div class="grimoire-divider"></div>'
+    +'<div class="grimoire-wheel">'+wheelHtml+'</div>'
+    +'<div class="grimoire-divider"></div>'
+    +'<div class="grimoire-reading-title">Natal Reading</div>'
+    +'<div class="grimoire-reading-text">'+aiText+'</div>'
+  );
 }
 
 setTimeout(function() {
