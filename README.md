@@ -1,14 +1,15 @@
 <div align="center">
 
 # ✦ THE VEIL ✦
-*Tarot · Astrology · Divination · Ritual Intelligence*
+### *Tarot · Astrology · Divination · Ritual Intelligence*
 
 [![Version](https://img.shields.io/badge/Version-1.3.0-gold?style=for-the-badge)](#)
 [![Focus](https://img.shields.io/badge/Focus-Spiritual_Tooling-purple?style=for-the-badge)](#)
 
-<img src="header_image.png" width="200" style="filter: drop-shadow(0 0 15px rgba(201,168,76,0.4));" alt="The Veil Pentacle">
-
 ---
+*“The lips of wisdom are closed, except to the ears of Understanding.”*
+---
+
 </div>
 
 ## 🌒 Overview
@@ -43,7 +44,7 @@
 
 <div align="center">
 
-*"The lips of wisdom are closed, except to the ears of Understanding."*
+**As above, so below.**
 
 **Blessed Be.**
 </div>
