@@ -696,6 +696,89 @@
     font-size: 1rem;
   }
 
+
+  /* ── BIRTH CHART ── */
+  .birth-chart-form {
+    max-width: 500px;
+    margin: 0 auto 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .birth-chart-form .full-width { grid-column: 1 / -1; }
+
+  .chart-wheel-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .chart-wheel-wrap svg {
+    max-width: 480px;
+    width: 100%;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.15));
+  }
+
+  .planet-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 32px;
+    border-collapse: collapse;
+  }
+
+  .planet-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    text-align: left;
+  }
+
+  .planet-table td {
+    font-size: 0.88rem;
+    color: rgba(245,237,224,0.8);
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+  }
+
+  .planet-table tr:hover td { background: rgba(201,168,76,0.04); }
+
+  .planet-symbol { font-size: 1.1rem; margin-right: 6px; }
+
+  .chart-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .dominant-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .dominant-pill {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 6px 16px;
+  }
+
+  .time-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(245,237,224,0.35);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--ink); }
   ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
@@ -730,6 +813,7 @@
   <button class="nav-btn" onclick="showSection('fan', this)">Fan Draw</button>
   <button class="nav-btn" onclick="showSection('library', this)">Card Library</button>
   <button class="nav-btn" onclick="showSection('astrology', this)">Astrology</button>
+  <button class="nav-btn" onclick="showSection('birthchart', this)">Birth Chart</button>
 </nav>
 
 <!-- READINGS -->
@@ -844,6 +928,55 @@
     <div class="reading-panel" id="astroAiPanel" style="display:none;margin-top:28px">
       <div class="reading-panel-title">✦ Your Cosmic Reading</div>
       <div class="reading-text" id="astroAiText"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BIRTH CHART -->
+<section class="section" id="birthchart">
+  <div class="section-title">Birth Chart</div>
+  <div class="section-desc">Discover your full natal chart — the map of the sky at the moment you were born</div>
+
+  <div class="birth-chart-form">
+    <div class="form-group full-width">
+      <label>Date of Birth</label>
+      <input type="date" id="bcDate">
+    </div>
+    <div class="form-group">
+      <label>Time of Birth <span style="color:rgba(245,237,224,0.3);font-size:0.75em">(optional)</span></label>
+      <input type="time" id="bcTime" placeholder="HH:MM">
+    </div>
+    <div class="form-group">
+      <label>City of Birth</label>
+      <input type="text" id="bcCity" placeholder="e.g. St. Louis, MO">
+    </div>
+    <div class="form-group full-width" style="text-align:center">
+      <button class="draw-btn" style="margin:0" onclick="generateBirthChart()">✦ Cast My Chart ✦</button>
+    </div>
+  </div>
+
+  <div id="bcResult" style="display:none">
+    <div class="time-note" id="bcTimeNote"></div>
+
+    <div class="dominant-row" id="bcDominants"></div>
+
+    <div class="chart-tabs">
+      <button class="nav-btn active" id="bcTabChart" onclick="switchBcTab('chart', this)">Chart Wheel</button>
+      <button class="nav-btn" id="bcTabPlanets" onclick="switchBcTab('planets', this)">Planets</button>
+    </div>
+
+    <div id="bcChartView">
+      <div class="chart-wheel-wrap" id="bcWheel"></div>
+    </div>
+
+    <div id="bcPlanetsView" style="display:none">
+      <table class="planet-table" id="bcPlanetTable"></table>
+    </div>
+
+    <div class="reading-panel" id="bcAiPanel" style="display:none;margin-top:28px">
+      <div class="reading-panel-title">✦ Your Natal Reading</div>
+      <div class="reading-text" id="bcAiText"></div>
     </div>
   </div>
 </section>
@@ -1265,6 +1398,437 @@ async function getAstroAIReading(zodiac, horoText) {
     return text.trim() || '<p>The stars are contemplating.</p>';
   } catch(e) {
     return '<p>The cosmic reading could not be completed.</p>';
+  }
+}
+
+
+/* ─────────────────────────────────────────────
+   BIRTH CHART
+───────────────────────────────────────────── */
+
+var PLANET_SYMBOLS = {
+  Sun: '☉', Moon: '☽', Mercury: '☿', Venus: '♀', Mars: '♂',
+  Jupiter: '♃', Saturn: '♄', Uranus: '♅', Neptune: '♆', Pluto: '♇',
+  'Rising': '↑'
+};
+
+var ZODIAC_SYMBOLS_LIST = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+var ZODIAC_NAMES_LIST = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+var ZODIAC_ELEMENTS = ['Fire','Earth','Air','Water','Fire','Earth','Air','Water','Fire','Earth','Air','Water'];
+var ZODIAC_MODALITIES = ['Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable'];
+
+var bcData = null;
+var currentBcTab = 'chart';
+
+function switchBcTab(tab, btn) {
+  currentBcTab = tab;
+  document.querySelectorAll('.chart-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  document.getElementById('bcChartView').style.display = tab === 'chart' ? 'block' : 'none';
+  document.getElementById('bcPlanetsView').style.display = tab === 'planets' ? 'block' : 'none';
+}
+
+async function generateBirthChart() {
+  var dateVal = document.getElementById('bcDate').value;
+  var timeVal = document.getElementById('bcTime').value;
+  var cityVal = document.getElementById('bcCity').value.trim();
+
+  if (!dateVal) { alert('Please enter your date of birth.'); return; }
+  if (!cityVal) { alert('Please enter your city of birth.'); return; }
+
+  var btn = document.querySelector('#birthchart .draw-btn');
+  btn.disabled = true;
+  btn.textContent = 'Casting...';
+
+  try {
+    // Geocode the birth city using existing proxy
+    var geoRes = await fetch('/api/geocode?address=' + encodeURIComponent(cityVal));
+    var geoData = await geoRes.json();
+    if (!geoData.results || geoData.results.length === 0) {
+      alert('Could not find that city. Please try a more specific location.');
+      btn.disabled = false; btn.textContent = '✦ Cast My Chart ✦';
+      return;
+    }
+    var loc = geoData.results[0].geometry.location;
+    var lat = loc.lat;
+    var lng = loc.lng;
+
+    // Parse birth date/time
+    var d = new Date(dateVal + 'T00:00:00');
+    var year = d.getFullYear();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    var hour = 12, minute = 0;
+    var hasTime = false;
+    if (timeVal) {
+      var tp = timeVal.split(':');
+      hour = parseInt(tp[0]); minute = parseInt(tp[1]);
+      hasTime = true;
+    }
+
+    // Calculate Julian Day Number
+    var jd = calcJulianDay(year, month, day, hour, minute, lng);
+
+    // Calculate planetary positions
+    var planets = calcPlanets(jd, lat, lng, hasTime);
+
+    bcData = { planets: planets, hasTime: hasTime, city: geoData.results[0].formatted_address };
+
+    renderBirthChart(bcData);
+  } catch(e) {
+    alert('Could not generate chart. Please try again.');
+    console.error(e);
+  }
+
+  btn.disabled = false; btn.textContent = '✦ Cast My Chart ✦';
+}
+
+function calcJulianDay(year, month, day, hour, minute, lng) {
+  // Standard Julian Day calculation
+  var timeFrac = (hour + minute / 60.0) / 24.0;
+  if (month <= 2) { year -= 1; month += 12; }
+  var A = Math.floor(year / 100);
+  var B = 2 - A + Math.floor(A / 4);
+  var jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + timeFrac + B - 1524.5;
+  // Adjust for local time (rough UT conversion)
+  jd -= lng / 360.0;
+  return jd;
+}
+
+function calcPlanets(jd, lat, lng, hasTime) {
+  // T = Julian centuries from J2000.0
+  var T = (jd - 2451545.0) / 36525.0;
+
+  var planets = [];
+
+  // Sun
+  var sunLon = calcSunLongitude(T);
+  planets.push({ name: 'Sun', lon: sunLon, sign: lonToSign(sunLon), deg: lonToDeg(sunLon) });
+
+  // Moon
+  var moonLon = calcMoonLongitude(T);
+  planets.push({ name: 'Moon', lon: moonLon, sign: lonToSign(moonLon), deg: lonToDeg(moonLon) });
+
+  // Mercury
+  var mercLon = calcMercuryLongitude(T);
+  planets.push({ name: 'Mercury', lon: mercLon, sign: lonToSign(mercLon), deg: lonToDeg(mercLon) });
+
+  // Venus
+  var venusLon = calcVenusLongitude(T);
+  planets.push({ name: 'Venus', lon: venusLon, sign: lonToSign(venusLon), deg: lonToDeg(venusLon) });
+
+  // Mars
+  var marsLon = calcMarsLongitude(T);
+  planets.push({ name: 'Mars', lon: marsLon, sign: lonToSign(marsLon), deg: lonToDeg(marsLon) });
+
+  // Jupiter
+  var jupLon = calcJupiterLongitude(T);
+  planets.push({ name: 'Jupiter', lon: jupLon, sign: lonToSign(jupLon), deg: lonToDeg(jupLon) });
+
+  // Saturn
+  var satLon = calcSaturnLongitude(T);
+  planets.push({ name: 'Saturn', lon: satLon, sign: lonToSign(satLon), deg: lonToDeg(satLon) });
+
+  // Uranus
+  var uraLon = calcUranusLongitude(T);
+  planets.push({ name: 'Uranus', lon: uraLon, sign: lonToSign(uraLon), deg: lonToDeg(uraLon) });
+
+  // Neptune
+  var nepLon = calcNeptuneLongitude(T);
+  planets.push({ name: 'Neptune', lon: nepLon, sign: lonToSign(nepLon), deg: lonToDeg(nepLon) });
+
+  // Pluto
+  var pluLon = calcPlutoLongitude(T);
+  planets.push({ name: 'Pluto', lon: pluLon, sign: lonToSign(pluLon), deg: lonToDeg(pluLon) });
+
+  // Rising sign (Ascendant) - only if birth time provided
+  if (hasTime) {
+    var asc = calcAscendant(jd, lat, lng);
+    planets.push({ name: 'Rising', lon: asc, sign: lonToSign(asc), deg: lonToDeg(asc), isAsc: true });
+  }
+
+  return planets;
+}
+
+function normalizeAngle(a) {
+  a = a % 360;
+  if (a < 0) a += 360;
+  return a;
+}
+
+function lonToSign(lon) {
+  return ZODIAC_NAMES_LIST[Math.floor(lon / 30) % 12];
+}
+
+function lonToDeg(lon) {
+  return (lon % 30).toFixed(1);
+}
+
+function calcSunLongitude(T) {
+  var L0 = 280.46646 + 36000.76983 * T;
+  var M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+  var Mrad = M * Math.PI / 180;
+  var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
+        + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+        + 0.000289 * Math.sin(3 * Mrad);
+  return normalizeAngle(L0 + C);
+}
+
+function calcMoonLongitude(T) {
+  var L = 218.3165 + 481267.8813 * T;
+  var M = 134.9634 + 477198.8676 * T;
+  var F = 93.2721 + 483202.0175 * T;
+  var D = 297.8502 + 445267.1115 * T;
+  var Mrad = M * Math.PI / 180;
+  var Drad = D * Math.PI / 180;
+  var Frad = F * Math.PI / 180;
+  var lon = L + 6.289 * Math.sin(Mrad) - 1.274 * Math.sin(2*Drad - Mrad)
+          + 0.658 * Math.sin(2*Drad) - 0.186 * Math.sin(M * Math.PI / 180)
+          - 0.059 * Math.sin(2*Drad - 2*Mrad) - 0.057 * Math.sin(2*Drad - M*Math.PI/180 - Mrad)
+          + 0.053 * Math.sin(2*Drad + Mrad) + 0.046 * Math.sin(2*Drad - M*Math.PI/180)
+          + 0.041 * Math.sin(Mrad - M*Math.PI/180);
+  return normalizeAngle(lon);
+}
+
+function calcMercuryLongitude(T) {
+  var L = 252.2509 + 149472.6746 * T;
+  var M = 168.6562 + 149472.5153 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 23.4400 * Math.sin(Mrad) + 2.9818 * Math.sin(2*Mrad));
+}
+
+function calcVenusLongitude(T) {
+  var L = 181.9798 + 58517.8156 * T;
+  var M = 212.4100 + 58517.8036 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 0.7758 * Math.sin(Mrad) + 0.0033 * Math.sin(2*Mrad));
+}
+
+function calcMarsLongitude(T) {
+  var L = 355.4330 + 19140.2993 * T;
+  var M = 319.5294 + 19139.8584 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 10.6912 * Math.sin(Mrad) + 0.6228 * Math.sin(2*Mrad));
+}
+
+function calcJupiterLongitude(T) {
+  var L = 34.3515 + 3034.9057 * T;
+  var M = 20.9202 + 3034.7684 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 5.5549 * Math.sin(Mrad) + 0.1683 * Math.sin(2*Mrad));
+}
+
+function calcSaturnLongitude(T) {
+  var L = 50.0774 + 1222.1138 * T;
+  var M = 317.9065 + 1221.5515 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 6.3585 * Math.sin(Mrad) - 0.2204 * Math.sin(2*Mrad));
+}
+
+function calcUranusLongitude(T) {
+  var L = 314.0550 + 428.4680 * T;
+  var M = 142.5905 + 428.3229 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 5.3042 * Math.sin(Mrad) + 0.1534 * Math.sin(2*Mrad));
+}
+
+function calcNeptuneLongitude(T) {
+  var L = 304.3486 + 218.4600 * T;
+  var M = 267.7649 + 218.3449 * T;
+  var Mrad = M * Math.PI / 180;
+  return normalizeAngle(L + 1.0169 * Math.sin(Mrad));
+}
+
+function calcPlutoLongitude(T) {
+  // Simplified Pluto position
+  var L = 238.9508 + 144.9600 * T;
+  return normalizeAngle(L);
+}
+
+function calcAscendant(jd, lat, lng) {
+  // RAMC (Right Ascension of Midheaven)
+  var T = (jd - 2451545.0) / 36525.0;
+  var theta0 = 280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T;
+  var RAMC = normalizeAngle(theta0 + lng);
+  var e = 23.439291 - 0.013004 * T; // obliquity
+  var eRad = e * Math.PI / 180;
+  var latRad = lat * Math.PI / 180;
+  var ramcRad = RAMC * Math.PI / 180;
+  var asc = Math.atan2(Math.cos(ramcRad), -(Math.sin(ramcRad) * Math.cos(eRad) + Math.tan(latRad) * Math.sin(eRad)));
+  var ascDeg = normalizeAngle(asc * 180 / Math.PI);
+  return ascDeg;
+}
+
+function renderBirthChart(data) {
+  document.getElementById('bcResult').style.display = 'block';
+
+  // Time note
+  var note = data.hasTime
+    ? 'Chart cast for ' + data.city + ' with birth time — Rising sign included.'
+    : 'Chart cast for ' + data.city + '. Birth time not provided — Rising sign and houses omitted.';
+  document.getElementById('bcTimeNote').textContent = note;
+
+  // Dominant element and modality
+  var elements = { Fire: 0, Earth: 0, Air: 0, Water: 0 };
+  var modalities = { Cardinal: 0, Fixed: 0, Mutable: 0 };
+  data.planets.forEach(function(p) {
+    if (p.isAsc) return;
+    var idx = ZODIAC_NAMES_LIST.indexOf(p.sign);
+    if (idx > -1) {
+      elements[ZODIAC_ELEMENTS[idx]]++;
+      modalities[ZODIAC_MODALITIES[idx]]++;
+    }
+  });
+  var domElement = Object.keys(elements).reduce(function(a, b) { return elements[a] >= elements[b] ? a : b; });
+  var domModality = Object.keys(modalities).reduce(function(a, b) { return modalities[a] >= modalities[b] ? a : b; });
+  var sunPlanet = data.planets.find(function(p) { return p.name === 'Sun'; });
+  var moonPlanet = data.planets.find(function(p) { return p.name === 'Moon'; });
+  var risingPlanet = data.planets.find(function(p) { return p.name === 'Rising'; });
+
+  var dominantHtml = '<div class="dominant-pill">Sun: ' + (sunPlanet ? sunPlanet.sign : '?') + '</div>'
+    + '<div class="dominant-pill">Moon: ' + (moonPlanet ? moonPlanet.sign : '?') + '</div>'
+    + (risingPlanet ? '<div class="dominant-pill">Rising: ' + risingPlanet.sign + '</div>' : '')
+    + '<div class="dominant-pill">Element: ' + domElement + '</div>'
+    + '<div class="dominant-pill">Mode: ' + domModality + '</div>';
+  document.getElementById('bcDominants').innerHTML = dominantHtml;
+
+  // Draw SVG wheel
+  drawChartWheel(data.planets);
+
+  // Planet table
+  var tableHtml = '<tr><th>Planet</th><th>Sign</th><th>Degree</th></tr>';
+  data.planets.forEach(function(p) {
+    var sym = PLANET_SYMBOLS[p.name] || '';
+    var signIdx = ZODIAC_NAMES_LIST.indexOf(p.sign);
+    var signSym = signIdx > -1 ? ZODIAC_SYMBOLS_LIST[signIdx] : '';
+    tableHtml += '<tr><td><span class="planet-symbol">' + sym + '</span>' + p.name + '</td>'
+      + '<td>' + signSym + ' ' + p.sign + '</td>'
+      + '<td>' + p.deg + '</td></tr>';
+  });
+  document.getElementById('bcPlanetTable').innerHTML = tableHtml;
+
+  // AI reading
+  document.getElementById('bcAiPanel').style.display = 'block';
+  document.getElementById('bcAiText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+  getBirthChartAIReading(data).then(function(text) {
+    document.getElementById('bcAiText').innerHTML = text;
+  });
+}
+
+function drawChartWheel(planets) {
+  var size = 480;
+  var cx = size / 2, cy = size / 2;
+  var outerR = 220, zodiacR = 200, innerR = 160, coreR = 80;
+
+  var svg = '<svg viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg">';
+
+  // Background
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + outerR + '" fill="#0d0a12" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + zodiacR + '" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + innerR + '" fill="#130d1e" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + coreR + '" fill="#0a0612" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>';
+
+  // Zodiac signs (12 segments)
+  var segColors = ['rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)',
+    'rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)',
+    'rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)'];
+
+  for (var i = 0; i < 12; i++) {
+    var startAngle = (i * 30 - 90) * Math.PI / 180;
+    var endAngle = ((i + 1) * 30 - 90) * Math.PI / 180;
+    var x1 = cx + zodiacR * Math.cos(startAngle);
+    var y1 = cy + zodiacR * Math.sin(startAngle);
+    var x2 = cx + outerR * Math.cos(startAngle);
+    var y2 = cy + outerR * Math.sin(startAngle);
+    // Segment fill
+    var px1 = cx + zodiacR * Math.cos(startAngle);
+    var py1 = cy + zodiacR * Math.sin(startAngle);
+    var px2 = cx + outerR * Math.cos(startAngle);
+    var py2 = cy + outerR * Math.sin(startAngle);
+    var px3 = cx + outerR * Math.cos(endAngle);
+    var py3 = cy + outerR * Math.sin(endAngle);
+    var px4 = cx + zodiacR * Math.cos(endAngle);
+    var py4 = cy + zodiacR * Math.sin(endAngle);
+    svg += '<path d="M' + px1 + ',' + py1 + ' L' + px2 + ',' + py2 + ' A' + outerR + ',' + outerR + ' 0 0,1 ' + px3 + ',' + py3 + ' L' + px4 + ',' + py4 + ' A' + zodiacR + ',' + zodiacR + ' 0 0,0 ' + px1 + ',' + py1 + 'Z" fill="' + segColors[i] + '"/>';
+    // Divider line
+    svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>';
+    // Sign symbol
+    var midAngle = ((i * 30 + 15) - 90) * Math.PI / 180;
+    var symR = (zodiacR + outerR) / 2;
+    var sx = cx + symR * Math.cos(midAngle);
+    var sy = cy + symR * Math.sin(midAngle);
+    svg += '<text x="' + sx + '" y="' + sy + '" text-anchor="middle" dominant-baseline="central" font-size="13" fill="rgba(201,168,76,0.7)">' + ZODIAC_SYMBOLS_LIST[i] + '</text>';
+  }
+
+  // Cross lines through center
+  svg += '<line x1="' + (cx - innerR) + '" y1="' + cy + '" x2="' + (cx + innerR) + '" y2="' + cy + '" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>';
+  svg += '<line x1="' + cx + '" y1="' + (cy - innerR) + '" x2="' + cx + '" y2="' + (cy + innerR) + '" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>';
+
+  // Planets
+  var placed = [];
+  planets.forEach(function(p) {
+    var angle = (p.lon - 90) * Math.PI / 180;
+    var pr = innerR - 20;
+    // Avoid overlap
+    var offset = 0;
+    placed.forEach(function(pl) {
+      var diff = Math.abs(p.lon - pl) % 360;
+      if (diff > 180) diff = 360 - diff;
+      if (diff < 12) offset += 14;
+    });
+    placed.push(p.lon);
+    var px = cx + (pr - offset) * Math.cos(angle);
+    var py = cy + (pr - offset) * Math.sin(angle);
+    var sym = PLANET_SYMBOLS[p.name] || p.name[0];
+    var col = p.isAsc ? '#e8c97e' : 'rgba(245,237,224,0.85)';
+    var fs = p.isAsc ? '13' : '12';
+    svg += '<text x="' + px + '" y="' + py + '" text-anchor="middle" dominant-baseline="central" font-size="' + fs + '" fill="' + col + '" font-weight="' + (p.isAsc ? 'bold' : 'normal') + '">' + sym + '</text>';
+    // Spoke line from planet to inner circle
+    var lineR = innerR;
+    var lx = cx + lineR * Math.cos(angle);
+    var ly = cy + lineR * Math.sin(angle);
+    svg += '<line x1="' + lx + '" y1="' + ly + '" x2="' + (cx + (zodiacR) * Math.cos(angle)) + '" y2="' + (cy + (zodiacR) * Math.sin(angle)) + '" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>';
+  });
+
+  // Center text
+  svg += '<text x="' + cx + '" y="' + (cy - 8) + '" text-anchor="middle" font-size="11" fill="rgba(201,168,76,0.4)" font-family="serif">NATAL</text>';
+  svg += '<text x="' + cx + '" y="' + (cy + 8) + '" text-anchor="middle" font-size="11" fill="rgba(201,168,76,0.4)" font-family="serif">CHART</text>';
+
+  svg += '</svg>';
+  document.getElementById('bcWheel').innerHTML = svg;
+}
+
+async function getBirthChartAIReading(data) {
+  var planetList = data.planets.map(function(p) {
+    return p.name + ' in ' + p.sign;
+  }).join(', ');
+
+  var sunP = data.planets.find(function(p) { return p.name === 'Sun'; });
+  var moonP = data.planets.find(function(p) { return p.name === 'Moon'; });
+  var ascP = data.planets.find(function(p) { return p.name === 'Rising'; });
+
+  var prompt = 'You are an astrologer giving a brief natal chart reading. '
+    + 'The person has: ' + planetList + '. '
+    + 'Focus on Sun (' + (sunP ? sunP.sign : '?') + '), Moon (' + (moonP ? moonP.sign : '?') + ')'
+    + (ascP ? ', and Rising (' + ascP.sign + ')' : '') + '. '
+    + 'Give a 3-4 sentence personal reading about their core nature, emotional world, and outward personality. '
+    + 'Be specific to these placements, speak in second person, use <p> tags only. Max 80 words.';
+
+  try {
+    var res = await fetch(AI_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    var d = await res.json();
+    var text = d && d.content && d.content[0] ? d.content[0].text : '';
+    return text.trim() || '<p>The stars hold their counsel today.</p>';
+  } catch(e) {
+    return '<p>The natal reading could not be completed.</p>';
   }
 }
 
