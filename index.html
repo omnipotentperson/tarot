@@ -1348,6 +1348,10 @@
   </div>
 </footer>
 
+<div class="ref-modal-overlay" id="refModal">
+  <div class="ref-modal-box" id="refModalBox"></div>
+</div>
+
 <script>
 var TAROT_API = 'https://tarotapi.dev/api/v1';
 var AI_API = '/api/ai-reading';
@@ -1701,7 +1705,7 @@ async function getAIReading(spreadType, draws, positions) {
   var spreadInstructions = {
     single: 'What does this card mean for the querent today? Give one direct, practical insight.',
     three: 'Briefly describe what each position (past/present/future) reveals. One sentence per card.',
-    celtic: 'Name the 3 most significant cards and what they reveal about the situation. Be specific.',
+    celtic: 'Interpret all 10 cards in their positions. For each card briefly state what it reveals in its position, then give an overall synthesis of the reading in 2 sentences. Be specific to the actual cards drawn.',
     horseshoe: 'What is the overall message of this spread? What action should the querent take?',
     relationship: 'What does this spread reveal about the relationship dynamic? Be direct.',
     yesno: 'Start with Yes or No. Then give one sentence of explanation based on the cards.',
@@ -1712,7 +1716,7 @@ async function getAIReading(spreadType, draws, positions) {
     + 'Cards drawn (' + (spreadNames[spreadType] || spreadType) + '):\n'
     + cardList + '\n\n'
     + instruction + '\n'
-    + 'Speak in second person. Use <p> tags only. Max 60 words. Be specific to the actual cards drawn.';
+    + 'Speak in second person. Use <p> tags only. Max 250 words for Celtic Cross, 60 words for other spreads. Be specific to the actual cards drawn.';
 
   try {
     var res = await fetch(AI_API, {
@@ -2175,8 +2179,8 @@ async function getBirthChartAIReading(data) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        max_tokens: 300,
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
@@ -2212,22 +2216,28 @@ function switchRefTab(tab, btn) {
   renderRefTab();
 }
 
+// Store ref items for modal access
+var refItemStore = [];
+
 function renderRefTab() {
   if (!REF_DATA || !REF_DATA.candles) return;
   var refContentEl = document.getElementById('refContent');
   if (!refContentEl) return;
   var searchEl = document.getElementById('refSearch');
   var q = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  refItemStore = [];
   var html = '';
 
   if (currentRefTab === 'candles') {
     var items = q ? REF_DATA.candles.filter(function(c) {
       return c.color.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q) || c.element.toLowerCase().includes(q);
-    }) : REF_DATA.candles;
+    }) : REF_DATA.candles.slice();
     html = '<div class="candle-grid">' + items.map(function(c) {
+      var idx = refItemStore.length;
+      refItemStore.push({item: c, type: 'candle'});
       var hex = CANDLE_HEX[c.color] || '#888';
       var props = c.properties.split(' - ').join(' · ');
-      return '<div class="candle-card" onclick="openRefModal(' + JSON.stringify(c).replace(/"/g,'&quot;') + ', \'candle\')">'
+      return '<div class="candle-card" onclick="openRefModalByIndex(' + idx + ')">'
         + '<div class="candle-swatch" style="background:' + hex + '"></div>'
         + '<div class="candle-name">' + c.color + '</div>'
         + '<div class="candle-props">' + props + '</div>'
@@ -2237,25 +2247,25 @@ function renderRefTab() {
   } else if (currentRefTab === 'crystals') {
     var items = q ? REF_DATA.crystals.filter(function(c) {
       return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q) || c.category.toLowerCase().includes(q);
-    }) : REF_DATA.crystals;
+    }) : REF_DATA.crystals.slice();
     html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'crystal');
+      return refCard(c, 'item');
     }).join('') + '</div>';
 
   } else if (currentRefTab === 'herbs') {
     var items = q ? REF_DATA.herbs.filter(function(c) {
       return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q);
-    }) : REF_DATA.herbs;
+    }) : REF_DATA.herbs.slice();
     html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'herb');
+      return refCard(c, 'item');
     }).join('') + '</div>';
 
   } else if (currentRefTab === 'oils') {
     var items = q ? REF_DATA.oils.filter(function(c) {
       return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q);
-    }) : REF_DATA.oils;
+    }) : REF_DATA.oils.slice();
     html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'oil');
+      return refCard(c, 'item');
     }).join('') + '</div>';
 
   } else if (currentRefTab === 'deities') {
@@ -2264,7 +2274,7 @@ function renderRefTab() {
       var deities = REF_DATA.deities[pantheon];
       var filtered = q ? deities.filter(function(d) {
         return d.name.toLowerCase().includes(q) || d.domain.toLowerCase().includes(q);
-      }) : deities;
+      }) : deities.slice();
       if (filtered.length === 0) return '';
       return '<div class="deity-pantheon">'
         + '<div class="deity-pantheon-title">' + pantheon + '</div>'
@@ -2285,25 +2295,29 @@ function renderRefTab() {
 }
 
 function refCard(item, type) {
-  var name = item.name;
+  var idx = refItemStore.length;
+  refItemStore.push({item: item, type: type});
+  var name = item.name || item.color || '';
   var cat = item.category || '';
-  var props = item.properties.split(' - ').join(' · ');
+  var props = item.properties ? item.properties.split(' - ').join(' · ') : '';
   var meta = '';
-  if (item.element && item.element !== 'nan') meta += '<span class="ref-meta-pill">🜁 ' + item.element + '</span>';
-  if (item.planet && item.planet !== 'nan') meta += '<span class="ref-meta-pill">☽ ' + item.planet + '</span>';
-  if (item.zodiac && item.zodiac !== 'nan') meta += '<span class="ref-meta-pill">✦ ' + item.zodiac.split(' - ')[0] + '</span>';
-  var itemJson = JSON.stringify(item).replace(/"/g,'&quot;');
-  return '<div class="ref-card" onclick="openRefModal(' + itemJson + ', \'item\')">'
+  if (item.element && item.element !== 'nan') meta += '<span class="ref-meta-pill">' + item.element + '</span>';
+  if (item.planet && item.planet !== 'nan') meta += '<span class="ref-meta-pill">' + item.planet + '</span>';
+  if (item.zodiac && item.zodiac !== 'nan') meta += '<span class="ref-meta-pill">' + item.zodiac.split(' - ')[0] + '</span>';
+  return '<div class="ref-card" onclick="openRefModalByIndex(' + idx + ')">'
     + '<div class="ref-card-name">' + name + '</div>'
     + (cat ? '<div class="ref-card-cat">' + cat + '</div>' : '')
     + '<div class="ref-card-props">' + props + '</div>'
-    + '<div class="ref-card-meta">' + meta + '</div>'
+    + (meta ? '<div class="ref-card-meta">' + meta + '</div>' : '')
     + '</div>';
 }
 
-function openRefModal(item, type) {
-  if (typeof item === 'string') item = JSON.parse(item);
-  var name = item.color || item.name;
+function openRefModalByIndex(idx) {
+  var entry = refItemStore[idx];
+  if (!entry) return;
+  var item = entry.item;
+  var type = entry.type;
+  var name = item.color || item.name || '';
   var cat = item.category || '';
   var props = item.properties || item.domain || '';
   var el = document.getElementById('refModalBox');
@@ -2319,7 +2333,7 @@ function openRefModal(item, type) {
   var swatchHtml = '';
   if (type === 'candle') {
     var hex = CANDLE_HEX[name] || '#888';
-    swatchHtml = '<div class="candle-swatch" style="width:50px;height:50px;background:' + hex + ';margin-bottom:14px"></div>';
+    swatchHtml = '<div class="candle-swatch" style="width:50px;height:50px;background:' + hex + ';margin-bottom:14px;margin-left:auto;margin-right:auto"></div>';
   }
 
   el.innerHTML = '<button class="modal-close" onclick="closeRefModal()">X</button>'
@@ -2341,8 +2355,5 @@ setTimeout(function() {
 }, 800);
 </script>
 
-<div class="ref-modal-overlay" id="refModal">
-  <div class="ref-modal-box" id="refModalBox"></div>
-</div>
 </body>
 </html>
