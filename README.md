@@ -2,15 +2,19 @@
 <p align="center"><i>Tarot · Astrology · Divination · Ritual Intelligence</i></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2.0-gold?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.3.0-gold?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Focus-Spiritual_Tooling-purple?style=flat-square" alt="Focus">
   <img src="https://img.shields.io/badge/License-MIT-black?style=flat-square" alt="License">
+</p>
+
+<p align="center">
+  <img src="path/to/image_1.png" width="150px" alt="The Isolated Pentacle">
 </p>
 
 ---
 
 ## 🌒 Overview
-**The Veil** is a high-fidelity, single-page web application designed as a digital sanctuary for the modern practitioner. It bridges ancient hermetic wisdom with a clean, "Gold-on-Ink" aesthetic to provide an immersive experience for self-reflection and occult study.
+**The Veil** is a high-fidelity, single-page web application designed as a digital sanctuary for the modern practitioner. It bridges ancient hermetic wisdom with a clean, "Gold-on-Ink" aesthetic, utilizing hand-drawn iconography to create an immersive experience for self-reflection and occult study.
 
 ---
 
@@ -32,7 +36,7 @@ A comprehensive, searchable database of all 78 Tarot cards.
 * **The Magick:** Acts as a *Digital Grimoire* for study and meditation, housing the archetypal journey of the Fool.
 
 ### 🕯️ Mystical Reference Guide
-A modular encyclopedia for ritual correspondences.
+A modular encyclopedia for ritual correspondences, featuring optimized logic for candles, crystals, and deities.
 * **How to Use:** Toggle between **Candles, Crystals, Herbs,** and **Deities** to see magical properties.
 * **The Magick:** Ensures the "intent" of a ritual matches the "frequency" of the materials—essential for successful manifestation.
 
@@ -42,9 +46,9 @@ A modular encyclopedia for ritual correspondences.
 
 | Phase | Title | Features | Status |
 | :--- | :--- | :--- | :--- |
-| **🌑 I** | **Waxing Moon** | Moon Phase Tracker, Ritual Journal (Local Storage), Reverse Card Logic | 🚧 In Progress |
-| **🌓 II** | **First Quarter** | Birth Chart Transit Overlays, Synastry Reports, Aspect Grids | 📅 Planned |
-| **🌕 III** | **Full Moon** | Custom Deck Uploads, Sigil Generator (Kamea), PDF Grimoire Export | 🔮 Vision |
+| **🌑 I** | **Waxing Moon** | *Custom Deck Uploads (Import/Define), Sigil Generator (Kamea/Magic Square)* | 🚧 In Progress |
+| **🌓 II** | **First Quarter** | *Transit Overlays (Astrology), Relationship Analysis (Synastry Reports), Aspect Grid (Visual)* | 📅 Planned |
+| **🌕 III** | **Full Moon** | Moon Phase Tracker, Ritual Journal (Local Storage), Reverse Card Logic | 🔮 Vision |
 
 ---
 
@@ -55,7 +59,7 @@ A modular encyclopedia for ritual correspondences.
 | **Frontend** | Vanilla JavaScript (ES6+), HTML5, CSS3 |
 | **Typography** | Cinzel (Google Fonts), Spectral |
 | **Data** | Modular JSON Archives (`reference.json`, `tarot.json`) |
-| **Styling** | Custom Flex/Grid layouts with CSS Variables for theme management |
+| **Visuals** | Hand-drawn occult iconography, custom CSS Grid/Flex layouts. |
 
 ---
 
