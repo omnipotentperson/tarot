@@ -1142,6 +1142,50 @@
     .grimoire-footer { text-align: center; margin-top: 30px; padding-top: 12px; border-top: 1px solid #7a6228; font-family: 'Cinzel', serif; font-size: 7pt; letter-spacing: 0.2em; color: #7a6228 !important; text-transform: uppercase; }
   }
 
+
+  /* ── HISTORY PANEL ── */
+  .history-entry {
+    border: 1px solid rgba(201,168,76,0.12);
+    background: rgba(201,168,76,0.02);
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .history-entry:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.05);
+  }
+  .history-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .history-entry-spread {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .history-entry-date {
+    font-size: 0.72rem;
+    color: rgba(245,237,224,0.3);
+    font-style: italic;
+  }
+  .history-entry-cards {
+    font-size: 0.78rem;
+    color: rgba(245,237,224,0.55);
+    line-height: 1.5;
+  }
+  .history-entry-intention {
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--ink); }
   ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
@@ -1166,22 +1210,24 @@
 </head>
 <body>
 
-<header>
+<a href="#main-content" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999;background:var(--ink);color:var(--gold);padding:8px 16px;font-family:Cinzel,serif;font-size:0.8rem" onfocus="this.style.left='8px';this.style.width='auto';this.style.height='auto'" onblur="this.style.left='-9999px'">Skip to content</a>
+<header role="banner">
   <div class="site-title">The Veil</div>
   <div class="site-sub">Tarot · Astrology · Divination</div>
 </header>
 
-<nav>
+<nav role="navigation" aria-label="Main navigation">
   <button class="nav-btn active" onclick="showSection('draws', this)"><span class="nav-star">✦ </span>Readings</button>
   <button class="nav-btn" onclick="showSection('fan', this)"><span class="nav-star" style="display:none">✦ </span>Fan Draw</button>
   <button class="nav-btn" onclick="showSection('library', this)"><span class="nav-star" style="display:none">✦ </span>Card Library</button>
   <button class="nav-btn" onclick="showSection('astrology', this)"><span class="nav-star" style="display:none">✦ </span>Astrology</button>
   <button class="nav-btn" onclick="showSection('birthchart', this)"><span class="nav-star" style="display:none">✦ </span>Birth Chart</button>
   <button class="nav-btn" onclick="showSection('reference', this)"><span class="nav-star" style="display:none">✦ </span>Reference</button>
+  <button class="nav-btn" onclick="showSection('sigil', this)"><span class="nav-star" style="display:none">✦ </span>Sigil Forge</button>
 </nav>
 
 <!-- READINGS -->
-<section class="section visible" id="draws">
+<main id="main-content"><section class="section visible" id="draws" role="main" aria-label="Tarot Readings">
   <div class="section-title">Choose Your Spread</div>
   <div class="section-desc">Select a spread, then draw the cards</div>
   <div class="spread-grid">
@@ -1217,14 +1263,27 @@
     </div>
   </div>
   <div class="ornament">— ✦ —</div>
-  <button class="draw-btn" id="drawBtn" onclick="drawSpread()">✦ Draw the Cards ✦</button>
+  <div style="max-width:480px;margin:0 auto 20px">
+    <label for="intentionInput" style="font-family:Cinzel,serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;display:block;margin-bottom:8px;text-align:center">Focus your intention (optional)</label>
+    <input type="text" id="intentionInput" placeholder="What question or situation guides this reading?" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);color:var(--parchment);font-family:EB Garamond,serif;font-size:1rem;padding:10px 14px;outline:none;transition:border 0.25s" aria-label="Intention or question for the reading">
+  </div>
+  <button class="draw-btn" id="drawBtn" onclick="drawSpread()" aria-label="Draw tarot cards">✦ Draw the Cards ✦</button>
   <div class="cards-area" id="cardsArea"></div>
   <div class="reading-panel" id="readingPanel" style="display:none">
     <div class="reading-panel-title">✦ The Reading</div>
     <div class="reading-text" id="readingText"></div>
   </div>
-  <div style="text-align:center">
+  <div style="text-align:center;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
     <button class="export-btn" id="exportReadingBtn" onclick="exportReadingPDF()">Save to Grimoire (PDF)</button>
+    <button class="export-btn" id="shareReadingBtn" onclick="shareReading()" style="display:none" aria-label="Share this reading">Share Reading</button>
+  </div>
+
+  <div id="historyPanel" style="display:none;margin-top:40px">
+    <div style="font-family:Cinzel,serif;font-size:0.75rem;letter-spacing:0.25em;color:var(--gold-dim);text-transform:uppercase;text-align:center;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,0.15)">
+      ✦ Reading History
+      <button onclick="clearHistory()" style="margin-left:16px;font-family:Cinzel,serif;font-size:0.6rem;letter-spacing:0.15em;color:var(--crimson);background:transparent;border:1px solid rgba(124,32,53,0.3);padding:3px 10px;cursor:pointer" aria-label="Clear reading history">Clear</button>
+    </div>
+    <div id="historyList"></div>
   </div>
 </section>
 
@@ -1271,10 +1330,17 @@
 <section class="section" id="astrology">
   <div class="section-title">Daily Astrology</div>
   <div class="section-desc">Enter your birthday to discover your sign and today's cosmic guidance</div>
+  <div id="moonWidget" style="text-align:center;margin-bottom:32px;padding:20px;border:1px solid rgba(201,168,76,0.15);background:rgba(201,168,76,0.02)" aria-label="Current moon phase">
+    <div style="font-family:Cinzel,serif;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px">Current Moon Phase</div>
+    <div id="moonSymbol" style="font-size:3rem;margin-bottom:6px" aria-hidden="true">🌑</div>
+    <div id="moonName" style="font-family:Cinzel,serif;font-size:1rem;color:var(--gold-light);letter-spacing:0.1em">Calculating...</div>
+    <div id="moonDesc" style="font-size:0.82rem;color:rgba(245,237,224,0.45);font-style:italic;margin-top:5px"></div>
+  </div>
+
   <div class="astro-form">
     <div class="form-group">
       <label>Date of Birth</label>
-      <input type="date" id="birthdayInput">
+      <input type="date" id="birthdayInput" aria-label="Date of birth">
     </div>
     <button class="draw-btn" style="margin:0" onclick="loadHoroscope()">✦ Read the Stars ✦</button>
   </div>
@@ -1372,8 +1438,46 @@
   <div id="refContent"></div>
 </section>
 
+
+<!-- SIGIL FORGE -->
+<section class="section" id="sigil" aria-label="Sigil Generator">
+  <div class="section-title">Sigil Forge</div>
+  <div class="section-desc">Transform your intention into a unique sigil using the chaos magic method</div>
+
+  <div style="max-width:480px;margin:0 auto 28px">
+    <div class="form-group">
+      <label for="sigilInput" style="font-family:Cinzel,serif;font-size:0.72rem;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;display:block;margin-bottom:8px">Your Intention</label>
+      <input type="text" id="sigilInput" placeholder="e.g. I am protected and at peace" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);color:var(--parchment);font-family:EB Garamond,serif;font-size:1rem;padding:10px 14px;outline:none;margin-bottom:16px" aria-label="Enter your intention for the sigil" maxlength="200">
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+      <label style="font-family:Cinzel,serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dim);text-transform:uppercase;display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="radio" name="sigilStyle" value="chaos" checked> Chaos Magic
+      </label>
+      <label style="font-family:Cinzel,serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dim);text-transform:uppercase;display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="radio" name="sigilStyle" value="geometric"> Geometric
+      </label>
+      <label style="font-family:Cinzel,serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dim);text-transform:uppercase;display:flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="radio" name="sigilStyle" value="rune"> Runic
+      </label>
+    </div>
+
+    <button class="draw-btn" style="margin:0 auto" onclick="forgeSigil()" aria-label="Generate sigil">✦ Forge the Sigil ✦</button>
+  </div>
+
+  <div id="sigilResult" style="display:none;text-align:center">
+    <div style="font-family:Cinzel,serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:14px">Your Sigil</div>
+    <div id="sigilLetters" style="font-family:Cinzel,serif;font-size:0.75rem;color:rgba(201,168,76,0.5);letter-spacing:0.2em;margin-bottom:16px"></div>
+    <div id="sigilCanvas" style="display:inline-block;margin-bottom:20px"></div>
+    <div style="font-family:EB Garamond,serif;font-size:0.85rem;color:rgba(245,237,224,0.45);font-style:italic;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto">
+      Meditate on this sigil. Charge it with intention, then release it — burn, bury, or simply let it go.
+    </div>
+    <button class="draw-btn" style="margin:0 auto" onclick="downloadSigil()" aria-label="Download sigil as PNG">⬇ Download Sigil</button>
+  </div>
+</section>
+
 <!-- MODAL -->
-<div class="modal-overlay" id="cardModal">
+<div class="modal-overlay" id="cardModal" role="dialog" aria-modal="true" aria-label="Card details">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">X</button>
     <div class="modal-card-header">
@@ -1413,7 +1517,7 @@
   </div>
 </footer>
 
-<div class="ref-modal-overlay" id="refModal">
+<div class="ref-modal-overlay" id="refModal" role="dialog" aria-modal="true" aria-label="Reference details">
   <div class="ref-modal-box" id="refModalBox"></div>
 </div>
 
@@ -1468,6 +1572,7 @@ function showSection(id, btn) {
   }
   if (id === 'library' && allCards.length === 0) loadLibrary();
   if (id === 'fan') initFan();
+  if (id === 'sigil') { document.getElementById('sigilResult').style.display = 'none'; }
   if (id === 'reference') {
     currentRefTab = 'candles';
     document.querySelectorAll('.ref-tab').forEach(function(t) { t.classList.remove('active'); });
@@ -1546,8 +1651,12 @@ async function drawSpread() {
     document.getElementById('readingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
     var aiText = await getAIReading(currentSpread, draws, cfg.positions);
     document.getElementById('readingText').innerHTML = aiText;
+    var intentionVal = document.getElementById('intentionInput') ? document.getElementById('intentionInput').value.trim() : '';
     lastDrawData = { spreadType: currentSpread, draws: draws, positions: cfg.positions };
     showExportBtn('exportReadingBtn');
+    var shareBtn = document.getElementById('shareReadingBtn');
+    if (shareBtn) shareBtn.style.display = 'block';
+    saveToHistory(currentSpread, draws, cfg.positions, intentionVal, aiText);
   } catch(e) {
     area.innerHTML = '<div style="color:var(--crimson);text-align:center;padding:20px">Unable to fetch cards. Please try again.</div>';
   }
@@ -1759,7 +1868,7 @@ function generateFallbackHoroscope(sign, period) {
   return fallbacks[period] || fallbacks.daily;
 }
 
-async function getAIReading(spreadType, draws, positions) {
+async function getAIReading(spreadType, draws, positions, intention) {
   var spreadNames = {
     single: 'Daily Card', three: 'Three-Card Spread (Past/Present/Future)',
     celtic: 'Celtic Cross', horseshoe: 'Horseshoe Spread',
@@ -1793,7 +1902,7 @@ async function getAIReading(spreadType, draws, positions) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'gpt-4o',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -1818,7 +1927,7 @@ async function getAstroAIReading(zodiac, horoText) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'gpt-4o',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -1897,7 +2006,12 @@ async function generateBirthChart() {
     }
 
     // Calculate Julian Day Number
-    var jd = calcJulianDay(year, month, day, hour, minute, lng);
+    var tzOffset = getTimezoneOffset(lat, lng);
+    var utHour = hour - tzOffset;
+    var utDay = day;
+    if (utHour < 0) { utHour += 24; utDay -= 1; }
+    if (utHour >= 24) { utHour -= 24; utDay += 1; }
+    var jd = calcJulianDayUT(year, month, utDay, utHour, minute);
 
     // Calculate planetary positions
     var planets = calcPlanets(jd, lat, lng, hasTime);
@@ -1973,7 +2087,7 @@ function calcPlanets(jd, lat, lng, hasTime) {
 
   // Rising sign (Ascendant) - only if birth time provided
   if (hasTime) {
-    var asc = calcAscendant(jd, lat, lng);
+    var asc = calcAscendantImproved(jd, lat, lng, tzOffset);
     planets.push({ name: 'Rising', lon: asc, sign: lonToSign(asc), deg: lonToDeg(asc), isAsc: true });
   }
 
@@ -2250,7 +2364,7 @@ async function getBirthChartAIReading(data) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'gpt-4o',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -2568,8 +2682,382 @@ function exportChartPDF() {
   );
 }
 
+
+/* ─────────────────────────────────────────────
+   MOON PHASE
+───────────────────────────────────────────── */
+function calcMoonPhase() {
+  var now = new Date();
+  var year = now.getFullYear(), month = now.getMonth()+1, day = now.getDate();
+  // Known new moon: Jan 6 2000
+  var known = new Date(2000, 0, 6, 18, 14, 0);
+  var diff = (now - known) / (1000*60*60*24);
+  var cycle = 29.53058867;
+  var phase = ((diff % cycle) + cycle) % cycle;
+  var phases = [
+    { name:'New Moon',        symbol:'🌑', desc:'New beginnings — set intentions', min:0,   max:1.85 },
+    { name:'Waxing Crescent', symbol:'🌒', desc:'Manifestation energy building',   min:1.85, max:7.38 },
+    { name:'First Quarter',   symbol:'🌓', desc:'Take action on your goals',        min:7.38, max:11.08},
+    { name:'Waxing Gibbous',  symbol:'🌔', desc:'Refine and persist',               min:11.08,max:14.77},
+    { name:'Full Moon',       symbol:'🌕', desc:'Peak energy — release and charge', min:14.77,max:16.62},
+    { name:'Waning Gibbous',  symbol:'🌖', desc:'Gratitude and reflection',         min:16.62,max:22.15},
+    { name:'Last Quarter',    symbol:'🌗', desc:'Let go of what no longer serves',  min:22.15,max:25.85},
+    { name:'Waning Crescent', symbol:'🌘', desc:'Rest, surrender, prepare',         min:25.85,max:29.53}
+  ];
+  var p = phases.find(function(ph) { return phase >= ph.min && phase < ph.max; }) || phases[0];
+  document.getElementById('moonSymbol').textContent = p.symbol;
+  document.getElementById('moonName').textContent = p.name;
+  document.getElementById('moonDesc').textContent = p.desc;
+}
+
+/* ─────────────────────────────────────────────
+   READING HISTORY
+───────────────────────────────────────────── */
+var HISTORY_KEY = 'veil_reading_history';
+
+function saveToHistory(spreadType, draws, positions, intention, aiText) {
+  try {
+    var history = getHistory();
+    var entry = {
+      id: Date.now(),
+      date: new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+      spreadType: spreadType,
+      spreadName: SPREAD_DISPLAY_NAMES[spreadType] || spreadType,
+      intention: intention || '',
+      cards: draws.map(function(d,i) {
+        return { name: d.card.name, position: positions[i] || '', reversed: d.reversed };
+      }),
+      reading: aiText
+    };
+    history.unshift(entry);
+    if (history.length > 20) history = history.slice(0, 20);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    renderHistory();
+  } catch(e) { console.log('History save failed:', e); }
+}
+
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+  } catch(e) { return []; }
+}
+
+function clearHistory() {
+  if (!confirm('Clear all reading history?')) return;
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+}
+
+function renderHistory() {
+  var history = getHistory();
+  var panel = document.getElementById('historyPanel');
+  var list = document.getElementById('historyList');
+  if (!panel || !list) return;
+  if (history.length === 0) {
+    panel.style.display = 'none';
+    return;
+  }
+  panel.style.display = 'block';
+  list.innerHTML = history.map(function(e) {
+    var cardNames = e.cards.map(function(c) {
+      return c.name + (c.reversed ? ' (R)' : '');
+    }).join(', ');
+    return '<div class="history-entry" onclick="expandHistory(' + e.id + ')" role="button" tabindex="0" aria-label="Reading from ' + e.date + '">'
+      + '<div class="history-entry-header">'
+      + '<span class="history-entry-spread">' + e.spreadName + '</span>'
+      + '<span class="history-entry-date">' + e.date + '</span>'
+      + '</div>'
+      + (e.intention ? '<div class="history-entry-intention">&#8220;' + e.intention + '&#8221;</div>' : '')
+      + '<div class="history-entry-cards">' + cardNames + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function expandHistory(id) {
+  var history = getHistory();
+  var entry = history.find(function(e) { return e.id === id; });
+  if (!entry) return;
+  var cardsArea = document.getElementById('cardsArea');
+  var readingText = document.getElementById('readingText');
+  var readingPanel = document.getElementById('readingPanel');
+  cardsArea.innerHTML = entry.cards.map(function(c) {
+    return '<div class="tarot-card-wrap">'
+      + '<div class="position-label">' + c.position + '</div>'
+      + '<div class="tarot-card-inner' + (c.reversed ? ' reversed' : '') + '">'
+      + '<div class="card-img-wrap"><div class="card-no-img">&#10022;</div></div>'
+      + '<div class="card-name-tag">' + c.name + (c.reversed ? '<span class="reversed-tag">REVERSED</span>' : '') + '</div>'
+      + '</div></div>';
+  }).join('');
+  readingPanel.style.display = 'block';
+  readingText.innerHTML = entry.reading || '<p>No reading saved.</p>';
+  window.scrollTo({ top: cardsArea.offsetTop - 80, behavior: 'smooth' });
+}
+
+/* ─────────────────────────────────────────────
+   SHAREABLE READINGS
+───────────────────────────────────────────── */
+function shareReading() {
+  if (!lastDrawData) return;
+  var params = new URLSearchParams();
+  params.set('spread', lastDrawData.spreadType);
+  params.set('cards', lastDrawData.draws.map(function(d) {
+    return d.card.name_short + (d.reversed ? 'r' : '');
+  }).join(','));
+  var intention = document.getElementById('intentionInput');
+  if (intention && intention.value.trim()) params.set('q', intention.value.trim());
+  var url = window.location.origin + window.location.pathname + '?' + params.toString();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(function() {
+      alert('Reading link copied to clipboard!');
+    }).catch(function() { promptCopy(url); });
+  } else {
+    promptCopy(url);
+  }
+}
+
+function promptCopy(url) {
+  var box = prompt('Copy this link to share your reading:', url);
+}
+
+function loadSharedReading() {
+  var params = new URLSearchParams(window.location.search);
+  if (!params.has('spread') || !params.has('cards')) return;
+  var spreadType = params.get('spread');
+  var cardCodes = params.get('cards').split(',');
+  var intention = params.get('q') || '';
+  if (!SPREAD_CONFIGS[spreadType]) return;
+
+  // Wait for cards to load then show shared reading
+  var attempts = 0;
+  var interval = setInterval(function() {
+    attempts++;
+    if (allCards.length > 0 || attempts > 30) {
+      clearInterval(interval);
+      if (allCards.length === 0) return;
+      var draws = cardCodes.map(function(code) {
+        var reversed = code.endsWith('r');
+        var shortName = reversed ? code.slice(0,-1) : code;
+        var card = allCards.find(function(c) { return c.name_short === shortName; });
+        return card ? { card: card, reversed: reversed } : null;
+      }).filter(Boolean);
+      if (draws.length === 0) return;
+      currentSpread = spreadType;
+      var cfg = SPREAD_CONFIGS[spreadType];
+      var area = document.getElementById('cardsArea');
+      area.innerHTML = draws.map(function(d,i) {
+        return cardHtml(d.card, cfg.positions[i] || '', d.reversed);
+      }).join('');
+      if (intention) {
+        var iEl = document.getElementById('intentionInput');
+        if (iEl) iEl.value = intention;
+      }
+      document.getElementById('readingPanel').style.display = 'block';
+      document.getElementById('readingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
+      getAIReading(spreadType, draws, cfg.positions).then(function(text) {
+        document.getElementById('readingText').innerHTML = text;
+      });
+    }
+  }, 200);
+}
+
+/* ─────────────────────────────────────────────
+   SIGIL FORGE
+───────────────────────────────────────────── */
+function forgeSigil() {
+  var input = document.getElementById('sigilInput').value.trim();
+  if (!input) { alert('Please enter an intention first.'); return; }
+  var style = document.querySelector('input[name="sigilStyle"]:checked').value;
+
+  // Chaos magic method: uppercase, remove spaces/punctuation, remove duplicate letters
+  var letters = input.toUpperCase().replace(/[^A-Z]/g, '');
+  var unique = [];
+  letters.split('').forEach(function(l) {
+    if (!unique.includes(l)) unique.push(l);
+  });
+
+  document.getElementById('sigilLetters').textContent = 'Letters: ' + unique.join(' · ');
+  document.getElementById('sigilResult').style.display = 'block';
+
+  var svg = generateSigilSVG(unique, style);
+  document.getElementById('sigilCanvas').innerHTML = svg;
+}
+
+function generateSigilSVG(letters, style) {
+  var size = 300;
+  var cx = size/2, cy = size/2;
+  var svg = '<svg id="sigilSVG" width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<rect width="' + size + '" height="' + size + '" fill="#0d0a12" rx="4"/>';
+
+  if (style === 'chaos') {
+    svg += generateChaosLines(letters, cx, cy, size);
+  } else if (style === 'geometric') {
+    svg += generateGeometricSigil(letters, cx, cy, size);
+  } else {
+    svg += generateRunicSigil(letters, cx, cy, size);
+  }
+
+  // Outer decorative circle
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (size/2-10) + '" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (size/2-14) + '" fill="none" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>';
+  svg += '</svg>';
+  return svg;
+}
+
+function generateChaosLines(letters, cx, cy, size) {
+  // Map each letter A-Z to a point on a circle
+  var r = size/2 - 30;
+  var html = '';
+  var points = [];
+  var seed = letters.join('').split('').reduce(function(a,c) { return a + c.charCodeAt(0); }, 0);
+
+  // Generate points for each letter on the circle
+  letters.forEach(function(letter) {
+    var idx = letter.charCodeAt(0) - 65; // 0-25
+    var angle = (idx / 26) * Math.PI * 2 - Math.PI/2;
+    // Add slight variation based on letter position
+    var variation = (seed * idx * 0.1) % 0.3;
+    angle += variation;
+    points.push({
+      x: cx + r * Math.cos(angle),
+      y: cy + r * Math.sin(angle),
+      letter: letter
+    });
+  });
+
+  // Draw connecting lines
+  if (points.length > 1) {
+    html += '<g stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" opacity="0.85">';
+    for (var i = 0; i < points.length - 1; i++) {
+      html += '<line x1="' + points[i].x.toFixed(1) + '" y1="' + points[i].y.toFixed(1) + '" x2="' + points[i+1].x.toFixed(1) + '" y2="' + points[i+1].y.toFixed(1) + '"/>';
+    }
+    html += '</g>';
+  }
+
+  // Start and end markers
+  if (points.length > 0) {
+    var p0 = points[0], pn = points[points.length-1];
+    html += '<circle cx="' + p0.x.toFixed(1) + '" cy="' + p0.y.toFixed(1) + '" r="5" fill="#e8c97e" opacity="0.8"/>';
+    html += '<line x1="' + (pn.x-5).toFixed(1) + '" y1="' + pn.y.toFixed(1) + '" x2="' + (pn.x+5).toFixed(1) + '" y2="' + pn.y.toFixed(1) + '" stroke="#c9a84c" stroke-width="2"/>';
+    html += '<line x1="' + pn.x.toFixed(1) + '" y1="' + (pn.y-5).toFixed(1) + '" x2="' + pn.x.toFixed(1) + '" y2="' + (pn.y+5).toFixed(1) + '" stroke="#c9a84c" stroke-width="2"/>';
+  }
+  return html;
+}
+
+function generateGeometricSigil(letters, cx, cy, size) {
+  var html = '';
+  var r = size/2 - 35;
+  var n = Math.min(letters.length, 12);
+  var angleStep = (Math.PI * 2) / n;
+
+  // Draw polygon connecting every other point for star effect
+  var pts = [];
+  for (var i = 0; i < n; i++) {
+    var angle = i * angleStep - Math.PI/2;
+    pts.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+  }
+
+  // Inner shapes
+  var skip = Math.max(2, Math.floor(n/3));
+  html += '<polygon points="' + pts.map(function(p) { return p.x.toFixed(1)+','+p.y.toFixed(1); }).join(' ') + '" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/>';
+  if (pts.length >= 3) {
+    var starPts = [];
+    for (var i = 0; i < pts.length; i++) { starPts.push(pts[(i * skip) % pts.length]); }
+    html += '<polygon points="' + starPts.map(function(p) { return p.x.toFixed(1)+','+p.y.toFixed(1); }).join(' ') + '" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.9"/>';
+  }
+
+  // Inner design based on letter count
+  var innerR = r * 0.45;
+  if (letters.length > 4) {
+    html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + innerR + '" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>';
+  }
+  html += '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#e8c97e" opacity="0.7"/>';
+  return html;
+}
+
+function generateRunicSigil(letters, cx, cy, size) {
+  var html = '';
+  // Draw stylized rune-like strokes for each letter
+  var usedLetters = letters.slice(0, 8); // max 8 for readability
+  var centerX = cx, centerY = cy;
+
+  html += '<g stroke="#c9a84c" stroke-width="2" stroke-linecap="round" opacity="0.9">';
+  usedLetters.forEach(function(letter, idx) {
+    var angle = (idx / usedLetters.length) * Math.PI * 2;
+    var r1 = 20, r2 = 60;
+    var lx1 = centerX + r1 * Math.cos(angle);
+    var ly1 = centerY + r1 * Math.sin(angle);
+    var lx2 = centerX + r2 * Math.cos(angle);
+    var ly2 = centerY + r2 * Math.sin(angle);
+    html += '<line x1="' + lx1.toFixed(1) + '" y1="' + ly1.toFixed(1) + '" x2="' + lx2.toFixed(1) + '" y2="' + ly2.toFixed(1) + '"/>';
+    // Cross-stroke
+    var perpAngle = angle + Math.PI/2;
+    var crossLen = 8 + (letter.charCodeAt(0) % 12);
+    var midX = centerX + (r1+r2)/2 * 0.7 * Math.cos(angle);
+    var midY = centerY + (r1+r2)/2 * 0.7 * Math.sin(angle);
+    html += '<line x1="' + (midX - crossLen*Math.cos(perpAngle)).toFixed(1) + '" y1="' + (midY - crossLen*Math.sin(perpAngle)).toFixed(1) + '" x2="' + (midX + crossLen*Math.cos(perpAngle)).toFixed(1) + '" y2="' + (midY + crossLen*Math.sin(perpAngle)).toFixed(1) + '"/>';
+  });
+  html += '</g>';
+  html += '<circle cx="' + cx + '" cy="' + cy + '" r="18" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>';
+  html += '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="#e8c97e" opacity="0.8"/>';
+  return html;
+}
+
+function downloadSigil() {
+  var svg = document.getElementById('sigilSVG');
+  if (!svg) return;
+  var data = new XMLSerializer().serializeToString(svg);
+  var blob = new Blob([data], { type: 'image/svg+xml' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'the-veil-sigil.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ─────────────────────────────────────────────
+   IMPROVED BIRTH CHART ACCURACY
+───────────────────────────────────────────── */
+function calcJulianDayUT(year, month, day, hour, minute) {
+  // Proper UT Julian Day without longitude adjustment
+  var timeFrac = (hour + minute / 60.0) / 24.0;
+  if (month <= 2) { year -= 1; month += 12; }
+  var A = Math.floor(year / 100);
+  var B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + timeFrac + B - 1524.5;
+}
+
+function calcAscendantImproved(jd, lat, lng, tzOffset) {
+  // More accurate ascendant using local sidereal time
+  var T = (jd - 2451545.0) / 36525.0;
+  // Greenwich Mean Sidereal Time in degrees
+  var GMST = 280.46061837 + 360.98564736629 * (jd - 2451545.0)
+           + 0.000387933 * T * T - T * T * T / 38710000.0;
+  GMST = ((GMST % 360) + 360) % 360;
+  // Local Sidereal Time
+  var LST = ((GMST + lng) % 360 + 360) % 360;
+  // Obliquity of ecliptic
+  var eps = 23.439291111 - 0.013004167 * T - 0.0000001639 * T * T + 0.0000005036 * T * T * T;
+  var epsRad = eps * Math.PI / 180;
+  var latRad = lat * Math.PI / 180;
+  var LSTrad = LST * Math.PI / 180;
+  // Ascendant formula
+  var y = -Math.cos(LSTrad);
+  var x = Math.sin(LSTrad) * Math.cos(epsRad) + Math.tan(latRad) * Math.sin(epsRad);
+  var asc = Math.atan2(y, x) * 180 / Math.PI;
+  return ((asc % 360) + 360) % 360;
+}
+
+function getTimezoneOffset(lat, lng) {
+  // Rough timezone offset from longitude (each 15 degrees = 1 hour)
+  // This is approximate — proper tz lookup would need a timezone database
+  return Math.round(lng / 15);
+}
+
+calcMoonPhase();
+renderHistory();
 setTimeout(function() {
-  fetchAllCards().then(function(cards) { allCards = cards; }).catch(function() {});
+  fetchAllCards().then(function(cards) { allCards = cards; loadSharedReading(); }).catch(function() {});
 }, 800);
 </script>
 
