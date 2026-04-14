@@ -1,0 +1,1878 @@
+{
+  "reference": {
+    "candles": [
+      {
+        "color": "White",
+        "properties": "Purification - Peace - Truth - Clarity - New beginnings - Protection - Moon energy - Amplifies other colors",
+        "zodiac": "Cancer - Pisces",
+        "planet": "Moon",
+        "element": "Spirit / All elements"
+      },
+      {
+        "color": "Black",
+        "properties": "Banishing negativity - Protection - Breaking bad habits - Absorbing illness or evil - Endings",
+        "zodiac": "Scorpio - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "color": "Red",
+        "properties": "Passion - Love - Courage - Vitality - Strength - Willpower - Sexual energy - Fire energy",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "color": "Pink",
+        "properties": "Romantic love - Self-love - Compassion - Friendship - Emotional healing - Nurturing",
+        "zodiac": "Taurus - Libra - Cancer",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "color": "Orange",
+        "properties": "Creativity - Joy - Ambition - Attraction - Success - Confidence - Energy - Legal matters",
+        "zodiac": "Leo - Sagittarius",
+        "planet": "Sun - Mercury",
+        "element": "Fire"
+      },
+      {
+        "color": "Yellow",
+        "properties": "Mental clarity - Intellect - Memory - Communication - Happiness - Learning - Sun energy",
+        "zodiac": "Gemini - Virgo - Leo",
+        "planet": "Mercury - Sun",
+        "element": "Air"
+      },
+      {
+        "color": "Green",
+        "properties": "Money - Prosperity - Abundance - Fertility - Growth - Healing - Luck - Nature connection",
+        "zodiac": "Taurus - Virgo - Capricorn",
+        "planet": "Venus - Jupiter",
+        "element": "Earth"
+      },
+      {
+        "color": "Light Blue",
+        "properties": "Peace - Calm - Patience - Healing - Truth - Harmony - Sleep - Communication",
+        "zodiac": "Aquarius - Libra - Gemini",
+        "planet": "Uranus - Mercury",
+        "element": "Air"
+      },
+      {
+        "color": "Dark Blue / Indigo",
+        "properties": "Intuition - Psychic ability - Wisdom - Deep meditation - Justice",
+        "zodiac": "Sagittarius - Pisces",
+        "planet": "Jupiter - Neptune",
+        "element": "Water"
+      },
+      {
+        "color": "Purple / Violet",
+        "properties": "Spiritual power - Psychic development - Divination - Ambition - Royalty - Higher consciousness",
+        "zodiac": "Scorpio - Sagittarius - Pisces",
+        "planet": "Jupiter - Neptune",
+        "element": "Spirit"
+      },
+      {
+        "color": "Brown",
+        "properties": "Stability - Grounding - Home - Animals - Earth energy - Practical matters",
+        "zodiac": "Taurus - Virgo - Capricorn",
+        "planet": "Saturn - Earth",
+        "element": "Earth"
+      },
+      {
+        "color": "Gold",
+        "properties": "Solar energy - Success - Wealth - Confidence - Masculine energy - Achievement",
+        "zodiac": "Leo",
+        "planet": "Sun",
+        "element": "Fire"
+      },
+      {
+        "color": "Silver",
+        "properties": "Lunar energy - Intuition - Dreams - Feminine energy - Psychic awareness - Reflection",
+        "zodiac": "Cancer",
+        "planet": "Moon",
+        "element": "Water"
+      },
+      {
+        "color": "Lavender",
+        "properties": "Calming the mind - Spiritual growth - Peace - Gentle healing",
+        "zodiac": "Virgo - Libra - Pisces",
+        "planet": "Mercury - Neptune",
+        "element": "Air"
+      },
+      {
+        "color": "Magenta",
+        "properties": "Quick change - Spiritual healing - High vibration energy - Transformation",
+        "zodiac": "Scorpio - Aries",
+        "planet": "Pluto - Mars",
+        "element": "Fire - Spirit"
+      },
+      {
+        "color": "Gray",
+        "properties": "Neutrality - Balance - Canceling negative energy - Compromise - Uncrossing",
+        "zodiac": "Capricorn - Aquarius",
+        "planet": "Saturn",
+        "element": "Earth - Air"
+      }
+    ],
+    "crystals": [
+      {
+        "name": "Amethyst",
+        "category": "Intuition & Psychic Development",
+        "properties": "Psychic protection - Intuition - Spiritual growth - Calming - Sobriety support",
+        "zodiac": "Pisces - Aquarius - Virgo",
+        "planet": "Jupiter - Neptune",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Amazonite",
+        "category": "Healing & Wellness",
+        "properties": "Soothing stress - Truth - Healthy boundaries - Heart and throat balance",
+        "zodiac": "Virgo - Aries",
+        "planet": "Uranus",
+        "element": "Earth"
+      },
+      {
+        "name": "Angelite",
+        "category": "Spiritual Connection",
+        "properties": "Angelic communication - Peace - Compassion - Psychic channeling",
+        "zodiac": "Aquarius",
+        "planet": "Uranus",
+        "element": "Air"
+      },
+      {
+        "name": "Apatite",
+        "category": "Motivation & Clarity",
+        "properties": "Manifestation - Motivation - Clearing confusion - Humanitarian pursuits",
+        "zodiac": "Gemini - Sagittarius",
+        "planet": "Mercury",
+        "element": "Air"
+      },
+      {
+        "name": "Aquamarine",
+        "category": "Healing & Wellness",
+        "properties": "Calming - Courage - Clear communication - Throat chakra - Stress relief",
+        "zodiac": "Pisces - Gemini - Aries",
+        "planet": "Neptune - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Azurite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Third eye activation - Psychic visions - Mental clarity - Spiritual guidance",
+        "zodiac": "Sagittarius - Capricorn",
+        "planet": "Jupiter - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Black Kyanite",
+        "category": "Protection & Grounding",
+        "properties": "Cutting energy cords - Grounding - Aura repair - Psychic protection",
+        "zodiac": "Aries - Taurus - Libra",
+        "planet": "Mars",
+        "element": "Earth - Air"
+      },
+      {
+        "name": "Black Tourmaline",
+        "category": "Protection & Grounding",
+        "properties": "Powerful protection - EMF shielding - Grounding - Repelling negativity",
+        "zodiac": "Capricorn - Scorpio",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Bloodstone",
+        "category": "Healing & Wellness",
+        "properties": "Vitality - Courage - Detoxification - Grounding - Strength in adversity",
+        "zodiac": "Aries - Pisces - Scorpio",
+        "planet": "Mars",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Blue Lace Agate",
+        "category": "Healing & Wellness",
+        "properties": "Calm communication - Soothing anxiety - Gentle healing - Throat chakra",
+        "zodiac": "Gemini - Pisces",
+        "planet": "Mercury - Neptune",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Blue Tiger's Eye",
+        "category": "Confidence & Creativity",
+        "properties": "Calming overanxiety - Communication - Insight - Reducing stress",
+        "zodiac": "Capricorn - Leo",
+        "planet": "Saturn - Sun",
+        "element": "Earth - Air"
+      },
+      {
+        "name": "Bornite",
+        "category": "Abundance & Prosperity",
+        "properties": "Abundance - Happiness - Joy",
+        "zodiac": "Cancer",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "name": "Carnelian",
+        "category": "Confidence & Creativity",
+        "properties": "Motivation - Creativity - Courage - Vitality - Taking action",
+        "zodiac": "Aries - Leo - Virgo",
+        "planet": "Mars - Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Celestite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Angelic communication - Dream work - Inner peace - Higher realms",
+        "zodiac": "Gemini - Libra",
+        "planet": "Neptune - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Chrysocolla",
+        "category": "Healing & Wellness",
+        "properties": "Feminine empowerment - Calming - Communication - Releasing guilt",
+        "zodiac": "Gemini - Taurus - Virgo",
+        "planet": "Venus - Mercury",
+        "element": "Water - Earth"
+      },
+      {
+        "name": "Chrysoprase",
+        "category": "Abundance & Prosperity",
+        "properties": "Joy - Optimism - Abundance - Healing a broken heart - Self-acceptance",
+        "zodiac": "Taurus - Gemini - Libra",
+        "planet": "Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Citrine",
+        "category": "Abundance & Prosperity",
+        "properties": "Manifestation - Abundance - Positivity - Confidence - The merchant's stone",
+        "zodiac": "Aries - Gemini - Leo - Libra",
+        "planet": "Sun - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Clear Quartz",
+        "category": "Healing & Wellness",
+        "properties": "Master healer - Amplifying intentions - Clarity - Energy programming",
+        "zodiac": "All signs",
+        "planet": "Sun - Moon",
+        "element": "All elements"
+      },
+      {
+        "name": "Danburite",
+        "category": "Spiritual Connection",
+        "properties": "High vibration - Angelic realms - Emotional healing - Heart opening",
+        "zodiac": "Scorpio - Leo",
+        "planet": "Venus",
+        "element": "Air - Fire"
+      },
+      {
+        "name": "Desert Rose Selenite",
+        "category": "Protection & Grounding",
+        "properties": "Mental clarity - Dissolving self-imposed limitations - Grounding",
+        "zodiac": "Taurus - Scorpio",
+        "planet": "Moon - Saturn",
+        "element": "Earth"
+      },
+      {
+        "name": "Emerald",
+        "category": "Love & Relationships",
+        "properties": "Loyalty - Unconditional love - Abundance - Memory - Heart healing",
+        "zodiac": "Taurus - Gemini - Cancer",
+        "planet": "Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Fire Opal",
+        "category": "Confidence & Creativity",
+        "properties": "Passion - Creativity - Releasing inhibitions - Personal power - Spontaneity",
+        "zodiac": "Aries - Leo - Sagittarius",
+        "planet": "Sun - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Fluorite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Mental clarity - Focus - Absorbing negative energy - Learning - Psychic shielding",
+        "zodiac": "Capricorn - Pisces - Aquarius",
+        "planet": "Mercury - Neptune",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Fuchsite",
+        "category": "Healing & Wellness",
+        "properties": "Emotional recovery - Resilience - Nature connection - Accessing healing wisdom",
+        "zodiac": "Aquarius - Scorpio",
+        "planet": "Mercury - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Garnet",
+        "category": "Love & Relationships",
+        "properties": "Passion - Devotion - Sensuality - Commitment",
+        "zodiac": "Aries - Leo - Virgo - Capricorn",
+        "planet": "Mars",
+        "element": "Fire - Earth"
+      },
+      {
+        "name": "Gold Sheen Obsidian",
+        "category": "Abundance & Prosperity",
+        "properties": "Releasing ego - Connecting to divine will - Abundance - Power",
+        "zodiac": "Sagittarius - Scorpio",
+        "planet": "Sun - Pluto",
+        "element": "Fire - Earth"
+      },
+      {
+        "name": "Goldstone",
+        "category": "Confidence & Creativity",
+        "properties": "Ambition - Drive - Positive energy - Confidence",
+        "zodiac": "Sagittarius",
+        "planet": "Sun - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Green Aventurine",
+        "category": "Abundance & Prosperity",
+        "properties": "Luck - Opportunity - Growth - Prosperity - The stone of opportunity",
+        "zodiac": "Aries - Leo - Virgo",
+        "planet": "Mercury - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Green Calcite",
+        "category": "Healing & Wellness",
+        "properties": "Emotional balance - Releasing old patterns - Heart healing - Mental clarity",
+        "zodiac": "Cancer - Virgo",
+        "planet": "Moon - Venus",
+        "element": "Water - Earth"
+      },
+      {
+        "name": "Hawk's Eye",
+        "category": "Intuition & Psychic Development",
+        "properties": "Psychic vision - Perspective - Protection - Grounding intuition",
+        "zodiac": "Scorpio - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Hematite",
+        "category": "Protection & Grounding",
+        "properties": "Grounding - Strength - Focus - Calming anxiety - Energetic boundaries",
+        "zodiac": "Aries - Aquarius",
+        "planet": "Mars - Saturn",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Howlite",
+        "category": "Healing & Wellness",
+        "properties": "Calming rage - Patience - Sleep aid - Emotional expression - Reducing stress",
+        "zodiac": "Gemini - Scorpio",
+        "planet": "Moon",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Iolite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Inner vision - Guidance - Releasing discord - Shamanic journeying",
+        "zodiac": "Sagittarius - Libra - Taurus",
+        "planet": "Saturn - Jupiter",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Jade",
+        "category": "Healing & Wellness",
+        "properties": "Health - Longevity - Harmony - Heart healing - Luck",
+        "zodiac": "Taurus - Libra - Virgo",
+        "planet": "Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Jasper (Red)",
+        "category": "Protection & Grounding",
+        "properties": "Grounding - Stability - Physical strength - Endurance - Slow steady energy",
+        "zodiac": "Aries - Scorpio - Taurus",
+        "planet": "Mars",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Jasper (Ocean)",
+        "category": "Healing & Wellness",
+        "properties": "Joy - Optimism - Creativity - Releasing worry - Connecting to nature",
+        "zodiac": "Cancer - Scorpio - Pisces",
+        "planet": "Neptune - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Jet",
+        "category": "Protection & Grounding",
+        "properties": "Purification - Grief support - Psychic protection",
+        "zodiac": "Capricorn",
+        "planet": "Saturn",
+        "element": "Earth"
+      },
+      {
+        "name": "Kunzite",
+        "category": "Love & Relationships",
+        "properties": "Opening the heart - Unconditional love - Releasing heartache - Emotional healing",
+        "zodiac": "Taurus - Leo - Libra",
+        "planet": "Venus - Pluto",
+        "element": "Water"
+      },
+      {
+        "name": "Kyanite (Blue)",
+        "category": "Spiritual Connection",
+        "properties": "Aligning chakras - Calming - Communication - Never needs cleansing",
+        "zodiac": "Aries - Taurus - Libra",
+        "planet": "Venus - Saturn",
+        "element": "Air"
+      },
+      {
+        "name": "Labradorite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Magic - Transformation - Psychic ability - Aura protection",
+        "zodiac": "Leo - Scorpio - Sagittarius",
+        "planet": "Uranus - Neptune",
+        "element": "Water"
+      },
+      {
+        "name": "Lapis Lazuli",
+        "category": "Intuition & Psychic Development",
+        "properties": "Third eye activation - Wisdom - Truth - Clairvoyance",
+        "zodiac": "Sagittarius - Pisces",
+        "planet": "Jupiter - Neptune",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Larimar",
+        "category": "Healing & Wellness",
+        "properties": "Cooling anger - Relaxation - Feminine energy - Ocean energy - Stress relief",
+        "zodiac": "Leo - Pisces",
+        "planet": "Neptune - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Lepidolite",
+        "category": "Healing & Wellness",
+        "properties": "Anxiety relief - Transition support - Emotional balance - Sleep - Contains lithium",
+        "zodiac": "Libra - Pisces",
+        "planet": "Jupiter - Neptune",
+        "element": "Water - Air"
+      },
+      {
+        "name": "Malachite",
+        "category": "Love & Relationships",
+        "properties": "Transformation in love - Releasing toxic patterns - Emotional risk-taking",
+        "zodiac": "Taurus - Scorpio - Capricorn",
+        "planet": "Venus - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Moldavite",
+        "category": "Spiritual Connection",
+        "properties": "Rapid transformation - Cosmic connection - Accelerating spiritual growth",
+        "zodiac": "All signs",
+        "planet": "Uranus - Neptune",
+        "element": "Fire - Earth"
+      },
+      {
+        "name": "Moonstone",
+        "category": "Intuition & Psychic Development",
+        "properties": "Intuition - Feminine energy - Lunar cycles - Emotional balance - New beginnings",
+        "zodiac": "Cancer - Libra - Scorpio",
+        "planet": "Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Morganite",
+        "category": "Love & Relationships",
+        "properties": "Divine love - Compassion - Emotional healing - Attracting a soulmate",
+        "zodiac": "Taurus - Libra - Pisces",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "name": "Moss Agate",
+        "category": "Abundance & Prosperity",
+        "properties": "Nature connection - New beginnings - Abundance - Growth - Gardening",
+        "zodiac": "Virgo - Gemini",
+        "planet": "Mercury - Earth",
+        "element": "Earth"
+      },
+      {
+        "name": "Nuummite",
+        "category": "Protection & Grounding",
+        "properties": "Personal magic - Deep shadow work - Self-mastery - Protection",
+        "zodiac": "Scorpio - Sagittarius",
+        "planet": "Pluto",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Obsidian",
+        "category": "Protection & Grounding",
+        "properties": "Deep protection - Truth-revealing - Releasing trauma - Psychic shielding",
+        "zodiac": "Scorpio - Sagittarius",
+        "planet": "Pluto - Saturn",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Orange Calcite",
+        "category": "Confidence & Creativity",
+        "properties": "Creativity - Emotional release - Energizing - Sexual energy",
+        "zodiac": "Cancer - Leo",
+        "planet": "Sun - Moon",
+        "element": "Fire"
+      },
+      {
+        "name": "Peridot",
+        "category": "Abundance & Prosperity",
+        "properties": "Abundance - Success - Releasing jealousy - Positivity",
+        "zodiac": "Leo - Virgo - Scorpio",
+        "planet": "Sun - Venus",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Phenacite",
+        "category": "Spiritual Connection",
+        "properties": "High vibration - Third eye activation - Accessing higher dimensions",
+        "zodiac": "Gemini - Sagittarius",
+        "planet": "Uranus",
+        "element": "Fire - Spirit"
+      },
+      {
+        "name": "Prehnite",
+        "category": "Healing & Wellness",
+        "properties": "Healing the healer - Prophetic dreams - Unconditional love - Decluttering",
+        "zodiac": "Libra - Capricorn",
+        "planet": "Venus - Saturn",
+        "element": "Earth - Water"
+      },
+      {
+        "name": "Pyrite",
+        "category": "Abundance & Prosperity",
+        "properties": "Wealth attraction - Willpower - Ambition - Blocking negative energy",
+        "zodiac": "Leo - Aries",
+        "planet": "Mars - Sun",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Rainbow Moonstone",
+        "category": "Intuition & Psychic Development",
+        "properties": "Psychic protection - Divine feminine - Joy - New beginnings - Deflecting negativity",
+        "zodiac": "Cancer - Libra",
+        "planet": "Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Rhodochrosite",
+        "category": "Love & Relationships",
+        "properties": "Self-worth - Attracting a soulmate - Inner child healing",
+        "zodiac": "Leo - Scorpio",
+        "planet": "Mars - Venus",
+        "element": "Fire"
+      },
+      {
+        "name": "Rhodonite",
+        "category": "Love & Relationships",
+        "properties": "Healing heartbreak - Forgiveness - Compassion - Balancing emotions",
+        "zodiac": "Taurus - Leo",
+        "planet": "Venus - Mars",
+        "element": "Earth"
+      },
+      {
+        "name": "Rose Quartz",
+        "category": "Love & Relationships",
+        "properties": "Unconditional love - Self-love - Attracting romance - Emotional healing",
+        "zodiac": "Taurus - Libra",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "name": "Ruby",
+        "category": "Confidence & Creativity",
+        "properties": "Life force energy - Passion - Courage - Leadership - Prosperity",
+        "zodiac": "Aries - Leo - Cancer - Sagittarius",
+        "planet": "Mars - Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Ruby Zoisite",
+        "category": "Healing & Wellness",
+        "properties": "Joy - Vitality - Healing grief - Connecting heart and mind",
+        "zodiac": "Aries - Cancer",
+        "planet": "Mars - Venus",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Rutilated Quartz",
+        "category": "Spiritual Connection",
+        "properties": "Amplifying intentions - Clearing blockages - Angelic access - Manifestation",
+        "zodiac": "Gemini - Leo",
+        "planet": "Sun - Mercury",
+        "element": "Fire - Air"
+      },
+      {
+        "name": "Sapphire",
+        "category": "Intuition & Psychic Development",
+        "properties": "Wisdom - Loyalty - Psychic activation - Focus - Mental discipline",
+        "zodiac": "Virgo - Libra - Sagittarius",
+        "planet": "Saturn - Jupiter",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Selenite",
+        "category": "Healing & Wellness",
+        "properties": "Cleansing other stones - Mental clarity - Angelic energy - High vibration",
+        "zodiac": "Taurus - Cancer",
+        "planet": "Moon",
+        "element": "Water - Air"
+      },
+      {
+        "name": "Shungite",
+        "category": "Protection & Grounding",
+        "properties": "EMF protection - Purification - Grounding - Ancient healing energy",
+        "zodiac": "Scorpio - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Smoky Quartz",
+        "category": "Protection & Grounding",
+        "properties": "Transmuting negative energy - Grounding - Stress relief - Clarity",
+        "zodiac": "Scorpio - Sagittarius - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Sodalite",
+        "category": "Confidence & Creativity",
+        "properties": "Rational thinking - Communication - Self-trust - Calming",
+        "zodiac": "Sagittarius",
+        "planet": "Jupiter - Mercury",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Spirit Quartz",
+        "category": "Spiritual Connection",
+        "properties": "Community - Harmony - Ancestral healing - Amplifying energy",
+        "zodiac": "Virgo - Capricorn - Aquarius - Pisces",
+        "planet": "Uranus - Neptune",
+        "element": "Air - Spirit"
+      },
+      {
+        "name": "Sugilite",
+        "category": "Spiritual Connection",
+        "properties": "Spiritual love - Protection for sensitives - Overcoming despair - Psychic development",
+        "zodiac": "Virgo - Sagittarius",
+        "planet": "Jupiter - Pluto",
+        "element": "Fire - Water"
+      },
+      {
+        "name": "Sunstone",
+        "category": "Confidence & Creativity",
+        "properties": "Personal power - Joy - Independence - Leadership - Optimism",
+        "zodiac": "Leo - Libra",
+        "planet": "Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Super Seven",
+        "category": "Spiritual Connection",
+        "properties": "Combines seven minerals - Universal connection - Psychic gifts - Healing",
+        "zodiac": "All signs",
+        "planet": "All planets",
+        "element": "All elements"
+      },
+      {
+        "name": "Tanzanite",
+        "category": "Intuition & Psychic Development",
+        "properties": "Spiritual awakening - Linking heart and mind - Compassionate communication",
+        "zodiac": "Gemini - Libra - Sagittarius",
+        "planet": "Saturn - Jupiter",
+        "element": "Air"
+      },
+      {
+        "name": "Tiger's Eye",
+        "category": "Abundance & Prosperity",
+        "properties": "Courage - Focus - Practical decision-making - Attracting good luck",
+        "zodiac": "Capricorn - Leo",
+        "planet": "Sun - Mars",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Tourmalinated Quartz",
+        "category": "Protection & Grounding",
+        "properties": "Combining protection and clarity - Dissolving tension - Grounding light",
+        "zodiac": "Scorpio - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Turquoise",
+        "category": "Healing & Wellness",
+        "properties": "Protection - Communication - Healing - Luck - Ancient spiritual use across cultures",
+        "zodiac": "Sagittarius - Pisces - Scorpio",
+        "planet": "Jupiter - Neptune",
+        "element": "Earth - Air"
+      },
+      {
+        "name": "Unakite",
+        "category": "Love & Relationships",
+        "properties": "Emotional balance - Rebirthing - Grounding after spiritual work - Patience",
+        "zodiac": "Scorpio - Taurus",
+        "planet": "Venus - Mars",
+        "element": "Earth"
+      },
+      {
+        "name": "Vanadinite",
+        "category": "Confidence & Creativity",
+        "properties": "Energy - Focus - Willpower - Creativity - Connecting to earth energy",
+        "zodiac": "Virgo - Aries",
+        "planet": "Mars - Mercury",
+        "element": "Earth - Fire"
+      },
+      {
+        "name": "Zircon",
+        "category": "Abundance & Prosperity",
+        "properties": "Prosperity - Honor - Wisdom - Grounding spiritual energy into physical reality",
+        "zodiac": "Sagittarius - Leo - Virgo",
+        "planet": "Jupiter - Sun",
+        "element": "Fire - Earth"
+      }
+    ],
+    "herbs": [
+      {
+        "name": "Angelica",
+        "properties": "Protection - Healing - Visions - Warding off evil - Connecting to angels",
+        "zodiac": "Leo - Aquarius",
+        "planet": "Sun - Venus",
+        "element": "Fire"
+      },
+      {
+        "name": "Basil",
+        "properties": "Love - Prosperity - Protection - Exorcism - Harmony in relationships",
+        "zodiac": "Scorpio - Aries",
+        "planet": "Mars - Venus",
+        "element": "Fire"
+      },
+      {
+        "name": "Bay Laurel",
+        "properties": "Psychic power - Wishes - Protection - Victory - Wisdom - Divination",
+        "zodiac": "Leo - Aries",
+        "planet": "Sun - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Blue Lotus",
+        "properties": "Psychic visions - Lucid dreaming - Meditation - Spiritual enlightenment",
+        "zodiac": "Pisces - Aquarius",
+        "planet": "Neptune - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Calendula",
+        "properties": "Protection - Legal matters - Psychic dreams - Success - Joy",
+        "zodiac": "Leo - Cancer",
+        "planet": "Sun - Moon",
+        "element": "Fire"
+      },
+      {
+        "name": "Catnip",
+        "properties": "Love - Happiness - Animal magic - Beauty - Luck",
+        "zodiac": "Cancer - Taurus",
+        "planet": "Venus - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Cayenne",
+        "properties": "Banishing - Hex breaking - Speeding up spells - Courage - Protection",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Chamomile",
+        "properties": "Calm - Sleep - Luck - Purification - Attracting money",
+        "zodiac": "Cancer - Virgo",
+        "planet": "Moon - Mercury",
+        "element": "Water"
+      },
+      {
+        "name": "Cinnamon",
+        "properties": "Prosperity - Love - Protection - Raising vibration - Psychic enhancement",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Sun - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Clove",
+        "properties": "Banishing - Protection - Love - Memory - Courage",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Jupiter - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Comfrey",
+        "properties": "Safe travel - Healing - Protection - Stability",
+        "zodiac": "Capricorn - Cancer",
+        "planet": "Saturn",
+        "element": "Earth - Water"
+      },
+      {
+        "name": "Dandelion",
+        "properties": "Wishes - Divination - Calling spirits - Psychic power",
+        "zodiac": "Sagittarius - Pisces",
+        "planet": "Jupiter - Moon",
+        "element": "Air"
+      },
+      {
+        "name": "Dill",
+        "properties": "Protection - Love - Luck - Money - Mental clarity",
+        "zodiac": "Gemini - Cancer",
+        "planet": "Mercury - Moon",
+        "element": "Air"
+      },
+      {
+        "name": "Elder Flower",
+        "properties": "Protection - Healing - Faerie magic - Sleep - Prosperity",
+        "zodiac": "Scorpio - Libra",
+        "planet": "Venus - Saturn",
+        "element": "Water"
+      },
+      {
+        "name": "Eucalyptus",
+        "properties": "Healing - Purification - Protection - Clearing negative energy",
+        "zodiac": "Aquarius",
+        "planet": "Uranus - Saturn",
+        "element": "Air"
+      },
+      {
+        "name": "Feverfew",
+        "properties": "Protection - Travel safety - Ward off accidents - Healing",
+        "zodiac": "Aries - Taurus",
+        "planet": "Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Frankincense Resin",
+        "properties": "Spiritual elevation - Purification - Protection - Consecration",
+        "zodiac": "Aries - Leo",
+        "planet": "Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Garlic",
+        "properties": "Protection - Banishing - Healing - Courage - Anti-evil",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Ginger",
+        "properties": "Success - Power - Love - Money - Courage",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Hawthorn",
+        "properties": "Faerie magic - Protection - Hope - Marriage - Fertility",
+        "zodiac": "Aries - Taurus",
+        "planet": "Mars - Venus",
+        "element": "Fire"
+      },
+      {
+        "name": "Hibiscus",
+        "properties": "Love - Lust - Divination - Dreams - Attracting desire",
+        "zodiac": "Libra - Scorpio",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "name": "High John Root",
+        "properties": "Strength - Luck - Success - Confidence - Overcoming obstacles",
+        "zodiac": "Leo - Aries",
+        "planet": "Mars - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Holy Basil (Tulsi)",
+        "properties": "Spiritual protection - Purification - Love - Clarity - Sacred offerings",
+        "zodiac": "Scorpio - Sagittarius",
+        "planet": "Jupiter - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Hyssop",
+        "properties": "Purification - Protection - Forgiveness - Cleansing negative energy",
+        "zodiac": "Cancer - Pisces",
+        "planet": "Jupiter - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Lavender",
+        "properties": "Peace - Love - Purification - Sleep - Psychic protection",
+        "zodiac": "Virgo - Gemini",
+        "planet": "Mercury - Moon",
+        "element": "Air"
+      },
+      {
+        "name": "Lemon Balm",
+        "properties": "Love - Success - Healing - Psychic development - Happiness",
+        "zodiac": "Cancer - Gemini",
+        "planet": "Moon - Mercury",
+        "element": "Water"
+      },
+      {
+        "name": "Licorice Root",
+        "properties": "Control - Fidelity - Passion - Commanding energy",
+        "zodiac": "Scorpio - Taurus",
+        "planet": "Venus - Pluto",
+        "element": "Water"
+      },
+      {
+        "name": "Lotus",
+        "properties": "Spiritual enlightenment - Purity - Rebirth - Meditation - Divine connection",
+        "zodiac": "Pisces - Cancer",
+        "planet": "Moon - Neptune",
+        "element": "Water"
+      },
+      {
+        "name": "Mandrake",
+        "properties": "Protection - Prosperity - Fertility - Banishing",
+        "zodiac": "Scorpio - Taurus",
+        "planet": "Saturn - Mercury",
+        "element": "Earth"
+      },
+      {
+        "name": "Meadowsweet",
+        "properties": "Love - Peace - Happiness - Divination - Harmony",
+        "zodiac": "Gemini - Libra",
+        "planet": "Jupiter - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Mint (General)",
+        "properties": "Money - Luck - Healing - Psychic ability - Protection",
+        "zodiac": "Gemini - Virgo",
+        "planet": "Mercury - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Mistletoe",
+        "properties": "Protection - Love - Fertility - Healing",
+        "zodiac": "Scorpio - Cancer",
+        "planet": "Sun - Jupiter",
+        "element": "Air"
+      },
+      {
+        "name": "Motherwort",
+        "properties": "Feminine power - Protection - Confidence - Inner strength",
+        "zodiac": "Cancer - Leo",
+        "planet": "Venus - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Mugwort",
+        "properties": "Psychic visions - Lucid dreaming - Astral travel - Divination - Protection",
+        "zodiac": "Taurus - Libra - Sagittarius",
+        "planet": "Moon - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Mullein",
+        "properties": "Protection - Courage - Banishing spirits - Divination",
+        "zodiac": "Aries",
+        "planet": "Saturn",
+        "element": "Fire - Earth"
+      },
+      {
+        "name": "Myrrh Resin",
+        "properties": "Protection - Healing - Spirituality - Consecration - Purification",
+        "zodiac": "Capricorn - Aries",
+        "planet": "Saturn - Moon",
+        "element": "Earth - Water"
+      },
+      {
+        "name": "Nettle",
+        "properties": "Protection - Healing - Banishing - Breaking curses",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Nutmeg",
+        "properties": "Luck - Money - Health - Fidelity - Psychic awareness",
+        "zodiac": "Sagittarius",
+        "planet": "Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Oak Bark",
+        "properties": "Strength - Protection - Luck - Healing - Wisdom - Longevity",
+        "zodiac": "Sagittarius - Leo",
+        "planet": "Sun - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Orange Peel",
+        "properties": "Joy - Love - Luck - Abundance - Sun energy",
+        "zodiac": "Leo - Sagittarius",
+        "planet": "Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Oregano",
+        "properties": "Joy - Strength - Vitality - Protection - Letting go",
+        "zodiac": "Aries - Taurus",
+        "planet": "Venus - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Palo Santo",
+        "properties": "Deep purification - Raising vibration - Clearing negative energy - Spiritual connection",
+        "zodiac": "Scorpio - Sagittarius",
+        "planet": "Sun - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Passionflower",
+        "properties": "Peace - Sleep - Friendship - Calming anxiety - Harmony",
+        "zodiac": "Libra - Pisces",
+        "planet": "Venus - Neptune",
+        "element": "Water"
+      },
+      {
+        "name": "Pennyroyal",
+        "properties": "Protection - Peace - Travel safety - Strength",
+        "zodiac": "Aries - Taurus",
+        "planet": "Mars - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Peppermint",
+        "properties": "Purification - Healing - Psychic ability - Love - Energy",
+        "zodiac": "Gemini - Aquarius",
+        "planet": "Mercury - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Plantain",
+        "properties": "Healing - Protection - Strength - Warding",
+        "zodiac": "Capricorn - Virgo",
+        "planet": "Saturn - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Rose",
+        "properties": "Love - Psychic power - Healing - Protection - Divination",
+        "zodiac": "Taurus - Libra",
+        "planet": "Venus",
+        "element": "Water"
+      },
+      {
+        "name": "Rosemary",
+        "properties": "Protection - Purification - Memory - Healing - Fidelity",
+        "zodiac": "Aries - Leo - Virgo",
+        "planet": "Sun - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Rue",
+        "properties": "Protection - Banishing - Clearing hexes - Mental clarity - Blessing",
+        "zodiac": "Aries - Leo",
+        "planet": "Mars - Saturn",
+        "element": "Fire"
+      },
+      {
+        "name": "Saffron",
+        "properties": "Love - Healing - Happiness - Psychic power",
+        "zodiac": "Leo - Pisces",
+        "planet": "Sun - Moon",
+        "element": "Fire"
+      },
+      {
+        "name": "Sage (Common)",
+        "properties": "Wisdom - Purification - Protection - Longevity - Wishes",
+        "zodiac": "Aries - Taurus - Sagittarius",
+        "planet": "Jupiter - Mercury",
+        "element": "Air - Earth"
+      },
+      {
+        "name": "Sage (White)",
+        "properties": "Powerful cleansing - Removing negative energy - Purification - Sacred space",
+        "zodiac": "Sagittarius - Aries",
+        "planet": "Moon - Jupiter",
+        "element": "Air"
+      },
+      {
+        "name": "St. Johns Wort",
+        "properties": "Protection - Strength - Happiness - Banishing evil - Courage",
+        "zodiac": "Leo",
+        "planet": "Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Star Anise",
+        "properties": "Psychic power - Luck - Protection - Calling spirits - Purification",
+        "zodiac": "Pisces - Sagittarius",
+        "planet": "Jupiter - Moon",
+        "element": "Air - Water"
+      },
+      {
+        "name": "Thyme",
+        "properties": "Courage - Purification - Protection - Psychic power - Sleep",
+        "zodiac": "Aries - Libra",
+        "planet": "Venus - Mars",
+        "element": "Air"
+      },
+      {
+        "name": "Valerian",
+        "properties": "Sleep - Love - Protection - Purification - Harmony",
+        "zodiac": "Virgo - Scorpio",
+        "planet": "Venus - Saturn",
+        "element": "Water"
+      },
+      {
+        "name": "Vervain",
+        "properties": "Protection - Purification - Love - Inspiration - Peace",
+        "zodiac": "Gemini - Virgo",
+        "planet": "Venus - Mercury",
+        "element": "Earth"
+      },
+      {
+        "name": "Yarrow",
+        "properties": "Courage - Love - Psychic awareness - Healing - Divination",
+        "zodiac": "Aries - Libra",
+        "planet": "Venus - Saturn",
+        "element": "Water"
+      }
+    ],
+    "oils": [
+      {
+        "name": "Bergamot",
+        "properties": "Confidence - Uplifting energy - Attracting success - Releasing anxiety",
+        "zodiac": "Aries - Leo",
+        "planet": "Sun - Mercury",
+        "element": "Fire"
+      },
+      {
+        "name": "Black Pepper",
+        "properties": "Protection - Banishing negativity - Courage - Mental clarity",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Cedarwood",
+        "properties": "Grounding - Strength - Wisdom - Spiritual protection - Connecting to ancient energy",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Saturn - Sun",
+        "element": "Earth"
+      },
+      {
+        "name": "Chamomile",
+        "properties": "Peace - Calm - Sleep - Purification - Attracting luck",
+        "zodiac": "Cancer - Virgo",
+        "planet": "Moon - Mercury",
+        "element": "Water"
+      },
+      {
+        "name": "Cinnamon",
+        "properties": "Prosperity - Protection - Love - Psychic enhancement - Raising vibration",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Sun - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Clary Sage",
+        "properties": "Intuition - Dream work - Clarity - Euphoria - Opening the third eye",
+        "zodiac": "Sagittarius - Aquarius",
+        "planet": "Moon - Saturn",
+        "element": "Air"
+      },
+      {
+        "name": "Clove",
+        "properties": "Protection - Banishing - Prosperity - Memory - Courage",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars - Jupiter",
+        "element": "Fire"
+      },
+      {
+        "name": "Cypress",
+        "properties": "Comfort in grief - Transition - Past life work - Ancestral connection",
+        "zodiac": "Scorpio - Capricorn",
+        "planet": "Saturn - Pluto",
+        "element": "Earth"
+      },
+      {
+        "name": "Eucalyptus",
+        "properties": "Purification - Healing - Protection - Clearing negative energy",
+        "zodiac": "Aquarius",
+        "planet": "Saturn - Uranus",
+        "element": "Air"
+      },
+      {
+        "name": "Frankincense",
+        "properties": "Spiritual elevation - Protection - Consecration - Connecting to the divine - Meditation",
+        "zodiac": "Aries - Leo - Capricorn",
+        "planet": "Sun - Pluto",
+        "element": "Fire"
+      },
+      {
+        "name": "Geranium",
+        "properties": "Love - Fertility - Protection - Balancing feminine energy - Lifting depression",
+        "zodiac": "Taurus - Cancer - Libra",
+        "planet": "Venus - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Ginger",
+        "properties": "Courage - Success - Prosperity - Warming energy - Empowerment",
+        "zodiac": "Aries - Scorpio",
+        "planet": "Mars - Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Helichrysum",
+        "properties": "Healing deep wounds - Past life work - Transformation - Inner strength",
+        "zodiac": "Scorpio - Pisces",
+        "planet": "Neptune - Pluto",
+        "element": "Water"
+      },
+      {
+        "name": "Jasmine",
+        "properties": "Love - Sensuality - Psychic dreams - Moon magic - Attracting abundance",
+        "zodiac": "Cancer - Pisces - Scorpio",
+        "planet": "Moon - Venus",
+        "element": "Water"
+      },
+      {
+        "name": "Juniper Berry",
+        "properties": "Protection - Purification - Banishing - Healing - Breaking hexes",
+        "zodiac": "Aries - Sagittarius",
+        "planet": "Jupiter - Sun",
+        "element": "Fire"
+      },
+      {
+        "name": "Lavender",
+        "properties": "Purification - Peace - Love - Sleep - Psychic protection - Calming",
+        "zodiac": "Virgo - Gemini - Libra",
+        "planet": "Mercury - Moon",
+        "element": "Air"
+      },
+      {
+        "name": "Lemon",
+        "properties": "Purification - Mental clarity - Uplifting - Lunar energy - Friendship",
+        "zodiac": "Gemini - Cancer",
+        "planet": "Moon - Mercury",
+        "element": "Water - Air"
+      },
+      {
+        "name": "Lemongrass",
+        "properties": "Psychic awareness - Clearing obstacles - Mental clarity - Purification",
+        "zodiac": "Gemini - Aquarius",
+        "planet": "Mercury - Uranus",
+        "element": "Air"
+      },
+      {
+        "name": "Lime",
+        "properties": "Purification - Protection - Uplifting energy - Clarity",
+        "zodiac": "Gemini - Aries",
+        "planet": "Sun - Mercury",
+        "element": "Fire - Air"
+      },
+      {
+        "name": "Myrrh",
+        "properties": "Spirituality - Protection - Healing - Consecration - Ancestral work",
+        "zodiac": "Capricorn - Aries",
+        "planet": "Saturn - Moon",
+        "element": "Earth - Water"
+      },
+      {
+        "name": "Neroli",
+        "properties": "Joy - Peace - Confidence - Attracting love - Easing grief",
+        "zodiac": "Libra - Cancer",
+        "planet": "Venus - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Patchouli",
+        "properties": "Abundance - Grounding - Sensuality - Earth magic - Manifestation",
+        "zodiac": "Taurus - Capricorn - Scorpio",
+        "planet": "Saturn - Venus",
+        "element": "Earth"
+      },
+      {
+        "name": "Peppermint",
+        "properties": "Purification - Mental clarity - Psychic enhancement - Protection - Energy",
+        "zodiac": "Gemini - Virgo - Aquarius",
+        "planet": "Mercury - Venus",
+        "element": "Air"
+      },
+      {
+        "name": "Pine",
+        "properties": "Cleansing - Grounding - Prosperity - Protection - Strength",
+        "zodiac": "Capricorn - Sagittarius",
+        "planet": "Mars - Saturn",
+        "element": "Earth"
+      },
+      {
+        "name": "Rose",
+        "properties": "Love - Self-love - Psychic ability - Healing the heart - Divine feminine",
+        "zodiac": "Taurus - Libra - Cancer",
+        "planet": "Venus - Moon",
+        "element": "Water"
+      },
+      {
+        "name": "Rosemary",
+        "properties": "Memory - Protection - Purification - Mental clarity - Fidelity",
+        "zodiac": "Aries - Leo - Virgo",
+        "planet": "Sun - Mars",
+        "element": "Fire"
+      },
+      {
+        "name": "Sandalwood",
+        "properties": "Meditation - Spiritual connection - Purification - Manifestation - Protection",
+        "zodiac": "Leo - Virgo - Capricorn",
+        "planet": "Moon - Saturn",
+        "element": "Earth"
+      },
+      {
+        "name": "Spearmint",
+        "properties": "Mental clarity - Luck - Protection - Love - Healing",
+        "zodiac": "Cancer - Gemini",
+        "planet": "Venus - Moon",
+        "element": "Water - Air"
+      },
+      {
+        "name": "Tea Tree",
+        "properties": "Purification - Protection - Healing - Cleansing negative energy",
+        "zodiac": "Scorpio - Aquarius",
+        "planet": "Uranus - Mars",
+        "element": "Air - Fire"
+      },
+      {
+        "name": "Thyme",
+        "properties": "Courage - Purification - Protection - Psychic power - Healing",
+        "zodiac": "Aries - Libra",
+        "planet": "Venus - Mars",
+        "element": "Air"
+      },
+      {
+        "name": "Vetiver",
+        "properties": "Grounding - Protection - Ancestral connection - Stability - Prosperity",
+        "zodiac": "Taurus - Capricorn - Virgo",
+        "planet": "Saturn",
+        "element": "Earth"
+      },
+      {
+        "name": "Ylang Ylang",
+        "properties": "Love - Sensuality - Peace - Confidence - Attracting abundance",
+        "zodiac": "Taurus - Scorpio - Libra",
+        "planet": "Venus",
+        "element": "Water"
+      }
+    ],
+    "deities": {
+      "Greek & Roman Pantheon": [
+        {
+          "name": "Hecate",
+          "domain": "perhaps the most popular goddess in modern witchcraft; goddess of magic, crossroads, the moon, and witchcraft"
+        },
+        {
+          "name": "Aphrodite/Venus",
+          "domain": "love, beauty, sexuality, relationships"
+        },
+        {
+          "name": "Artemis/Diana",
+          "domain": "the hunt, the moon, independence, feminine power"
+        },
+        {
+          "name": "Hermes/Mercury",
+          "domain": "communication, travel, magic, trickery, messages"
+        },
+        {
+          "name": "Apollo",
+          "domain": "sun, music, prophecy, healing, truth"
+        },
+        {
+          "name": "Persephone",
+          "domain": "the underworld, transformation, seasons, rebirth"
+        },
+        {
+          "name": "Demeter/Ceres",
+          "domain": "earth, harvest, fertility, abundance"
+        },
+        {
+          "name": "Zeus/Jupiter",
+          "domain": "sky, power, justice, authority"
+        },
+        {
+          "name": "Hephaestus/Vulcan",
+          "domain": "fire, craftsmanship, transformation"
+        },
+        {
+          "name": "Dionysus/Bacchus",
+          "domain": "ecstasy, wine, altered states, liberation"
+        },
+        {
+          "name": "Athena/Minerva",
+          "domain": "wisdom, strategy, crafts, justice"
+        },
+        {
+          "name": "Poseidon/Neptune",
+          "domain": "sea, intuition, storms, the unconscious"
+        }
+      ],
+      "Egyptian Pantheon": [
+        {
+          "name": "Isis",
+          "domain": "arguably the most universally worshipped goddess in history; magic, healing, motherhood, protection"
+        },
+        {
+          "name": "Osiris",
+          "domain": "death, resurrection, the afterlife, judgment"
+        },
+        {
+          "name": "Thoth",
+          "domain": "wisdom, writing, magic, the moon, knowledge"
+        },
+        {
+          "name": "Ra/AmunRa",
+          "domain": "the sun, creation, kingship, power"
+        },
+        {
+          "name": "Anubis",
+          "domain": "death, the afterlife, protection of the dead, guidance"
+        },
+        {
+          "name": "Bastet",
+          "domain": "cats, home, protection, fertility, pleasure"
+        },
+        {
+          "name": "Sekhmet",
+          "domain": "healing, war, destruction, fierce protection"
+        },
+        {
+          "name": "Hathor",
+          "domain": "love, beauty, music, joy, motherhood"
+        },
+        {
+          "name": "Horus",
+          "domain": "sky, kingship, protection, the sun and moon"
+        },
+        {
+          "name": "Set",
+          "domain": "chaos, storms, the desert, transformation through conflict"
+        },
+        {
+          "name": "Ma'at",
+          "domain": "truth, justice, balance, cosmic order"
+        }
+      ],
+      "Norse Pantheon": [
+        {
+          "name": "Odin",
+          "domain": "wisdom, magic, war, death, poetry, runes"
+        },
+        {
+          "name": "Freya",
+          "domain": "love, fertility, war, magic (seidr), beauty, gold"
+        },
+        {
+          "name": "Thor",
+          "domain": "thunder, strength, protection, working people"
+        },
+        {
+          "name": "Loki",
+          "domain": "trickery, transformation, chaos, cleverness"
+        },
+        {
+          "name": "Frigg",
+          "domain": "marriage, motherhood, foresight, domesticity"
+        },
+        {
+          "name": "Tyr",
+          "domain": "justice, law, sacrifice, honor"
+        },
+        {
+          "name": "Heimdall",
+          "domain": "watchfulness, the rainbow bridge, protection"
+        },
+        {
+          "name": "Skadi",
+          "domain": "winter, mountains, hunting, independence"
+        },
+        {
+          "name": "Brigid (also Celtic)",
+          "domain": "fire, healing, poetry, smithcraft"
+        },
+        {
+          "name": "Morrigan (Celtic/Norse overlap)",
+          "domain": "fate, war, transformation, prophecy"
+        }
+      ],
+      "Celtic Pantheon": [
+        {
+          "name": "The Morrigan",
+          "domain": "sovereignty, fate, war, shapeshifting, prophecy"
+        },
+        {
+          "name": "Brigid",
+          "domain": "healing, fire, poetry, smithcraft, the home"
+        },
+        {
+          "name": "Cernunnos",
+          "domain": "the horned god, nature, animals, fertility, the wild"
+        },
+        {
+          "name": "Danu",
+          "domain": "the mother goddess, earth, rivers, abundance"
+        },
+        {
+          "name": "Lugh",
+          "domain": "sun, skill, craftsmanship, many talents"
+        },
+        {
+          "name": "The Dagda",
+          "domain": "fertility, agriculture, wisdom, protection"
+        },
+        {
+          "name": "Arawn",
+          "domain": "the underworld, death, justice, hunting"
+        },
+        {
+          "name": "Rhiannon",
+          "domain": "horses, the otherworld, sovereignty, birds"
+        }
+      ],
+      "Hindu Deities": [
+        {
+          "name": "Ganesha",
+          "domain": "removing obstacles, new beginnings, wisdom, success probably the most widely invoked Hindu deity globally"
+        },
+        {
+          "name": "Lakshmi",
+          "domain": "wealth, abundance, fortune, beauty, prosperity"
+        },
+        {
+          "name": "Saraswati",
+          "domain": "knowledge, arts, music, learning, creativity"
+        },
+        {
+          "name": "Kali",
+          "domain": "destruction of ego, fierce transformation, time, liberation"
+        },
+        {
+          "name": "Durga",
+          "domain": "protection, war, strength, feminine power"
+        },
+        {
+          "name": "Shiva",
+          "domain": "destruction and creation, transformation, meditation, yoga"
+        },
+        {
+          "name": "Vishnu",
+          "domain": "preservation, protection, balance, cosmic order"
+        },
+        {
+          "name": "Krishna",
+          "domain": "love, devotion, joy, divine play"
+        },
+        {
+          "name": "Parvati",
+          "domain": "love, fertility, devotion, the divine feminine"
+        },
+        {
+          "name": "Hanuman",
+          "domain": "devotion, strength, loyalty, service"
+        }
+      ],
+      "Yoruba / AfroCaribbean Orishas": [
+        {
+          "name": "Oshun",
+          "domain": "love, rivers, fertility, beauty, sweetness, abundance"
+        },
+        {
+          "name": "Yemaya",
+          "domain": "the ocean, motherhood, protection, the unconscious"
+        },
+        {
+          "name": "Shango",
+          "domain": "thunder, lightning, justice, strength, passion"
+        },
+        {
+          "name": "Elegba/Eshu",
+          "domain": "crossroads, communication, beginnings, trickster energy"
+        },
+        {
+          "name": "Obatala",
+          "domain": "wisdom, purity, peace, creation, clarity"
+        },
+        {
+          "name": "Oya",
+          "domain": "storms, change, death, transformation, wind"
+        },
+        {
+          "name": "Ogun",
+          "domain": "iron, war, labor, the wilderness, protection"
+        }
+      ],
+      "Mesopotamian / Sumerian": [
+        {
+          "name": "Inanna/Ishtar",
+          "domain": "love, war, beauty, political power, descent and return"
+        },
+        {
+          "name": "Enki/Ea",
+          "domain": "wisdom, water, magic, creation, crafts"
+        },
+        {
+          "name": "Nanna/Sin",
+          "domain": "the moon, wisdom, cattle, time"
+        },
+        {
+          "name": "Ereshkigal",
+          "domain": "the underworld, shadow work, grief, transformation"
+        }
+      ],
+      "Celtic / Arthurian Archetypes": [
+        {
+          "name": "The Green Man",
+          "domain": "nature, rebirth, the cycle of seasons"
+        },
+        {
+          "name": "The Triple Goddess",
+          "domain": "Maiden/Mother/Crone as phases of the feminine divine (and the moon)"
+        },
+        {
+          "name": "The Horned God",
+          "domain": "masculine counterpart in Wicca, nature and the hunt"
+        }
+      ],
+      "How People Work With Deities": [
+        {
+          "name": "Hard polytheism",
+          "domain": "believing each deity is a fully distinct, literal being"
+        },
+        {
+          "name": "Soft polytheism",
+          "domain": "seeing all gods as aspects of one divine source"
+        },
+        {
+          "name": "Archetypal approach",
+          "domain": "working with deities as powerful psychological symbols without literal belief"
+        },
+        {
+          "name": "Devotional practice",
+          "domain": "building an ongoing relationship through altar work, offerings, prayer, and ritual"
+        },
+        {
+          "name": "Invocation",
+          "domain": "calling a deity's energy into yourself during ritual"
+        },
+        {
+          "name": "Evocation",
+          "domain": "calling a deity's presence into a space outside yourself"
+        }
+      ]
+    }
+  },
+  "candleHex": {
+    "White": "#f5f5f5",
+    "Black": "#1a1a1a",
+    "Red": "#c0392b",
+    "Pink": "#e91e8c",
+    "Orange": "#e67e22",
+    "Yellow": "#f1c40f",
+    "Green": "#27ae60",
+    "Light Blue": "#5dade2",
+    "Dark Blue / Indigo": "#2c3e7a",
+    "Purple / Violet": "#7d3c98",
+    "Brown": "#7d5a3c",
+    "Gold": "#c9a84c",
+    "Silver": "#aab7b8",
+    "Lavender": "#c39bd3",
+    "Magenta": "#d63384",
+    "Gray": "#7f8c8d"
+  },
+  "fallbackDeck": [
+    {
+      "name": "The Fool",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Beginnings, faith, freedom, spontaneity.",
+      "meaning_rev": "Recklessness, naivety, poor timing.",
+      "desc": "A leap into the unknown."
+    },
+    {
+      "name": "The Magician",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Skill, focus, action, manifestation.",
+      "meaning_rev": "Manipulation, scattered effort, untapped talent.",
+      "desc": "Will aligned with action."
+    },
+    {
+      "name": "The High Priestess",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Intuition, inner knowing, mystery.",
+      "meaning_rev": "Secrets, disconnection from intuition, silence.",
+      "desc": "Knowledge beneath the surface."
+    },
+    {
+      "name": "The Empress",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Growth, nurture, abundance, beauty.",
+      "meaning_rev": "Smothering, stagnation, imbalance.",
+      "desc": "Creation and fertile momentum."
+    },
+    {
+      "name": "The Emperor",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Structure, leadership, authority, stability.",
+      "meaning_rev": "Rigidity, control issues, stubbornness.",
+      "desc": "Order and discipline."
+    },
+    {
+      "name": "The Hierophant",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Tradition, learning, mentorship, spiritual order.",
+      "meaning_rev": "Rebellion, dogma, resisting convention.",
+      "desc": "Sacred systems and teachings."
+    },
+    {
+      "name": "The Lovers",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Connection, values, choice, harmony.",
+      "meaning_rev": "Disharmony, misalignment, indecision.",
+      "desc": "Union and values-led choice."
+    },
+    {
+      "name": "The Chariot",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Momentum, willpower, victory, focus.",
+      "meaning_rev": "Loss of control, conflict, scattered drive.",
+      "desc": "Directed motion."
+    },
+    {
+      "name": "Strength",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Courage, resilience, compassion, mastery.",
+      "meaning_rev": "Self-doubt, raw emotion, depletion.",
+      "desc": "Soft power and steadiness."
+    },
+    {
+      "name": "The Hermit",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Reflection, solitude, wisdom, guidance.",
+      "meaning_rev": "Isolation, avoidance, withdrawal.",
+      "desc": "The lantern in the dark."
+    },
+    {
+      "name": "Wheel of Fortune",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Change, fate, turning point, timing.",
+      "meaning_rev": "Resistance, bad timing, repeated patterns.",
+      "desc": "The cycle turns."
+    },
+    {
+      "name": "Justice",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Truth, accountability, balance, fairness.",
+      "meaning_rev": "Bias, avoidance, imbalance.",
+      "desc": "Cause and effect made visible."
+    },
+    {
+      "name": "The Hanged Man",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Pause, surrender, new perspective.",
+      "meaning_rev": "Delay, resistance, martyrdom.",
+      "desc": "Insight through suspension."
+    },
+    {
+      "name": "Death",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Endings, transformation, release, renewal.",
+      "meaning_rev": "Clinging, stalled transition, fear of change.",
+      "desc": "Necessary transformation."
+    },
+    {
+      "name": "Temperance",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Balance, healing, integration, patience.",
+      "meaning_rev": "Excess, disharmony, extremes.",
+      "desc": "Alchemy and moderation."
+    },
+    {
+      "name": "The Devil",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Attachment, temptation, shadow, material binds.",
+      "meaning_rev": "Release, awareness, breaking patterns.",
+      "desc": "The chain you can loosen."
+    },
+    {
+      "name": "The Tower",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Shock, revelation, upheaval, truth.",
+      "meaning_rev": "Avoided change, lingering instability.",
+      "desc": "What falls away was never secure."
+    },
+    {
+      "name": "The Star",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Hope, renewal, inspiration, faith.",
+      "meaning_rev": "Doubt, disconnection, dimmed hope.",
+      "desc": "Light after disruption."
+    },
+    {
+      "name": "The Moon",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Dreams, uncertainty, intuition, hidden currents.",
+      "meaning_rev": "Confusion lifting, clarity, confronting fear.",
+      "desc": "The deep tides of feeling."
+    },
+    {
+      "name": "The Sun",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Joy, confidence, success, vitality.",
+      "meaning_rev": "Delay, ego, temporary clouding.",
+      "desc": "Life made radiant."
+    },
+    {
+      "name": "Judgement",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Awakening, reckoning, purpose, absolution.",
+      "meaning_rev": "Self-judgment, hesitation, avoidance.",
+      "desc": "The call to rise."
+    },
+    {
+      "name": "The World",
+      "arcana": "Major",
+      "suit": "major",
+      "meaning_up": "Completion, mastery, wholeness, arrival.",
+      "meaning_rev": "Loose ends, delay, unfinished cycle.",
+      "desc": "The circle closes."
+    }
+  ]
+}

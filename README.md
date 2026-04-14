@@ -1,2 +1,0 @@
-# tarot
-Tarot card website 

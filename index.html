@@ -1,2348 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Veil â€” Tarot & Astrology</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0d0a12;
-    --parchment: #f5ede0;
-    --gold: #c9a84c;
-    --gold-light: #e8c97e;
-    --gold-dim: #7a6228;
-    --crimson: #7c2035;
-    --violet: #2e1a4a;
-    --smoke: #1a1226;
-    --card-bg: #130d1e;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--ink);
-    color: var(--parchment);
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 17px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 10%, rgba(46,26,74,0.9) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 90%, rgba(124,32,53,0.4) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(13,10,18,1) 0%, transparent 100%);
-    z-index: -2;
-  }
-
-  body::after {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 15% 20%, rgba(255,255,220,0.7) 0%, transparent 100%),
-      radial-gradient(1px 1px at 42% 8%, rgba(255,255,220,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 67% 30%, rgba(255,255,220,0.6) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 15%, rgba(255,255,220,0.4) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 5% 55%, rgba(201,168,76,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 70%, rgba(255,255,220,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 75% 65%, rgba(255,255,220,0.5) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 93% 80%, rgba(201,168,76,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 55% 88%, rgba(255,255,220,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 20% 92%, rgba(255,255,220,0.4) 0%, transparent 100%);
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  header {
-    text-align: center;
-    padding: 52px 20px 32px;
-    position: relative;
-  }
-
-  header::after {
-    content: '';
-    display: block;
-    width: 340px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 18px auto 0;
-  }
-
-  .site-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(2.2rem, 6vw, 3.8rem);
-    color: var(--gold-light);
-    letter-spacing: 0.12em;
-    text-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2);
-    line-height: 1.15;
-  }
-
-  .site-sub {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.35em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-top: 6px;
-  }
-
-  nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 20px 20px 0;
-  }
-
-  .nav-btn {
-    font-family: 'Cinzel', serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold-dim);
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.25);
-    padding: 9px 18px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border-radius: 1px;
-  }
-
-  .nav-btn:hover, .nav-btn.active {
-    color: var(--gold-light);
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.07);
-    text-shadow: 0 0 12px rgba(201,168,76,0.4);
-  }
-
-  .section {
-    display: none;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 44px 20px 60px;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .section.visible { display: block; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .section-title {
-    font-family: 'Cinzel', serif;
-    font-size: 1.5rem;
-    color: var(--gold-light);
-    text-align: center;
-    letter-spacing: 0.12em;
-    margin-bottom: 8px;
-  }
-
-  .section-desc {
-    text-align: center;
-    color: rgba(245,237,224,0.55);
-    font-style: italic;
-    margin-bottom: 36px;
-    font-size: 1rem;
-  }
-
-  .ornament {
-    text-align: center;
-    color: var(--gold-dim);
-    font-size: 1.4rem;
-    margin: 0 0 28px;
-    opacity: 0.7;
-  }
-
-  .spread-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 14px;
-    margin-bottom: 36px;
-  }
-
-  .spread-card {
-    border: 1px solid rgba(201,168,76,0.22);
-    padding: 18px 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s;
-    background: rgba(201,168,76,0.03);
-    border-radius: 2px;
-  }
-
-  .spread-card:hover, .spread-card.selected {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    box-shadow: 0 0 20px rgba(201,168,76,0.1);
-  }
-
-  .spread-card .spread-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-
-  .spread-card .spread-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .spread-card .spread-count {
-    font-size: 0.78rem;
-    color: rgba(245,237,224,0.45);
-    font-style: italic;
-  }
-
-  .draw-btn {
-    display: block;
-    margin: 0 auto 40px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--ink);
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-    border: none;
-    padding: 14px 42px;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 0 24px rgba(201,168,76,0.35);
-  }
-
-  .draw-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 36px rgba(201,168,76,0.5);
-  }
-
-  .draw-btn:disabled {
-    opacity: 0.5; cursor: not-allowed; transform: none;
-  }
-
-  .cards-area {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 32px;
-  }
-
-  .fan-area {
-    position: relative;
-    height: 320px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    margin-bottom: 40px;
-    overflow: visible;
-  }
-
-  .fan-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    height: 260px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-  }
-
-  .fan-card {
-    position: absolute;
-    bottom: 0;
-    width: 70px; height: 115px;
-    background: linear-gradient(160deg, #1e1233 0%, #130d1e 100%);
-    background-image: url('card-back.png');
-    background-size: cover;
-    background-position: center;
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
-    transform-origin: bottom center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .fan-card.no-img::before {
-    content: 'á›Ÿ';
-    color: rgba(201,168,76,0.35);
-    font-size: 1.2rem;
-  }
-
-  .fan-card:hover {
-    box-shadow: 0 -8px 30px rgba(201,168,76,0.4);
-    border-color: var(--gold);
-    z-index: 20 !important;
-  }
-
-  .fan-card.chosen {
-    border-color: var(--gold-light);
-    box-shadow: 0 -12px 40px rgba(201,168,76,0.6);
-  }
-
-  .fan-instruction {
-    text-align: center;
-    color: rgba(245,237,224,0.5);
-    font-style: italic;
-    margin-bottom: 16px;
-    font-size: 0.95rem;
-  }
-
-  .tarot-card-wrap {
-    text-align: center;
-    animation: revealCard 0.6s ease both;
-  }
-
-  .tarot-card-wrap .position-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  @keyframes revealCard {
-    from { opacity: 0; transform: scale(0.85) rotateY(90deg); }
-    to { opacity: 1; transform: scale(1) rotateY(0deg); }
-  }
-
-  .tarot-card-inner {
-    width: 130px;
-    background: linear-gradient(160deg, #1e1233 0%, #130d1e 100%);
-    border: 1px solid rgba(201,168,76,0.4);
-    border-radius: 6px;
-    padding: 10px 8px 12px;
-    display: inline-block;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1) inset;
-    cursor: pointer;
-  }
-
-  .tarot-card-inner.reversed {
-    transform: rotate(180deg);
-    border-color: rgba(124,32,53,0.6);
-  }
-
-  .card-img-wrap {
-    width: 114px; height: 190px;
-    overflow: hidden;
-    border-radius: 3px;
-    background: #0a0612;
-    margin-bottom: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .card-img-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .card-img-wrap .card-no-img {
-    font-size: 2.5rem;
-    color: rgba(201,168,76,0.3);
-  }
-
-  .card-name-tag {
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    text-align: center;
-    line-height: 1.4;
-  }
-
-  .reversed-tag {
-    font-size: 0.58rem;
-    color: var(--crimson);
-    display: block;
-    letter-spacing: 0.15em;
-    margin-top: 2px;
-  }
-
-  .tarot-card-wrap {
-    position: relative;
-  }
-
-  .tarot-card-wrap .card-meaning {
-    display: none;
-  }
-
-  .card-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    background: #1a1226;
-    border: 1px solid rgba(201,168,76,0.4);
-    border-radius: 4px;
-    padding: 10px 12px;
-    font-size: 0.78rem;
-    color: rgba(245,237,224,0.85);
-    font-style: italic;
-    line-height: 1.55;
-    text-align: center;
-    z-index: 100;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: translateX(-50%) translateY(4px);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
-  }
-
-  .card-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-top-color: rgba(201,168,76,0.4);
-  }
-
-  .tarot-card-wrap:hover .card-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  .reading-panel {
-    background: rgba(46,26,74,0.3);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 4px;
-    padding: 28px 30px;
-    margin-top: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .reading-panel::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-  }
-
-  .reading-panel-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.25em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .reading-panel-title::after {
-    content: '';
-    flex: 1; height: 1px;
-    background: rgba(201,168,76,0.15);
-  }
-
-  .reading-text {
-    line-height: 1.85;
-    color: rgba(245,237,224,0.85);
-    font-size: 1rem;
-  }
-
-  .reading-text p { margin-bottom: 1em; }
-
-  .loading-dots span {
-    display: inline-block;
-    animation: blink 1.4s infinite both;
-    color: var(--gold);
-    font-size: 1.4rem;
-  }
-
-  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes blink {
-    0%, 80%, 100% { opacity: 0.2; }
-    40% { opacity: 1; }
-  }
-
-  .library-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .lib-filter-btn {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--gold-dim);
-    padding: 7px 16px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-
-  .lib-filter-btn:hover, .lib-filter-btn.active {
-    border-color: var(--gold);
-    color: var(--gold-light);
-    background: rgba(201,168,76,0.08);
-  }
-
-  .lib-search {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--parchment);
-    font-family: 'EB Garamond', serif;
-    font-size: 0.95rem;
-    padding: 8px 16px;
-    width: 260px;
-    outline: none;
-    transition: border 0.25s;
-  }
-
-  .lib-search:focus { border-color: var(--gold); }
-  .lib-search::placeholder { color: rgba(245,237,224,0.3); font-style: italic; }
-
-  .lib-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-  }
-
-  .lib-card {
-    border: 1px solid rgba(201,168,76,0.18);
-    background: rgba(201,168,76,0.02);
-    padding: 12px 10px 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.25s;
-    border-radius: 2px;
-  }
-
-  .lib-card:hover {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.07);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-  }
-
-  .lib-card .lc-img {
-    width: 70px; height: 116px;
-    margin: 0 auto 10px;
-    background: #0a0612;
-    border-radius: 3px;
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .lib-card .lc-img img { width: 100%; height: 100%; object-fit: cover; }
-  .lib-card .lc-img span { color: rgba(201,168,76,0.3); font-size: 1.5rem; }
-
-  .lib-card .lc-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.67rem;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    line-height: 1.4;
-    margin-bottom: 4px;
-  }
-
-  .lib-card .lc-suit {
-    font-size: 0.7rem;
-    color: rgba(245,237,224,0.35);
-    font-style: italic;
-  }
-
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal-box {
-    background: var(--smoke);
-    border: 1px solid rgba(201,168,76,0.4);
-    max-width: 680px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 36px;
-    position: relative;
-    animation: fadeUp 0.3s ease;
-  }
-
-  .modal-close {
-    position: absolute; top: 16px; right: 20px;
-    background: none; border: none;
-    color: var(--gold-dim); font-size: 1.4rem; cursor: pointer;
-  }
-
-  .modal-close:hover { color: var(--gold); }
-
-  .modal-card-header {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 24px;
-    align-items: flex-start;
-  }
-
-  .modal-img-wrap {
-    width: 110px; min-width: 110px; height: 184px;
-    background: #0a0612;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid rgba(201,168,76,0.3);
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-  .modal-img-wrap span { color: rgba(201,168,76,0.3); font-size: 2rem; }
-
-  .modal-card-info h2 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold-light);
-    font-size: 1.3rem;
-    margin-bottom: 8px;
-  }
-
-  .modal-card-info .badge {
-    display: inline-block;
-    font-size: 0.68rem;
-    font-family: 'Cinzel', serif;
-    letter-spacing: 0.15em;
-    padding: 3px 10px;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold-dim);
-    margin-right: 6px;
-    margin-bottom: 12px;
-  }
-
-  .modal-card-info p {
-    font-size: 0.92rem;
-    color: rgba(245,237,224,0.7);
-    line-height: 1.7;
-    font-style: italic;
-  }
-
-  .modal-meanings h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin: 20px 0 8px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-  }
-
-  .modal-meanings p {
-    font-size: 0.9rem;
-    color: rgba(245,237,224,0.75);
-    line-height: 1.7;
-  }
-
-  .astro-form {
-    max-width: 400px;
-    margin: 0 auto 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .form-group label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .form-group input {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--parchment);
-    font-family: 'EB Garamond', serif;
-    font-size: 1rem;
-    padding: 10px 14px;
-    outline: none;
-    transition: border 0.25s;
-    border-radius: 1px;
-  }
-
-  .form-group input:focus { border-color: var(--gold); }
-
-  .zodiac-display {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-
-  .zodiac-symbol {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 8px;
-    filter: drop-shadow(0 0 20px rgba(201,168,76,0.5));
-  }
-
-  .zodiac-name {
-    font-family: 'Cinzel', serif;
-    font-size: 1.4rem;
-    color: var(--gold-light);
-    letter-spacing: 0.12em;
-  }
-
-  .zodiac-dates {
-    font-size: 0.85rem;
-    color: rgba(245,237,224,0.45);
-    font-style: italic;
-    margin-top: 4px;
-  }
-
-  .horoscope-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .horoscope-text {
-    background: rgba(46,26,74,0.3);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 4px;
-    padding: 24px 28px;
-    line-height: 1.85;
-    color: rgba(245,237,224,0.85);
-    font-size: 1rem;
-  }
-
-
-  /* â”€â”€ BIRTH CHART â”€â”€ */
-  .birth-chart-form {
-    max-width: 500px;
-    margin: 0 auto 36px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-  .birth-chart-form .full-width { grid-column: 1 / -1; }
-
-  .chart-wheel-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 32px;
-  }
-
-  .chart-wheel-wrap svg {
-    max-width: 480px;
-    width: 100%;
-    filter: drop-shadow(0 0 30px rgba(201,168,76,0.15));
-  }
-
-  .planet-table {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 32px;
-    border-collapse: collapse;
-  }
-
-  .planet-table th {
-    font-family: 'Cinzel', serif;
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    padding: 8px 12px;
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-    text-align: left;
-  }
-
-  .planet-table td {
-    font-size: 0.88rem;
-    color: rgba(245,237,224,0.8);
-    padding: 9px 12px;
-    border-bottom: 1px solid rgba(201,168,76,0.07);
-  }
-
-  .planet-table tr:hover td { background: rgba(201,168,76,0.04); }
-
-  .planet-symbol { font-size: 1.1rem; margin-right: 6px; }
-
-  .chart-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 28px;
-  }
-
-  .dominant-row {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-  }
-
-  .dominant-pill {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold);
-    padding: 6px 16px;
-  }
-
-  .time-note {
-    text-align: center;
-    font-size: 0.78rem;
-    color: rgba(245,237,224,0.35);
-    font-style: italic;
-    margin-bottom: 24px;
-  }
-
-  /* â”€â”€ REFERENCE GUIDE â”€â”€ */
-  .ref-tabs {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .ref-tab {
-    font-family: 'Cinzel', serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.25);
-    color: var(--gold-dim);
-    padding: 9px 18px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-
-  .ref-tab:hover, .ref-tab.active {
-    border-color: var(--gold);
-    color: var(--gold-light);
-    background: rgba(201,168,76,0.08);
-  }
-
-  .ref-search-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 28px;
-  }
-
-  .ref-search-wrap .lib-search { width: 320px; }
-
-  /* Candle grid */
-  .candle-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-  }
-
-  .candle-card {
-    border: 1px solid rgba(201,168,76,0.18);
-    background: rgba(201,168,76,0.02);
-    border-radius: 3px;
-    padding: 14px;
-    transition: all 0.25s;
-    cursor: pointer;
-  }
-
-  .candle-card:hover {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.07);
-    transform: translateY(-2px);
-  }
-
-  .candle-swatch {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    margin: 0 auto 10px;
-    border: 2px solid rgba(255,255,255,0.15);
-    box-shadow: 0 0 12px rgba(0,0,0,0.4);
-  }
-
-  .candle-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
-    color: var(--gold);
-    text-align: center;
-    letter-spacing: 0.08em;
-    margin-bottom: 6px;
-  }
-
-  .candle-props {
-    font-size: 0.75rem;
-    color: rgba(245,237,224,0.55);
-    text-align: center;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  /* Crystal / Herb / Oil grid */
-  .ref-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-  }
-
-  .ref-card {
-    border: 1px solid rgba(201,168,76,0.18);
-    background: rgba(201,168,76,0.02);
-    border-radius: 3px;
-    padding: 14px 16px;
-    transition: all 0.25s;
-    cursor: pointer;
-  }
-
-  .ref-card:hover {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.07);
-    transform: translateY(-2px);
-  }
-
-  .ref-card-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    margin-bottom: 4px;
-  }
-
-  .ref-card-cat {
-    font-size: 0.7rem;
-    color: var(--gold-dim);
-    font-style: italic;
-    margin-bottom: 8px;
-  }
-
-  .ref-card-props {
-    font-size: 0.75rem;
-    color: rgba(245,237,224,0.6);
-    line-height: 1.55;
-    margin-bottom: 8px;
-  }
-
-  .ref-card-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 8px;
-  }
-
-  .ref-meta-pill {
-    font-size: 0.65rem;
-    font-family: 'Cinzel', serif;
-    border: 1px solid rgba(201,168,76,0.2);
-    color: rgba(201,168,76,0.6);
-    padding: 2px 8px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  /* Deity section */
-  .deity-pantheon {
-    margin-bottom: 36px;
-  }
-
-  .deity-pantheon-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    color: var(--gold-light);
-    letter-spacing: 0.15em;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-    text-transform: uppercase;
-  }
-
-  .deity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-  }
-
-  .deity-card {
-    border: 1px solid rgba(201,168,76,0.15);
-    background: rgba(201,168,76,0.02);
-    border-radius: 3px;
-    padding: 12px 14px;
-    transition: all 0.25s;
-  }
-
-  .deity-card:hover {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.07);
-  }
-
-  .deity-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
-    color: var(--gold);
-    letter-spacing: 0.06em;
-    margin-bottom: 5px;
-  }
-
-  .deity-domain {
-    font-size: 0.75rem;
-    color: rgba(245,237,224,0.6);
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  /* Ref modal */
-  .ref-modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-  }
-
-  .ref-modal-overlay.open { display: flex; }
-
-  .ref-modal-box {
-    background: var(--smoke);
-    border: 1px solid rgba(201,168,76,0.4);
-    max-width: 520px;
-    width: 100%;
-    padding: 32px;
-    position: relative;
-    animation: fadeUp 0.3s ease;
-    border-radius: 3px;
-  }
-
-  .ref-modal-box h2 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold-light);
-    font-size: 1.2rem;
-    margin-bottom: 6px;
-  }
-
-  .ref-modal-box .ref-modal-cat {
-    font-size: 0.75rem;
-    color: var(--gold-dim);
-    font-style: italic;
-    margin-bottom: 16px;
-  }
-
-  .ref-modal-box .ref-modal-props {
-    color: rgba(245,237,224,0.82);
-    line-height: 1.75;
-    margin-bottom: 16px;
-    font-size: 0.95rem;
-  }
-
-  .ref-modal-box .ref-modal-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    font-size: 0.8rem;
-  }
-
-  .ref-modal-meta-item label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 3px;
-  }
-
-  .ref-modal-meta-item span {
-    color: rgba(245,237,224,0.75);
-  }
-
-  @media(max-width:600px) {
-    .candle-grid, .ref-grid, .deity-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  }
-
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--ink); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
-
-  footer {
-    text-align: center;
-    padding: 24px;
-    color: rgba(245,237,224,0.2);
-    font-size: 0.78rem;
-    font-style: italic;
-    border-top: 1px solid rgba(201,168,76,0.08);
-  }
-
-  @media(max-width:600px) {
-    .spread-grid { grid-template-columns: repeat(2, 1fr); }
-    .lib-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-    .modal-card-header { flex-direction: column; align-items: center; }
-    .tarot-card-inner { width: 110px; }
-    .card-img-wrap { width: 94px; height: 160px; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Veil — Tarot & Astrology</title>
+  <meta name="description" content="Tarot readings, astrology, birth charts, transits, sigils, and spiritual reference tools in an installable web app." />
+  <meta name="theme-color" content="#c9a84c" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="The Veil" />
+  <meta property="og:title" content="The Veil — Tarot & Astrology" />
+  <meta property="og:description" content="An installable tarot and astrology app with readings, birth charts, seasonal themes, sigils, and a spiritual reference library." />
+  <meta property="og:type" content="website" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "The Veil",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Any",
+    "description": "Tarot readings, astrology, birth charts, transits, sigils, and spiritual reference tools.",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header role="banner">
+    <div class="site-title">The Veil</div>
+    <div class="site-sub">Tarot · Astrology · Divination</div>
+    <div id="seasonBanner" class="season-banner" aria-live="polite"></div>
+  </header>
 
-<header>
-  <div class="site-title">The Veil</div>
-  <div class="site-sub">Tarot Â· Astrology Â· Divination</div>
-</header>
-
-<nav>
-  <button class="nav-btn active" onclick="showSection('draws', this)"><span class="nav-star">âœ¦ </span>Readings</button>
-  <button class="nav-btn" onclick="showSection('fan', this)"><span class="nav-star" style="display:none">âœ¦ </span>Fan Draw</button>
-  <button class="nav-btn" onclick="showSection('library', this)"><span class="nav-star" style="display:none">âœ¦ </span>Card Library</button>
-  <button class="nav-btn" onclick="showSection('astrology', this)"><span class="nav-star" style="display:none">âœ¦ </span>Astrology</button>
-  <button class="nav-btn" onclick="showSection('birthchart', this)"><span class="nav-star" style="display:none">âœ¦ </span>Birth Chart</button>
-  <button class="nav-btn" onclick="showSection('reference', this)"><span class="nav-star" style="display:none">âœ¦ </span>Reference</button>
-</nav>
-
-<!-- READINGS -->
-<section class="section visible" id="draws">
-  <div class="section-title">Choose Your Spread</div>
-  <div class="section-desc">Select a spread, then draw the cards</div>
-  <div class="spread-grid">
-    <div class="spread-card selected" onclick="selectSpread('single', this)">
-      <span class="spread-icon">ðŸŒ™</span>
-      <span class="spread-name">Daily Card</span>
-      <span class="spread-count">1 card Â· Daily guidance</span>
-    </div>
-    <div class="spread-card" onclick="selectSpread('three', this)">
-      <span class="spread-icon">âš–ï¸</span>
-      <span class="spread-name">Three Card</span>
-      <span class="spread-count">3 cards Â· Past Â· Present Â· Future</span>
-    </div>
-    <div class="spread-card" onclick="selectSpread('celtic', this)">
-      <span class="spread-icon">âœ™</span>
-      <span class="spread-name">Celtic Cross</span>
-      <span class="spread-count">10 cards Â· Full reading</span>
-    </div>
-    <div class="spread-card" onclick="selectSpread('horseshoe', this)">
-      <span class="spread-icon">ðŸŒŸ</span>
-      <span class="spread-name">Horseshoe</span>
-      <span class="spread-count">7 cards Â· Life overview</span>
-    </div>
-    <div class="spread-card" onclick="selectSpread('relationship', this)">
-      <span class="spread-icon">ðŸ”®</span>
-      <span class="spread-name">Relationship</span>
-      <span class="spread-count">6 cards Â· Partnership</span>
-    </div>
-    <div class="spread-card" onclick="selectSpread('yesno', this)">
-      <span class="spread-icon">âš¡</span>
-      <span class="spread-name">Yes / No</span>
-      <span class="spread-count">5 cards Â· Quick answer</span>
-    </div>
-  </div>
-  <div class="ornament">â€” âœ¦ â€”</div>
-  <button class="draw-btn" id="drawBtn" onclick="drawSpread()">âœ¦ Draw the Cards âœ¦</button>
-  <div class="cards-area" id="cardsArea"></div>
-  <div class="reading-panel" id="readingPanel" style="display:none">
-    <div class="reading-panel-title">âœ¦ The Reading</div>
-    <div class="reading-text" id="readingText"></div>
-  </div>
-</section>
-
-<!-- FAN DRAW -->
-<section class="section" id="fan">
-  <div class="section-title">The Fan Method</div>
-  <div class="section-desc">The deck is spread before you. Trust your intuition â€” touch the card that calls to you.</div>
-  <p class="fan-instruction" id="fanInstruction">The cards await your touch...</p>
-  <div class="fan-area">
-    <div class="fan-wrapper" id="fanWrapper"></div>
-  </div>
-  <div style="text-align:center;">
-    <button class="draw-btn" onclick="initFan()" style="margin-bottom:20px">âœ¦ Shuffle and Spread âœ¦</button>
-  </div>
-  <div class="cards-area" id="fanRevealArea"></div>
-  <div class="reading-panel" id="fanReadingPanel" style="display:none">
-    <div class="reading-panel-title">âœ¦ Your Card's Message</div>
-    <div class="reading-text" id="fanReadingText"></div>
-  </div>
-</section>
-
-<!-- LIBRARY -->
-<section class="section" id="library">
-  <div class="section-title">Card Library</div>
-  <div class="section-desc">Browse all 78 cards of the Rider-Waite-Smith deck</div>
-  <div class="library-controls">
-    <input class="lib-search" type="text" placeholder="Search cards..." id="libSearch" oninput="filterLibrary()">
-    <button class="lib-filter-btn active" onclick="setLibFilter('all', this)">All</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('major', this)">Major Arcana</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('minor', this)">Minor Arcana</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('wands', this)">Wands</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('cups', this)">Cups</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('swords', this)">Swords</button>
-    <button class="lib-filter-btn" onclick="setLibFilter('pentacles', this)">Pentacles</button>
-  </div>
-  <div class="lib-grid" id="libGrid">
-    <div style="text-align:center;color:var(--gold-dim);font-style:italic;padding:40px;grid-column:1/-1">
-      Loading the deck...
-    </div>
-  </div>
-</section>
-
-<!-- ASTROLOGY -->
-<section class="section" id="astrology">
-  <div class="section-title">Daily Astrology</div>
-  <div class="section-desc">Enter your birthday to discover your sign and today's cosmic guidance</div>
-  <div class="astro-form">
-    <div class="form-group">
-      <label>Date of Birth</label>
-      <input type="date" id="birthdayInput">
-    </div>
-    <button class="draw-btn" style="margin:0" onclick="loadHoroscope()">âœ¦ Read the Stars âœ¦</button>
-  </div>
-  <div id="astroResult" style="display:none">
-    <div class="zodiac-display">
-      <span class="zodiac-symbol" id="zodiacSymbol"></span>
-      <div class="zodiac-name" id="zodiacName"></div>
-      <div class="zodiac-dates" id="zodiacDates"></div>
-    </div>
-    <div class="horoscope-tabs">
-      <button class="nav-btn active" id="tabDaily" onclick="switchHoroTab('daily', this)">Daily</button>
-      <button class="nav-btn" id="tabWeekly" onclick="switchHoroTab('weekly', this)">Weekly</button>
-      <button class="nav-btn" id="tabMonthly" onclick="switchHoroTab('monthly', this)">Monthly</button>
-    </div>
-    <div class="horoscope-text" id="horoscopeText">
-      <div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>
-    </div>
-    <div class="reading-panel" id="astroAiPanel" style="display:none;margin-top:28px">
-      <div class="reading-panel-title">âœ¦ Your Cosmic Reading</div>
-      <div class="reading-text" id="astroAiText"></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- BIRTH CHART -->
-<section class="section" id="birthchart">
-  <div class="section-title">Birth Chart</div>
-  <div class="section-desc">Discover your full natal chart â€” the map of the sky at the moment you were born</div>
-
-  <div class="birth-chart-form">
-    <div class="form-group full-width">
-      <label>Date of Birth</label>
-      <input type="date" id="bcDate">
-    </div>
-    <div class="form-group">
-      <label>Time of Birth <span style="color:rgba(245,237,224,0.3);font-size:0.75em">(optional)</span></label>
-      <input type="time" id="bcTime" placeholder="HH:MM">
-    </div>
-    <div class="form-group">
-      <label>City of Birth</label>
-      <input type="text" id="bcCity" placeholder="e.g. St. Louis, MO">
-    </div>
-    <div class="form-group full-width" style="text-align:center">
-      <button class="draw-btn" style="margin:0" onclick="generateBirthChart()">âœ¦ Cast My Chart âœ¦</button>
-    </div>
+  <div class="top-utility" aria-label="Theme and app controls">
+    <label class="meta-copy" for="themeMode">Seasonal theme</label>
+    <select id="themeMode" class="pill-select" aria-label="Select seasonal theme mode">
+      <option value="auto">Auto</option>
+      <option value="imbolc">Imbolc</option>
+      <option value="ostara">Ostara</option>
+      <option value="beltane">Beltane</option>
+      <option value="litha">Litha</option>
+      <option value="lughnasadh">Lughnasadh</option>
+      <option value="mabon">Mabon</option>
+      <option value="samhain">Samhain</option>
+      <option value="yule">Yule</option>
+    </select>
+    <button id="installBtn" class="mini-btn hidden" type="button">Install App</button>
   </div>
 
-  <div id="bcResult" style="display:none">
-    <div class="time-note" id="bcTimeNote"></div>
+  <nav role="navigation" aria-label="Main navigation" id="mainNav">
+    <button class="nav-btn active" data-section="draws">Readings</button>
+    <button class="nav-btn" data-section="fan">Fan Draw</button>
+    <button class="nav-btn" data-section="library">Card Library</button>
+    <button class="nav-btn" data-section="astrology">Astrology</button>
+    <button class="nav-btn" data-section="birthchart">Birth Chart</button>
+    <button class="nav-btn" data-section="reference">Reference</button>
+    <button class="nav-btn" data-section="sigil">Sigil Forge</button>
+    <button class="nav-btn" data-section="favorites">Favorites</button>
+  </nav>
 
-    <div class="dominant-row" id="bcDominants"></div>
+  <main id="main-content">
+    <section class="section visible" id="draws" aria-labelledby="readings-title">
+      <h1 class="section-title" id="readings-title">Choose Your Spread</h1>
+      <p class="section-desc">Select a spread, focus your intention, then draw the cards.</p>
+      <div class="spread-grid" id="spreadGrid"></div>
+      <div class="ornament">— ✦ —</div>
+      <div class="form-grid" style="max-width:700px">
+        <div class="form-group" style="grid-column:1/-1">
+          <label for="intentionInput">Focus your intention</label>
+          <textarea id="intentionInput" placeholder="What question or situation guides this reading?"></textarea>
+        </div>
+      </div>
+      <div id="relationshipTools" class="relationship-tools hidden">
+        <div class="form-grid" style="max-width:700px">
+          <div class="form-group">
+            <label for="relationshipIdA">First Reading ID</label>
+            <input type="text" id="relationshipIdA" placeholder="e.g. VEIL-A1B2C3D4" />
+          </div>
+          <div class="form-group">
+            <label for="relationshipIdB">Second Reading ID</label>
+            <input type="text" id="relationshipIdB" placeholder="e.g. VEIL-E5F6G7H8" />
+          </div>
+        </div>
+        <p class="center meta-copy">Relationship draws can weave two saved readings into the interpretation when both IDs are found on this device.</p>
+      </div>
+      <div class="center"><button class="draw-btn" id="drawBtn" type="button">✦ Draw the Cards ✦</button></div>
+      <div class="cards-area" id="cardsArea"></div>
+      <div class="reading-panel hidden" id="readingPanel">
+        <div class="reading-panel-title">✦ The Reading</div>
+        <div class="reading-text" id="readingText"></div>
+      </div>
+      <div class="result-actions">
+        <button class="ghost-btn hidden" id="printReadingBtn" type="button">Print Reading</button>
+        <button class="ghost-btn hidden" id="shareReadingBtn" type="button">Share Reading Link</button>
+      </div>
+      <div id="historyPanel" class="reading-panel hidden">
+        <div class="reading-panel-title">✦ Saved Readings</div>
+        <div id="historyList"></div>
+      </div>
+    </section>
 
-    <div class="chart-tabs">
-      <button class="nav-btn active" id="bcTabChart" onclick="switchBcTab('chart', this)">Chart Wheel</button>
-      <button class="nav-btn" id="bcTabPlanets" onclick="switchBcTab('planets', this)">Planets</button>
-    </div>
+    <section class="section" id="fan" aria-labelledby="fan-title">
+      <h2 class="section-title" id="fan-title">The Fan Method</h2>
+      <p class="section-desc">Touch the card that calls to you.</p>
+      <p class="center meta-copy" id="fanInstruction">The deck awaits your touch.</p>
+      <div class="fan-wrapper" id="fanWrapper"></div>
+      <div class="center"><button class="draw-btn" id="fanShuffleBtn" type="button">✦ Shuffle and Spread ✦</button></div>
+      <div class="cards-area" id="fanRevealArea"></div>
+      <div class="reading-panel hidden" id="fanReadingPanel">
+        <div class="reading-panel-title">✦ Your Card's Message</div>
+        <div class="reading-text" id="fanReadingText"></div>
+      </div>
+      <div class="result-actions"><button class="ghost-btn hidden" id="printFanBtn" type="button">Print Result</button></div>
+    </section>
 
-    <div id="bcChartView">
-      <div class="chart-wheel-wrap" id="bcWheel"></div>
-    </div>
+    <section class="section" id="library" aria-labelledby="library-title">
+      <h2 class="section-title" id="library-title">Card Library</h2>
+      <p class="section-desc">Browse the deck and save favorites.</p>
+      <div class="library-controls">
+        <input class="lib-search" type="search" id="libSearch" placeholder="Search cards..." aria-label="Search tarot cards" />
+        <button class="lib-filter-btn active" data-lib-filter="all">All</button>
+        <button class="lib-filter-btn" data-lib-filter="major">Major Arcana</button>
+        <button class="lib-filter-btn" data-lib-filter="cups">Cups</button>
+        <button class="lib-filter-btn" data-lib-filter="swords">Swords</button>
+        <button class="lib-filter-btn" data-lib-filter="wands">Wands</button>
+        <button class="lib-filter-btn" data-lib-filter="pentacles">Pentacles</button>
+      </div>
+      <div class="result-actions"><button class="ghost-btn" id="printLibraryBtn" type="button">Print Library View</button></div>
+      <div class="lib-grid" id="libGrid"></div>
+    </section>
 
-    <div id="bcPlanetsView" style="display:none">
-      <table class="planet-table" id="bcPlanetTable"></table>
-    </div>
+    <section class="section" id="astrology" aria-labelledby="astrology-title">
+      <h2 class="section-title" id="astrology-title">Daily Astrology</h2>
+      <p class="section-desc">Get your sign, the current moon phase, and today's energy.</p>
+      <div class="energy-panel" id="todayEnergyPanel">
+        <div class="energy-title">✦ Today's Energy</div>
+        <div id="todayEnergyText" class="reading-text"></div>
+      </div>
+      <div class="moon-widget" aria-label="Current moon phase">
+        <div class="meta-copy" style="margin-bottom:10px;font-family:Cinzel,serif;letter-spacing:.2em;text-transform:uppercase">Current Moon Phase</div>
+        <div id="moonSymbol" style="font-size:3rem">🌑</div>
+        <div id="moonName" class="zodiac-name" style="font-size:1.1rem"></div>
+        <div id="moonDesc" class="zodiac-dates"></div>
+      </div>
+      <div class="form-grid" style="max-width:420px">
+        <div class="form-group" style="grid-column:1/-1">
+          <label for="birthdayInput">Date of Birth</label>
+          <input type="date" id="birthdayInput" />
+        </div>
+      </div>
+      <div class="center"><button class="draw-btn" id="loadHoroscopeBtn" type="button">✦ Read the Stars ✦</button></div>
+      <div id="astroResult" class="hidden">
+        <div class="zodiac-display">
+          <span class="zodiac-symbol" id="zodiacSymbol"></span>
+          <div class="zodiac-name" id="zodiacName"></div>
+          <div class="zodiac-dates" id="zodiacDates"></div>
+        </div>
+        <div class="horoscope-tabs">
+          <button class="tab-btn active" data-horo-tab="daily">Daily</button>
+          <button class="tab-btn" data-horo-tab="weekly">Weekly</button>
+          <button class="tab-btn" data-horo-tab="monthly">Monthly</button>
+        </div>
+        <div class="horoscope-text reading-panel" id="horoscopeText"></div>
+        <div class="result-actions"><button class="ghost-btn" id="printAstroBtn" type="button">Print Astrology Result</button></div>
+      </div>
+    </section>
 
-    <div class="reading-panel" id="bcAiPanel" style="display:none;margin-top:28px">
-      <div class="reading-panel-title">âœ¦ Your Natal Reading</div>
-      <div class="reading-text" id="bcAiText"></div>
-    </div>
-  </div>
-</section>
+    <section class="section" id="birthchart" aria-labelledby="birthchart-title">
+      <h2 class="section-title" id="birthchart-title">Birth Chart</h2>
+      <p class="section-desc">Cast your natal chart with today's transits overlaid in blue.</p>
+      <details class="astro-note">
+        <summary>What are transits?</summary>
+        <p>In astrology, a natal chart is the sky at birth. Transits are the current sky moving across that natal pattern. A transit is usually read by comparing a current planet to a natal planet or angle, then judging the aspect between them: conjunctions intensify, sextiles open cooperation, squares create friction, trines support flow, and oppositions reveal polarity that asks for integration.</p>
+        <p>The closer the aspect, the stronger the symbolism. Fast planets describe short moods and timing; slower planets describe longer chapters of pressure, growth, revision, or maturation.</p>
+      </details>
+      <div class="form-grid">
+        <div class="form-group" style="grid-column:1/-1">
+          <label for="bcDate">Date of Birth</label>
+          <input type="date" id="bcDate" />
+        </div>
+        <div class="form-group">
+          <label for="bcTime">Time of Birth</label>
+          <input type="time" id="bcTime" />
+        </div>
+        <div class="form-group">
+          <label for="bcCity">City of Birth</label>
+          <input type="text" id="bcCity" placeholder="e.g. St. Louis, MO" />
+        </div>
+      </div>
+      <div class="center"><button class="draw-btn" id="generateChartBtn" type="button">✦ Cast My Chart ✦</button></div>
+      <div id="bcError" class="center meta-copy" style="margin-top:12px;color:#ffb8b8"></div>
+      <div id="bcResult" class="hidden">
+        <p class="center meta-copy" id="bcTimeNote"></p>
+        <div class="dominant-row" id="bcDominants"></div>
+        <div class="chart-tabs">
+          <button class="tab-btn active" data-bc-tab="chart">Chart Wheel</button>
+          <button class="tab-btn" data-bc-tab="planets">Planets</button>
+        </div>
+        <div class="chart-legend" aria-label="Birth chart legend"><span class="legend-item"><span class="legend-dot natal"></span> Natal</span><span class="legend-item"><span class="legend-dot transit"></span> Today's Transits</span></div>
+        <div id="bcChartView"><div class="chart-wheel-wrap" id="bcWheel"></div></div>
+        <div id="bcPlanetsView" class="hidden"><table class="planet-table" id="bcPlanetTable"></table></div>
+        <div class="reading-panel" id="bcAiPanel">
+          <div class="reading-panel-title">✦ Your Natal Reading</div>
+          <div class="reading-text" id="bcAiText"></div>
+          <div class="reading-text" id="bcTransitText" style="margin-top:16px"></div>
+        </div>
+        <div class="result-actions"><button class="ghost-btn" id="printChartBtn" type="button">Print Birth Chart</button></div>
+      </div>
+    </section>
 
+    <section class="section" id="reference" aria-labelledby="reference-title">
+      <h2 class="section-title" id="reference-title">Reference Guide</h2>
+      <p class="section-desc">Cleaned, searchable reference notes for ritual work and study.</p>
+      <div class="ref-tabs">
+        <button class="ref-tab active" data-ref-tab="candles">🕯 Candles</button>
+        <button class="ref-tab" data-ref-tab="crystals">💎 Crystals</button>
+        <button class="ref-tab" data-ref-tab="herbs">🌿 Herbs</button>
+        <button class="ref-tab" data-ref-tab="oils">🧴 Oils</button>
+        <button class="ref-tab" data-ref-tab="deities">⚡ Deities</button>
+      </div>
+      <div class="library-controls"><input class="lib-search" id="refSearch" type="search" placeholder="Search this section..." aria-label="Search reference entries" /></div>
+      <div class="result-actions"><button class="ghost-btn" id="printReferenceBtn" type="button">Print Current Reference View</button></div>
+      <div id="refContent"></div>
+    </section>
 
-<!-- REFERENCE GUIDE -->
-<section class="section" id="reference">
-  <div class="section-title">Reference Guide</div>
-  <div class="section-desc">A complete spiritual reference drawn from the practitioner's compendium</div>
+    <section class="section" id="sigil" aria-labelledby="sigil-title">
+      <h2 class="section-title" id="sigil-title">Sigil Forge</h2>
+      <p class="section-desc">Transform your intention into a downloadable sigil.</p>
+      <div class="form-grid" style="max-width:600px">
+        <div class="form-group" style="grid-column:1/-1">
+          <label for="sigilInput">Your Intention</label>
+          <input type="text" id="sigilInput" maxlength="200" placeholder="e.g. I am protected and at peace" />
+        </div>
+        <div class="form-group">
+          <label for="sigilStyle">Sigil Style</label>
+          <select id="sigilStyle">
+            <option value="chaos">Chaos Magic</option>
+            <option value="geometric">Geometric</option>
+            <option value="rune">Runic</option>
+          </select>
+        </div>
+      </div>
+      <div class="center"><button class="draw-btn" id="forgeSigilBtn" type="button">✦ Forge the Sigil ✦</button></div>
+      <div id="sigilResult" class="hidden center" style="margin-top:24px">
+        <div class="meta-copy" style="margin-bottom:12px;font-family:Cinzel,serif;letter-spacing:.2em;text-transform:uppercase">Your Sigil</div>
+        <div id="sigilLetters" class="meta-copy" style="margin-bottom:16px"></div>
+        <canvas id="sigilCanvas" width="500" height="500" style="max-width:100%;background:#130d1e;border:1px solid rgba(201,168,76,.2)"></canvas>
+        <div class="result-actions">
+          <button class="ghost-btn" id="downloadSigilBtn" type="button">Download Sigil</button>
+          <button class="ghost-btn" id="printSigilBtn" type="button">Print Sigil</button>
+        </div>
+      </div>
+    </section>
 
-  <div class="ref-tabs">
-    <button class="ref-tab active" onclick="switchRefTab('candles', this)">ðŸ•¯ Candles</button>
-    <button class="ref-tab" onclick="switchRefTab('crystals', this)">ðŸ’Ž Crystals</button>
-    <button class="ref-tab" onclick="switchRefTab('herbs', this)">ðŸŒ¿ Herbs</button>
-    <button class="ref-tab" onclick="switchRefTab('oils', this)">ðŸ§´ Oils</button>
-    <button class="ref-tab" onclick="switchRefTab('deities', this)">âš¡ Deities</button>
-  </div>
+    <section class="section" id="favorites" aria-labelledby="favorites-title">
+      <h2 class="section-title" id="favorites-title">Favorites</h2>
+      <p class="section-desc">Your saved cards, oils, herbs, crystals, and deities live here.</p>
+      <div class="result-actions"><button class="ghost-btn" id="printFavoritesBtn" type="button">Print Favorites</button></div>
+      <div id="favoritesContent"></div>
+    </section>
+  </main>
 
-  <div class="ref-search-wrap">
-    <input class="lib-search" type="text" id="refSearch" placeholder="Search..." oninput="renderRefTab()">
-  </div>
-
-  <div id="refContent"></div>
-</section>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="cardModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">X</button>
-    <div class="modal-card-header">
-      <div class="modal-img-wrap" id="modalImg"><span>âœ¦</span></div>
-      <div class="modal-card-info">
-        <h2 id="modalName">â€”</h2>
-        <div id="modalBadges"></div>
-        <p id="modalDesc">â€”</p>
+  <div class="modal-overlay" id="cardModal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <div class="modal-box">
+      <button class="modal-close" type="button" data-close-modal="card">×</button>
+      <div class="modal-card-header">
+        <div class="modal-img-wrap" id="modalImg"><span class="card-no-img">✦</span></div>
+        <div>
+          <h3 id="modalName" class="section-title" style="text-align:left;margin:0 0 6px;font-size:1.2rem"></h3>
+          <div id="modalBadges" style="margin-bottom:12px"></div>
+          <p id="modalDesc" class="meta-copy"></p>
+        </div>
+      </div>
+      <div class="reading-text">
+        <p><strong>Upright:</strong> <span id="modalUpright"></span></p>
+        <p><strong>Reversed:</strong> <span id="modalReversed"></span></p>
       </div>
     </div>
-    <div class="modal-meanings">
-      <h3>Upright Meaning</h3>
-      <p id="modalUpright">â€”</p>
-      <h3>Reversed Meaning</h3>
-      <p id="modalReversed">â€”</p>
+  </div>
+
+  <div class="ref-modal-overlay" id="refModal" role="dialog" aria-modal="true" aria-labelledby="refModalTitle">
+    <div class="ref-modal-box">
+      <button class="modal-close" type="button" data-close-modal="ref">×</button>
+      <div id="refModalBody"></div>
     </div>
   </div>
-</div>
 
-<footer>
-  <div style="margin-bottom:16px">
-    The Veil Â· Tarot and Astrology Â· For entertainment and personal reflection only
-  </div>
-  <div style="margin-bottom:10px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold-dim)">
-    SUPPORT THE VEIL
-  </div>
-  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
-    <a href="https://cash.app/$toyz4me" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
-      âœ¦ CashApp
-    </a>
-    <a href="https://venmo.com/u/the_funko_deity" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
-      âœ¦ Venmo
-    </a>
-    <a href="https://www.paypal.me/thefunkodeity" target="_blank" rel="noopener" style="color:var(--gold-dim);text-decoration:none;font-size:0.82rem;border:1px solid rgba(201,168,76,0.25);padding:7px 16px;transition:all 0.25s" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)';this.style.borderColor='rgba(201,168,76,0.25)'">
-      âœ¦ PayPal
-    </a>
-  </div>
-</footer>
-
-<script>
-var TAROT_API = 'https://tarotapi.dev/api/v1';
-var AI_API = '/api/ai-reading';
-
-var allCards = [];
-var libFilter = 'all';
-var currentSpread = 'single';
-var horoCache = {};
-var currentZodiac = null;
-var currentHoroTab = 'daily';
-var fanDeck = [];
-
-var SPREAD_CONFIGS = {
-  single:       { n: 1,  positions: ['Your card for today'] },
-  three:        { n: 3,  positions: ['Past', 'Present', 'Future'] },
-  celtic:       { n: 10, positions: ['The Present','The Challenge','The Foundation','The Past','Possible Outcome','Near Future','Your Attitude','External Influences','Hopes and Fears','Final Outcome'] },
-  horseshoe:    { n: 7,  positions: ['Past Influences','Present Situation','Hidden Influences','Obstacles','External Influences','Best Course','Most Likely Outcome'] },
-  relationship: { n: 6,  positions: ['You','Your Partner','The Connection','Strengths','Challenges','Potential'] },
-  yesno:        { n: 5,  positions: ['The Situation','What Helps','What Hinders','Hidden Factor','Answer'] }
-};
-
-var ZODIAC_DATA = [
-  { name:'Capricorn',   symbol:'â™‘', dates:'Dec 22 - Jan 19' },
-  { name:'Aquarius',    symbol:'â™’', dates:'Jan 20 - Feb 18' },
-  { name:'Pisces',      symbol:'â™“', dates:'Feb 19 - Mar 20' },
-  { name:'Aries',       symbol:'â™ˆ', dates:'Mar 21 - Apr 19' },
-  { name:'Taurus',      symbol:'â™‰', dates:'Apr 20 - May 20' },
-  { name:'Gemini',      symbol:'â™Š', dates:'May 21 - Jun 20' },
-  { name:'Cancer',      symbol:'â™‹', dates:'Jun 21 - Jul 22' },
-  { name:'Leo',         symbol:'â™Œ', dates:'Jul 23 - Aug 22' },
-  { name:'Virgo',       symbol:'â™', dates:'Aug 23 - Sep 22' },
-  { name:'Libra',       symbol:'â™Ž', dates:'Sep 23 - Oct 22' },
-  { name:'Scorpio',     symbol:'â™', dates:'Oct 23 - Nov 21' },
-  { name:'Sagittarius', symbol:'â™', dates:'Nov 22 - Dec 21' }
-];
-
-function showSection(id, btn) {
-  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('visible'); });
-  document.querySelectorAll('nav .nav-btn').forEach(function(b) {
-    b.classList.remove('active');
-    var star = b.querySelector('.nav-star');
-    if (star) star.style.display = 'none';
-  });
-  document.getElementById(id).classList.add('visible');
-  if (btn) {
-    btn.classList.add('active');
-    var star = btn.querySelector('.nav-star');
-    if (star) star.style.display = 'inline';
-  }
-  if (id === 'library' && allCards.length === 0) loadLibrary();
-  if (id === 'fan') initFan();
-  if (id === 'reference') {
-    currentRefTab = 'candles';
-    document.querySelectorAll('.ref-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.ref-tab')[0].classList.add('active');
-    var rs = document.getElementById('refSearch');
-    if (rs) rs.value = '';
-    setTimeout(function() { renderRefTab(); }, 10);
-  }
-}
-
-function selectSpread(key, el) {
-  document.querySelectorAll('.spread-card').forEach(function(c) { c.classList.remove('selected'); });
-  el.classList.add('selected');
-  currentSpread = key;
-  document.getElementById('cardsArea').innerHTML = '';
-  document.getElementById('readingPanel').style.display = 'none';
-}
-
-async function fetchCards(n) {
-  var res = await fetch(TAROT_API + '/cards/random?n=' + n);
-  var data = await res.json();
-  return data.cards;
-}
-
-async function fetchAllCards() {
-  var res = await fetch(TAROT_API + '/cards');
-  var data = await res.json();
-  return data.cards;
-}
-
-function getCardImage(card) {
-  var name = card.name_short || card.name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
-  return 'https://sacred-texts.com/tarot/xr/' + name + '.jpg';
-}
-
-function isReversed() {
-  return Math.random() < 0.3;
-}
-
-function cardHtml(card, position, reversed) {
-  var imgSrc = getCardImage(card);
-  var meaning = reversed ? (card.meaning_rev || '') : (card.meaning_up || '');
-  var label = reversed ? 'Reversed' : 'Upright';
-  var cardData = JSON.stringify(card).replace(/"/g, '&quot;');
-  return '<div class="tarot-card-wrap" data-card="' + cardData + '" data-reversed="' + reversed + '">'
-    + (position ? '<div class="position-label">' + position + '</div>' : '')
-    + '<div class="tarot-card-inner' + (reversed ? ' reversed' : '') + '" onclick="openCardModal(this.parentNode)">'
-    + '<div class="card-img-wrap">'
-    + '<img src="' + imgSrc + '" alt="' + card.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
-    + '<div class="card-no-img" style="display:none">&#10022;</div>'
-    + '</div>'
-    + '<div class="card-name-tag">' + card.name + (reversed ? '<span class="reversed-tag">REVERSED</span>' : '') + '</div>'
-    + '</div>'
-    + '<div class="card-tooltip"><span style="font-style:normal;color:var(--gold);font-size:0.7rem;letter-spacing:0.1em;font-family:Cinzel,serif">' + label + '</span><br>' + meaning + '</div>'
-    + '<div class="card-meaning"></div>'
-    + '</div>';
-}
-
-async function drawSpread() {
-  var btn = document.getElementById('drawBtn');
-  btn.disabled = true;
-  var area = document.getElementById('cardsArea');
-  area.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;text-align:center;width:100%;padding:20px">Shuffling the deck...</div>';
-  document.getElementById('readingPanel').style.display = 'none';
-  var cfg = SPREAD_CONFIGS[currentSpread];
-  try {
-    var cards = await fetchCards(cfg.n);
-    var draws = cards.map(function(c) { return { card: c, reversed: isReversed() }; });
-    area.innerHTML = draws.map(function(d, i) {
-      return cardHtml(d.card, cfg.positions[i] || '', d.reversed);
-    }).join('');
-    document.getElementById('readingPanel').style.display = 'block';
-    document.getElementById('readingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
-    var aiText = await getAIReading(currentSpread, draws, cfg.positions);
-    document.getElementById('readingText').innerHTML = aiText;
-  } catch(e) {
-    area.innerHTML = '<div style="color:var(--crimson);text-align:center;padding:20px">Unable to fetch cards. Please try again.</div>';
-  }
-  btn.disabled = false;
-}
-
-async function initFan() {
-  var wrapper = document.getElementById('fanWrapper');
-  document.getElementById('fanRevealArea').innerHTML = '';
-  document.getElementById('fanReadingPanel').style.display = 'none';
-  document.getElementById('fanInstruction').textContent = 'Hover over the cards and feel for the one calling to you...';
-  wrapper.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;padding:20px">Preparing the deck...</div>';
-  try {
-    if (allCards.length === 0) allCards = await fetchAllCards();
-    fanDeck = allCards.slice().sort(function() { return Math.random() - 0.5; });
-    var total = Math.min(fanDeck.length, 40);
-    var spread = 340;
-    var startAngle = -spread / 2;
-    var step = spread / (total - 1);
-    wrapper.innerHTML = '';
-    for (var i = 0; i < total; i++) {
-      (function(idx) {
-        var angle = startAngle + step * idx;
-        var card = document.createElement('div');
-        card.className = 'fan-card';
-        card.style.transform = 'rotate(' + angle + 'deg) translateY(-20px)';
-        card.style.left = 'calc(50% - 35px + ' + (idx * (660/total) - 330) + 'px)';
-        card.style.zIndex = idx;
-        card.dataset.index = idx;
-        card.dataset.angle = angle;
-        card.onclick = function() { fanPick(idx); };
-        card.onmouseenter = function() {
-          card.style.transform = 'rotate(' + angle + 'deg) translateY(-45px)';
-        };
-        card.onmouseleave = function() {
-          if (!card.classList.contains('chosen')) {
-            card.style.transform = 'rotate(' + angle + 'deg) translateY(-20px)';
-          }
-        };
-        wrapper.appendChild(card);
-      })(i);
-    }
-  } catch(e) {
-    wrapper.innerHTML = '<div style="color:var(--crimson)">Could not load deck.</div>';
-  }
-}
-
-async function fanPick(index) {
-  var wrapper = document.getElementById('fanWrapper');
-  var cards = wrapper.querySelectorAll('.fan-card');
-  cards.forEach(function(c) { c.onclick = null; c.onmouseenter = null; c.onmouseleave = null; });
-  cards[index].classList.add('chosen');
-  document.getElementById('fanInstruction').textContent = 'The cards have chosen...';
-  var chosenCard = fanDeck[index];
-  var rev = isReversed();
-  var area = document.getElementById('fanRevealArea');
-  area.innerHTML = cardHtml(chosenCard, '', rev);
-  document.getElementById('fanReadingPanel').style.display = 'block';
-  document.getElementById('fanReadingText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
-  var draws = [{ card: chosenCard, reversed: rev }];
-  var aiText = await getAIReading('fan', draws, ['Your Chosen Card']);
-  document.getElementById('fanReadingText').innerHTML = aiText;
-}
-
-async function loadLibrary() {
-  try {
-    if (allCards.length === 0) allCards = await fetchAllCards();
-    renderLibrary();
-  } catch(e) {
-    document.getElementById('libGrid').innerHTML = '<div style="color:var(--crimson);text-align:center;grid-column:1/-1">Could not load library.</div>';
-  }
-}
-
-function setLibFilter(f, el) {
-  libFilter = f;
-  document.querySelectorAll('.lib-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  el.classList.add('active');
-  renderLibrary();
-}
-
-function filterLibrary() { renderLibrary(); }
-
-function renderLibrary() {
-  var q = document.getElementById('libSearch').value.toLowerCase();
-  var cards = allCards.slice();
-  if (libFilter === 'major') cards = cards.filter(function(c) { return c.type === 'major'; });
-  else if (libFilter === 'minor') cards = cards.filter(function(c) { return c.type === 'minor'; });
-  else if (['wands','cups','swords','pentacles'].indexOf(libFilter) > -1)
-    cards = cards.filter(function(c) { return c.suit === libFilter; });
-  if (q) cards = cards.filter(function(c) { return c.name.toLowerCase().indexOf(q) > -1; });
-  var grid = document.getElementById('libGrid');
-  if (cards.length === 0) {
-    grid.innerHTML = '<div style="color:var(--gold-dim);font-style:italic;text-align:center;grid-column:1/-1;padding:40px">No cards found.</div>';
-    return;
-  }
-  grid.innerHTML = cards.map(function(c) {
-    var imgSrc = getCardImage(c);
-    var cardData = JSON.stringify(c).replace(/"/g, '&quot;');
-    return '<div class="lib-card" onclick="openCardModal(this)" data-card="' + cardData + '" data-reversed="false">'
-      + '<div class="lc-img"><img src="' + imgSrc + '" alt="' + c.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><span style="display:none">âœ¦</span></div>'
-      + '<div class="lc-name">' + c.name + '</div>'
-      + '<div class="lc-suit">' + (c.suit ? c.suit.charAt(0).toUpperCase()+c.suit.slice(1) : c.type === 'major' ? 'Major Arcana' : '') + '</div>'
-      + '</div>';
-  }).join('');
-}
-
-function openCardModal(el) {
-  var card = JSON.parse(el.dataset.card.replace(/&quot;/g, '"'));
-  var reversed = el.dataset.reversed === 'true';
-  var imgSrc = getCardImage(card);
-  document.getElementById('modalImg').innerHTML = '<img src="' + imgSrc + '" alt="' + card.name + '" onerror="this.outerHTML=\'<span>âœ¦</span>\'">';
-  document.getElementById('modalName').textContent = card.name + (reversed ? ' (Reversed)' : '');
-  var suit = card.suit ? card.suit.charAt(0).toUpperCase()+card.suit.slice(1) : '';
-  var arcana = card.type === 'major' ? 'Major Arcana' : 'Minor Arcana';
-  document.getElementById('modalBadges').innerHTML = '<span class="badge">' + arcana + '</span>' + (suit ? '<span class="badge">' + suit + '</span>' : '');
-  document.getElementById('modalDesc').textContent = card.desc || 'A card of the Rider-Waite-Smith deck.';
-  document.getElementById('modalUpright').textContent = card.meaning_up || 'â€”';
-  document.getElementById('modalReversed').textContent = card.meaning_rev || 'â€”';
-  document.getElementById('cardModal').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('cardModal').classList.remove('open');
-}
-
-document.getElementById('refModal').addEventListener('click', function(e) {
-  if (e.target === document.getElementById('refModal')) closeRefModal();
-});
-document.getElementById('cardModal').addEventListener('click', function(e) {
-  if (e.target === document.getElementById('cardModal')) closeModal();
-});
-
-function getZodiacSign(month, day) {
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
-  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'Pisces';
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
-  return 'Sagittarius';
-}
-
-async function loadHoroscope() {
-  var val = document.getElementById('birthdayInput').value;
-  if (!val) { alert('Please enter your birthday first.'); return; }
-  var d = new Date(val + 'T00:00:00');
-  var m = d.getMonth() + 1;
-  var day = d.getDate();
-  var signName = getZodiacSign(m, day);
-  currentZodiac = ZODIAC_DATA.find(function(z) { return z.name === signName; });
-  document.getElementById('astroResult').style.display = 'block';
-  document.getElementById('zodiacSymbol').textContent = currentZodiac.symbol;
-  document.getElementById('zodiacName').textContent = currentZodiac.name;
-  document.getElementById('zodiacDates').textContent = currentZodiac.dates;
-  currentHoroTab = 'daily';
-  document.querySelectorAll('.horoscope-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-  document.getElementById('tabDaily').classList.add('active');
-  await fetchAndShowHoroscope('daily');
-}
-
-async function switchHoroTab(tab, btn) {
-  currentHoroTab = tab;
-  document.querySelectorAll('.horoscope-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  await fetchAndShowHoroscope(tab);
-}
-
-async function fetchAndShowHoroscope(period) {
-  if (!currentZodiac) return;
-  var key = currentZodiac.name + '_' + period;
-  var el = document.getElementById('horoscopeText');
-  el.innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
-  document.getElementById('astroAiPanel').style.display = 'none';
-  var horoText = '';
-  if (horoCache[key]) {
-    horoText = horoCache[key];
-  } else {
-    try {
-      var res = await fetch('https://freehoroscopeapi.com/api/v1/get-horoscope/' + period + '?sign=' + currentZodiac.name.toLowerCase());
-      var data = await res.json();
-      horoText = (data && data.data && data.data.horoscope) ? data.data.horoscope : '';
-      if (!horoText) throw new Error('empty');
-      horoCache[key] = horoText;
-    } catch(e) {
-      horoText = generateFallbackHoroscope(currentZodiac.name, period);
-      horoCache[key] = horoText;
-    }
-  }
-  el.innerHTML = '<p>' + horoText + '</p>';
-  if (period === 'daily') {
-    document.getElementById('astroAiPanel').style.display = 'block';
-    document.getElementById('astroAiText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
-    var aiText = await getAstroAIReading(currentZodiac, horoText);
-    document.getElementById('astroAiText').innerHTML = aiText;
-  }
-}
-
-function generateFallbackHoroscope(sign, period) {
-  var fallbacks = {
-    daily: 'The cosmic energies surrounding ' + sign + ' today invite reflection and intentional action. Pay attention to subtle signs and trust your inner guidance as you navigate the day ahead.',
-    weekly: 'This week brings opportunities for growth and connection for ' + sign + '. The planetary alignments favor thoughtful communication and creative endeavors.',
-    monthly: 'The month ahead holds significant potential for ' + sign + '. Embrace change as a catalyst for transformation and remain open to unexpected blessings.'
-  };
-  return fallbacks[period] || fallbacks.daily;
-}
-
-async function getAIReading(spreadType, draws, positions) {
-  var spreadNames = {
-    single: 'Daily Card', three: 'Three-Card Spread (Past/Present/Future)',
-    celtic: 'Celtic Cross', horseshoe: 'Horseshoe Spread',
-    relationship: 'Relationship Spread', yesno: 'Yes/No Oracle', fan: 'Fan Draw'
-  };
-  var cardList = draws.map(function(d, i) {
-    var pos = positions[i] || ('Card ' + (i+1));
-    var orient = d.reversed ? 'Reversed' : 'Upright';
-    var meaning = d.reversed ? d.card.meaning_rev : d.card.meaning_up;
-    return '- ' + pos + ': ' + d.card.name + ' (' + orient + ') â€” ' + meaning;
-  }).join('\n');
-
-  var spreadInstructions = {
-    single: 'What does this card mean for the querent today? Give one direct, practical insight.',
-    three: 'Briefly describe what each position (past/present/future) reveals. One sentence per card.',
-    celtic: 'Name the 3 most significant cards and what they reveal about the situation. Be specific.',
-    horseshoe: 'What is the overall message of this spread? What action should the querent take?',
-    relationship: 'What does this spread reveal about the relationship dynamic? Be direct.',
-    yesno: 'Start with Yes or No. Then give one sentence of explanation based on the cards.',
-    fan: 'What message does this card have for the querent right now? Be direct and specific.'
-  };
-  var instruction = spreadInstructions[spreadType] || spreadInstructions.single;
-  var prompt = 'You are a tarot reader. Give a direct, no-fluff reading. No poetic filler, no vague spiritual language.\n'
-    + 'Cards drawn (' + (spreadNames[spreadType] || spreadType) + '):\n'
-    + cardList + '\n\n'
-    + instruction + '\n'
-    + 'Speak in second person. Use <p> tags only. Max 60 words. Be specific to the actual cards drawn.';
-
-  try {
-    var res = await fetch(AI_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    var data = await res.json();
-    var text = data && data.content && data.content[0] ? data.content[0].text : '';
-    return text.trim() || '<p>The cards speak in silence today.</p>';
-  } catch(e) {
-    return '<p>The reading could not be completed. Please try again.</p>';
-  }
-}
-
-async function getAstroAIReading(zodiac, horoText) {
-  var today = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  var prompt = 'You are an astrologer. Today is ' + today + '.\n'
-    + zodiac.name + ' horoscope: "' + horoText + '"\n\n'
-    + 'Give 2 specific, practical sentences about what a ' + zodiac.name + ' should focus on today. '
-    + 'No generic affirmations. No filler. Second person. <p> tags only. Max 50 words.';
-
-  try {
-    var res = await fetch(AI_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    var data = await res.json();
-    var text = data && data.content && data.content[0] ? data.content[0].text : '';
-    return text.trim() || '<p>The stars are contemplating.</p>';
-  } catch(e) {
-    return '<p>The cosmic reading could not be completed.</p>';
-  }
-}
-
-
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   BIRTH CHART
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-
-var PLANET_SYMBOLS = {
-  Sun: 'â˜‰', Moon: 'â˜½', Mercury: 'â˜¿', Venus: 'â™€', Mars: 'â™‚',
-  Jupiter: 'â™ƒ', Saturn: 'â™„', Uranus: 'â™…', Neptune: 'â™†', Pluto: 'â™‡',
-  'Rising': 'â†‘'
-};
-
-var ZODIAC_SYMBOLS_LIST = ['â™ˆ','â™‰','â™Š','â™‹','â™Œ','â™','â™Ž','â™','â™','â™‘','â™’','â™“'];
-var ZODIAC_NAMES_LIST = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-var ZODIAC_ELEMENTS = ['Fire','Earth','Air','Water','Fire','Earth','Air','Water','Fire','Earth','Air','Water'];
-var ZODIAC_MODALITIES = ['Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable','Cardinal','Fixed','Mutable'];
-
-var bcData = null;
-var currentBcTab = 'chart';
-
-function switchBcTab(tab, btn) {
-  currentBcTab = tab;
-  document.querySelectorAll('.chart-tabs .nav-btn').forEach(function(b) { b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  document.getElementById('bcChartView').style.display = tab === 'chart' ? 'block' : 'none';
-  document.getElementById('bcPlanetsView').style.display = tab === 'planets' ? 'block' : 'none';
-}
-
-async function generateBirthChart() {
-  var dateVal = document.getElementById('bcDate').value;
-  var timeVal = document.getElementById('bcTime').value;
-  var cityVal = document.getElementById('bcCity').value.trim();
-
-  if (!dateVal) { alert('Please enter your date of birth.'); return; }
-  if (!cityVal) { alert('Please enter your city of birth.'); return; }
-
-  var btn = document.querySelector('#birthchart .draw-btn');
-  btn.disabled = true;
-  btn.textContent = 'Casting...';
-
-  try {
-    // Geocode the birth city using existing proxy
-    var geoRes = await fetch('/api/geocode?address=' + encodeURIComponent(cityVal));
-    var geoData = await geoRes.json();
-    if (!geoData.results || geoData.results.length === 0) {
-      alert('Could not find that city. Please try a more specific location.');
-      btn.disabled = false; btn.textContent = 'âœ¦ Cast My Chart âœ¦';
-      return;
-    }
-    var loc = geoData.results[0].geometry.location;
-    var lat = loc.lat;
-    var lng = loc.lng;
-
-    // Parse birth date/time
-    var d = new Date(dateVal + 'T00:00:00');
-    var year = d.getFullYear();
-    var month = d.getMonth() + 1;
-    var day = d.getDate();
-    var hour = 12, minute = 0;
-    var hasTime = false;
-    if (timeVal) {
-      var tp = timeVal.split(':');
-      hour = parseInt(tp[0]); minute = parseInt(tp[1]);
-      hasTime = true;
-    }
-
-    // Calculate Julian Day Number
-    var jd = calcJulianDay(year, month, day, hour, minute, lng);
-
-    // Calculate planetary positions
-    var planets = calcPlanets(jd, lat, lng, hasTime);
-
-    bcData = { planets: planets, hasTime: hasTime, city: geoData.results[0].formatted_address };
-
-    renderBirthChart(bcData);
-  } catch(e) {
-    alert('Could not generate chart. Please try again.');
-    console.error(e);
-  }
-
-  btn.disabled = false; btn.textContent = 'âœ¦ Cast My Chart âœ¦';
-}
-
-function calcJulianDay(year, month, day, hour, minute, lng) {
-  // Standard Julian Day calculation
-  var timeFrac = (hour + minute / 60.0) / 24.0;
-  if (month <= 2) { year -= 1; month += 12; }
-  var A = Math.floor(year / 100);
-  var B = 2 - A + Math.floor(A / 4);
-  var jd = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + timeFrac + B - 1524.5;
-  // Adjust for local time (rough UT conversion)
-  jd -= lng / 360.0;
-  return jd;
-}
-
-function calcPlanets(jd, lat, lng, hasTime) {
-  // T = Julian centuries from J2000.0
-  var T = (jd - 2451545.0) / 36525.0;
-
-  var planets = [];
-
-  // Sun
-  var sunLon = calcSunLongitude(T);
-  planets.push({ name: 'Sun', lon: sunLon, sign: lonToSign(sunLon), deg: lonToDeg(sunLon) });
-
-  // Moon
-  var moonLon = calcMoonLongitude(T);
-  planets.push({ name: 'Moon', lon: moonLon, sign: lonToSign(moonLon), deg: lonToDeg(moonLon) });
-
-  // Mercury
-  var mercLon = calcMercuryLongitude(T);
-  planets.push({ name: 'Mercury', lon: mercLon, sign: lonToSign(mercLon), deg: lonToDeg(mercLon) });
-
-  // Venus
-  var venusLon = calcVenusLongitude(T);
-  planets.push({ name: 'Venus', lon: venusLon, sign: lonToSign(venusLon), deg: lonToDeg(venusLon) });
-
-  // Mars
-  var marsLon = calcMarsLongitude(T);
-  planets.push({ name: 'Mars', lon: marsLon, sign: lonToSign(marsLon), deg: lonToDeg(marsLon) });
-
-  // Jupiter
-  var jupLon = calcJupiterLongitude(T);
-  planets.push({ name: 'Jupiter', lon: jupLon, sign: lonToSign(jupLon), deg: lonToDeg(jupLon) });
-
-  // Saturn
-  var satLon = calcSaturnLongitude(T);
-  planets.push({ name: 'Saturn', lon: satLon, sign: lonToSign(satLon), deg: lonToDeg(satLon) });
-
-  // Uranus
-  var uraLon = calcUranusLongitude(T);
-  planets.push({ name: 'Uranus', lon: uraLon, sign: lonToSign(uraLon), deg: lonToDeg(uraLon) });
-
-  // Neptune
-  var nepLon = calcNeptuneLongitude(T);
-  planets.push({ name: 'Neptune', lon: nepLon, sign: lonToSign(nepLon), deg: lonToDeg(nepLon) });
-
-  // Pluto
-  var pluLon = calcPlutoLongitude(T);
-  planets.push({ name: 'Pluto', lon: pluLon, sign: lonToSign(pluLon), deg: lonToDeg(pluLon) });
-
-  // Rising sign (Ascendant) - only if birth time provided
-  if (hasTime) {
-    var asc = calcAscendant(jd, lat, lng);
-    planets.push({ name: 'Rising', lon: asc, sign: lonToSign(asc), deg: lonToDeg(asc), isAsc: true });
-  }
-
-  return planets;
-}
-
-function normalizeAngle(a) {
-  a = a % 360;
-  if (a < 0) a += 360;
-  return a;
-}
-
-function lonToSign(lon) {
-  return ZODIAC_NAMES_LIST[Math.floor(lon / 30) % 12];
-}
-
-function lonToDeg(lon) {
-  return (lon % 30).toFixed(1);
-}
-
-function calcSunLongitude(T) {
-  var L0 = 280.46646 + 36000.76983 * T;
-  var M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
-  var Mrad = M * Math.PI / 180;
-  var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mrad)
-        + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
-        + 0.000289 * Math.sin(3 * Mrad);
-  return normalizeAngle(L0 + C);
-}
-
-function calcMoonLongitude(T) {
-  var L = 218.3165 + 481267.8813 * T;
-  var M = 134.9634 + 477198.8676 * T;
-  var F = 93.2721 + 483202.0175 * T;
-  var D = 297.8502 + 445267.1115 * T;
-  var Mrad = M * Math.PI / 180;
-  var Drad = D * Math.PI / 180;
-  var Frad = F * Math.PI / 180;
-  var lon = L + 6.289 * Math.sin(Mrad) - 1.274 * Math.sin(2*Drad - Mrad)
-          + 0.658 * Math.sin(2*Drad) - 0.186 * Math.sin(M * Math.PI / 180)
-          - 0.059 * Math.sin(2*Drad - 2*Mrad) - 0.057 * Math.sin(2*Drad - M*Math.PI/180 - Mrad)
-          + 0.053 * Math.sin(2*Drad + Mrad) + 0.046 * Math.sin(2*Drad - M*Math.PI/180)
-          + 0.041 * Math.sin(Mrad - M*Math.PI/180);
-  return normalizeAngle(lon);
-}
-
-function calcMercuryLongitude(T) {
-  var L = 252.2509 + 149472.6746 * T;
-  var M = 168.6562 + 149472.5153 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 23.4400 * Math.sin(Mrad) + 2.9818 * Math.sin(2*Mrad));
-}
-
-function calcVenusLongitude(T) {
-  var L = 181.9798 + 58517.8156 * T;
-  var M = 212.4100 + 58517.8036 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 0.7758 * Math.sin(Mrad) + 0.0033 * Math.sin(2*Mrad));
-}
-
-function calcMarsLongitude(T) {
-  var L = 355.4330 + 19140.2993 * T;
-  var M = 319.5294 + 19139.8584 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 10.6912 * Math.sin(Mrad) + 0.6228 * Math.sin(2*Mrad));
-}
-
-function calcJupiterLongitude(T) {
-  var L = 34.3515 + 3034.9057 * T;
-  var M = 20.9202 + 3034.7684 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 5.5549 * Math.sin(Mrad) + 0.1683 * Math.sin(2*Mrad));
-}
-
-function calcSaturnLongitude(T) {
-  var L = 50.0774 + 1222.1138 * T;
-  var M = 317.9065 + 1221.5515 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 6.3585 * Math.sin(Mrad) - 0.2204 * Math.sin(2*Mrad));
-}
-
-function calcUranusLongitude(T) {
-  var L = 314.0550 + 428.4680 * T;
-  var M = 142.5905 + 428.3229 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 5.3042 * Math.sin(Mrad) + 0.1534 * Math.sin(2*Mrad));
-}
-
-function calcNeptuneLongitude(T) {
-  var L = 304.3486 + 218.4600 * T;
-  var M = 267.7649 + 218.3449 * T;
-  var Mrad = M * Math.PI / 180;
-  return normalizeAngle(L + 1.0169 * Math.sin(Mrad));
-}
-
-function calcPlutoLongitude(T) {
-  // Simplified Pluto position
-  var L = 238.9508 + 144.9600 * T;
-  return normalizeAngle(L);
-}
-
-function calcAscendant(jd, lat, lng) {
-  // RAMC (Right Ascension of Midheaven)
-  var T = (jd - 2451545.0) / 36525.0;
-  var theta0 = 280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T;
-  var RAMC = normalizeAngle(theta0 + lng);
-  var e = 23.439291 - 0.013004 * T; // obliquity
-  var eRad = e * Math.PI / 180;
-  var latRad = lat * Math.PI / 180;
-  var ramcRad = RAMC * Math.PI / 180;
-  var asc = Math.atan2(Math.cos(ramcRad), -(Math.sin(ramcRad) * Math.cos(eRad) + Math.tan(latRad) * Math.sin(eRad)));
-  var ascDeg = normalizeAngle(asc * 180 / Math.PI);
-  return ascDeg;
-}
-
-function renderBirthChart(data) {
-  document.getElementById('bcResult').style.display = 'block';
-
-  // Time note
-  var note = data.hasTime
-    ? 'Chart cast for ' + data.city + ' with birth time â€” Rising sign included.'
-    : 'Chart cast for ' + data.city + '. Birth time not provided â€” Rising sign and houses omitted.';
-  document.getElementById('bcTimeNote').textContent = note;
-
-  // Dominant element and modality
-  var elements = { Fire: 0, Earth: 0, Air: 0, Water: 0 };
-  var modalities = { Cardinal: 0, Fixed: 0, Mutable: 0 };
-  data.planets.forEach(function(p) {
-    if (p.isAsc) return;
-    var idx = ZODIAC_NAMES_LIST.indexOf(p.sign);
-    if (idx > -1) {
-      elements[ZODIAC_ELEMENTS[idx]]++;
-      modalities[ZODIAC_MODALITIES[idx]]++;
-    }
-  });
-  var domElement = Object.keys(elements).reduce(function(a, b) { return elements[a] >= elements[b] ? a : b; });
-  var domModality = Object.keys(modalities).reduce(function(a, b) { return modalities[a] >= modalities[b] ? a : b; });
-  var sunPlanet = data.planets.find(function(p) { return p.name === 'Sun'; });
-  var moonPlanet = data.planets.find(function(p) { return p.name === 'Moon'; });
-  var risingPlanet = data.planets.find(function(p) { return p.name === 'Rising'; });
-
-  var dominantHtml = '<div class="dominant-pill">Sun: ' + (sunPlanet ? sunPlanet.sign : '?') + '</div>'
-    + '<div class="dominant-pill">Moon: ' + (moonPlanet ? moonPlanet.sign : '?') + '</div>'
-    + (risingPlanet ? '<div class="dominant-pill">Rising: ' + risingPlanet.sign + '</div>' : '')
-    + '<div class="dominant-pill">Element: ' + domElement + '</div>'
-    + '<div class="dominant-pill">Mode: ' + domModality + '</div>';
-  document.getElementById('bcDominants').innerHTML = dominantHtml;
-
-  // Draw SVG wheel
-  drawChartWheel(data.planets);
-
-  // Planet table
-  var tableHtml = '<tr><th>Planet</th><th>Sign</th><th>Degree</th></tr>';
-  data.planets.forEach(function(p) {
-    var sym = PLANET_SYMBOLS[p.name] || '';
-    var signIdx = ZODIAC_NAMES_LIST.indexOf(p.sign);
-    var signSym = signIdx > -1 ? ZODIAC_SYMBOLS_LIST[signIdx] : '';
-    tableHtml += '<tr><td><span class="planet-symbol">' + sym + '</span>' + p.name + '</td>'
-      + '<td>' + signSym + ' ' + p.sign + '</td>'
-      + '<td>' + p.deg + '</td></tr>';
-  });
-  document.getElementById('bcPlanetTable').innerHTML = tableHtml;
-
-  // AI reading
-  document.getElementById('bcAiPanel').style.display = 'block';
-  document.getElementById('bcAiText').innerHTML = '<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>';
-  getBirthChartAIReading(data).then(function(text) {
-    document.getElementById('bcAiText').innerHTML = text;
-  });
-}
-
-function drawChartWheel(planets) {
-  var size = 480;
-  var cx = size / 2, cy = size / 2;
-  var outerR = 220, zodiacR = 200, innerR = 160, coreR = 80;
-
-  var svg = '<svg viewBox="0 0 ' + size + ' ' + size + '" xmlns="http://www.w3.org/2000/svg">';
-
-  // Background
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + outerR + '" fill="#0d0a12" stroke="rgba(201,168,76,0.4)" stroke-width="1.5"/>';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + zodiacR + '" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + innerR + '" fill="#130d1e" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + coreR + '" fill="#0a0612" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>';
-
-  // Zodiac signs (12 segments)
-  var segColors = ['rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)',
-    'rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)',
-    'rgba(220,80,60,0.15)','rgba(80,160,80,0.1)','rgba(120,180,220,0.1)','rgba(60,120,200,0.12)'];
-
-  for (var i = 0; i < 12; i++) {
-    var startAngle = (i * 30 - 90) * Math.PI / 180;
-    var endAngle = ((i + 1) * 30 - 90) * Math.PI / 180;
-    var x1 = cx + zodiacR * Math.cos(startAngle);
-    var y1 = cy + zodiacR * Math.sin(startAngle);
-    var x2 = cx + outerR * Math.cos(startAngle);
-    var y2 = cy + outerR * Math.sin(startAngle);
-    // Segment fill
-    var px1 = cx + zodiacR * Math.cos(startAngle);
-    var py1 = cy + zodiacR * Math.sin(startAngle);
-    var px2 = cx + outerR * Math.cos(startAngle);
-    var py2 = cy + outerR * Math.sin(startAngle);
-    var px3 = cx + outerR * Math.cos(endAngle);
-    var py3 = cy + outerR * Math.sin(endAngle);
-    var px4 = cx + zodiacR * Math.cos(endAngle);
-    var py4 = cy + zodiacR * Math.sin(endAngle);
-    svg += '<path d="M' + px1 + ',' + py1 + ' L' + px2 + ',' + py2 + ' A' + outerR + ',' + outerR + ' 0 0,1 ' + px3 + ',' + py3 + ' L' + px4 + ',' + py4 + ' A' + zodiacR + ',' + zodiacR + ' 0 0,0 ' + px1 + ',' + py1 + 'Z" fill="' + segColors[i] + '"/>';
-    // Divider line
-    svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>';
-    // Sign symbol
-    var midAngle = ((i * 30 + 15) - 90) * Math.PI / 180;
-    var symR = (zodiacR + outerR) / 2;
-    var sx = cx + symR * Math.cos(midAngle);
-    var sy = cy + symR * Math.sin(midAngle);
-    svg += '<text x="' + sx + '" y="' + sy + '" text-anchor="middle" dominant-baseline="central" font-size="13" fill="rgba(201,168,76,0.7)">' + ZODIAC_SYMBOLS_LIST[i] + '</text>';
-  }
-
-  // Cross lines through center
-  svg += '<line x1="' + (cx - innerR) + '" y1="' + cy + '" x2="' + (cx + innerR) + '" y2="' + cy + '" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>';
-  svg += '<line x1="' + cx + '" y1="' + (cy - innerR) + '" x2="' + cx + '" y2="' + (cy + innerR) + '" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>';
-
-  // Planets
-  var placed = [];
-  planets.forEach(function(p) {
-    var angle = (p.lon - 90) * Math.PI / 180;
-    var pr = innerR - 20;
-    // Avoid overlap
-    var offset = 0;
-    placed.forEach(function(pl) {
-      var diff = Math.abs(p.lon - pl) % 360;
-      if (diff > 180) diff = 360 - diff;
-      if (diff < 12) offset += 14;
-    });
-    placed.push(p.lon);
-    var px = cx + (pr - offset) * Math.cos(angle);
-    var py = cy + (pr - offset) * Math.sin(angle);
-    var sym = PLANET_SYMBOLS[p.name] || p.name[0];
-    var col = p.isAsc ? '#e8c97e' : 'rgba(245,237,224,0.85)';
-    var fs = p.isAsc ? '13' : '12';
-    svg += '<text x="' + px + '" y="' + py + '" text-anchor="middle" dominant-baseline="central" font-size="' + fs + '" fill="' + col + '" font-weight="' + (p.isAsc ? 'bold' : 'normal') + '">' + sym + '</text>';
-    // Spoke line from planet to inner circle
-    var lineR = innerR;
-    var lx = cx + lineR * Math.cos(angle);
-    var ly = cy + lineR * Math.sin(angle);
-    svg += '<line x1="' + lx + '" y1="' + ly + '" x2="' + (cx + (zodiacR) * Math.cos(angle)) + '" y2="' + (cy + (zodiacR) * Math.sin(angle)) + '" stroke="rgba(201,168,76,0.12)" stroke-width="0.5"/>';
-  });
-
-  // Center text
-  svg += '<text x="' + cx + '" y="' + (cy - 8) + '" text-anchor="middle" font-size="11" fill="rgba(201,168,76,0.4)" font-family="serif">NATAL</text>';
-  svg += '<text x="' + cx + '" y="' + (cy + 8) + '" text-anchor="middle" font-size="11" fill="rgba(201,168,76,0.4)" font-family="serif">CHART</text>';
-
-  svg += '</svg>';
-  document.getElementById('bcWheel').innerHTML = svg;
-}
-
-async function getBirthChartAIReading(data) {
-  var planetList = data.planets.map(function(p) {
-    return p.name + ' in ' + p.sign;
-  }).join(', ');
-
-  var sunP = data.planets.find(function(p) { return p.name === 'Sun'; });
-  var moonP = data.planets.find(function(p) { return p.name === 'Moon'; });
-  var ascP = data.planets.find(function(p) { return p.name === 'Rising'; });
-
-  var prompt = 'You are an astrologer giving a brief natal chart reading. '
-    + 'The person has: ' + planetList + '. '
-    + 'Focus on Sun (' + (sunP ? sunP.sign : '?') + '), Moon (' + (moonP ? moonP.sign : '?') + ')'
-    + (ascP ? ', and Rising (' + ascP.sign + ')' : '') + '. '
-    + 'Give a 3-4 sentence personal reading about their core nature, emotional world, and outward personality. '
-    + 'Be specific to these placements, speak in second person, use <p> tags only. Max 80 words.';
-
-  try {
-    var res = await fetch(AI_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        max_tokens: 300,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    var d = await res.json();
-    var text = d && d.content && d.content[0] ? d.content[0].text : '';
-    return text.trim() || '<p>The stars hold their counsel today.</p>';
-  } catch(e) {
-    return '<p>The natal reading could not be completed.</p>';
-  }
-}
-
-
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   REFERENCE GUIDE
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-var REF_DATA = {
-  candles: [{"color": "White", "properties": "Purification - Peace - Truth - Clarity - New beginnings - Protection - Moon energy - Amplifies other colors", "zodiac": "Cancer - Pisces", "planet": "Moon", "element": "Spirit / All elements"}, {"color": "Black", "properties": "Banishing negativity - Protection - Breaking bad habits - Absorbing illness or evil - Endings", "zodiac": "Scorpio - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"color": "Red", "properties": "Passion - Love - Courage - Vitality - Strength - Willpower - Sexual energy - Fire energy", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"color": "Pink", "properties": "Romantic love - Self-love - Compassion - Friendship - Emotional healing - Nurturing", "zodiac": "Taurus - Libra - Cancer", "planet": "Venus", "element": "Water"}, {"color": "Orange", "properties": "Creativity - Joy - Ambition - Attraction - Success - Confidence - Energy - Legal matters", "zodiac": "Leo - Sagittarius", "planet": "Sun - Mercury", "element": "Fire"}, {"color": "Yellow", "properties": "Mental clarity - Intellect - Memory - Communication - Happiness - Learning - Sun energy", "zodiac": "Gemini - Virgo - Leo", "planet": "Mercury - Sun", "element": "Air"}, {"color": "Green", "properties": "Money - Prosperity - Abundance - Fertility - Growth - Healing - Luck - Nature connection", "zodiac": "Taurus - Virgo - Capricorn", "planet": "Venus - Jupiter", "element": "Earth"}, {"color": "Light Blue", "properties": "Peace - Calm - Patience - Healing - Truth - Harmony - Sleep - Communication", "zodiac": "Aquarius - Libra - Gemini", "planet": "Uranus - Mercury", "element": "Air"}, {"color": "Dark Blue / Indigo", "properties": "Intuition - Psychic ability - Wisdom - Deep meditation - Justice", "zodiac": "Sagittarius - Pisces", "planet": "Jupiter - Neptune", "element": "Water"}, {"color": "Purple / Violet", "properties": "Spiritual power - Psychic development - Divination - Ambition - Royalty - Higher consciousness", "zodiac": "Scorpio - Sagittarius - Pisces", "planet": "Jupiter - Neptune", "element": "Spirit"}, {"color": "Brown", "properties": "Stability - Grounding - Home - Animals - Earth energy - Practical matters", "zodiac": "Taurus - Virgo - Capricorn", "planet": "Saturn - Earth", "element": "Earth"}, {"color": "Gold", "properties": "Solar energy - Success - Wealth - Confidence - Masculine energy - Achievement", "zodiac": "Leo", "planet": "Sun", "element": "Fire"}, {"color": "Silver", "properties": "Lunar energy - Intuition - Dreams - Feminine energy - Psychic awareness - Reflection", "zodiac": "Cancer", "planet": "Moon", "element": "Water"}, {"color": "Lavender", "properties": "Calming the mind - Spiritual growth - Peace - Gentle healing", "zodiac": "Virgo - Libra - Pisces", "planet": "Mercury - Neptune", "element": "Air"}, {"color": "Magenta", "properties": "Quick change - Spiritual healing - High vibration energy - Transformation", "zodiac": "Scorpio - Aries", "planet": "Pluto - Mars", "element": "Fire - Spirit"}, {"color": "Gray", "properties": "Neutrality - Balance - Canceling negative energy - Compromise - Uncrossing", "zodiac": "Capricorn - Aquarius", "planet": "Saturn", "element": "Earth - Air"}],
-  crystals: [{"name": "Amethyst", "category": "Intuition & Psychic Development", "properties": "Psychic protection - Intuition - Spiritual growth - Calming - Sobriety support", "zodiac": "Pisces - Aquarius - Virgo", "planet": "Jupiter - Neptune", "element": "Air - Water"}, {"name": "Amazonite", "category": "Healing & Wellness", "properties": "Soothing stress - Truth - Healthy boundaries - Heart and throat balance", "zodiac": "Virgo - Aries", "planet": "Uranus", "element": "Earth"}, {"name": "Angelite", "category": "Spiritual Connection", "properties": "Angelic communication - Peace - Compassion - Psychic channeling", "zodiac": "Aquarius", "planet": "Uranus", "element": "Air"}, {"name": "Apatite", "category": "Motivation & Clarity", "properties": "Manifestation - Motivation - Clearing confusion - Humanitarian pursuits", "zodiac": "Gemini - Sagittarius", "planet": "Mercury", "element": "Air"}, {"name": "Aquamarine", "category": "Healing & Wellness", "properties": "Calming - Courage - Clear communication - Throat chakra - Stress relief", "zodiac": "Pisces - Gemini - Aries", "planet": "Neptune - Moon", "element": "Water"}, {"name": "Azurite", "category": "Intuition & Psychic Development", "properties": "Third eye activation - Psychic visions - Mental clarity - Spiritual guidance", "zodiac": "Sagittarius - Capricorn", "planet": "Jupiter - Venus", "element": "Air"}, {"name": "Black Kyanite", "category": "Protection & Grounding", "properties": "Cutting energy cords - Grounding - Aura repair - Psychic protection", "zodiac": "Aries - Taurus - Libra", "planet": "Mars", "element": "Earth - Air"}, {"name": "Black Tourmaline", "category": "Protection & Grounding", "properties": "Powerful protection - EMF shielding - Grounding - Repelling negativity", "zodiac": "Capricorn - Scorpio", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Bloodstone", "category": "Healing & Wellness", "properties": "Vitality - Courage - Detoxification - Grounding - Strength in adversity", "zodiac": "Aries - Pisces - Scorpio", "planet": "Mars", "element": "Earth - Fire"}, {"name": "Blue Lace Agate", "category": "Healing & Wellness", "properties": "Calm communication - Soothing anxiety - Gentle healing - Throat chakra", "zodiac": "Gemini - Pisces", "planet": "Mercury - Neptune", "element": "Air - Water"}, {"name": "Blue Tiger's Eye", "category": "Confidence & Creativity", "properties": "Calming overanxiety - Communication - Insight - Reducing stress", "zodiac": "Capricorn - Leo", "planet": "Saturn - Sun", "element": "Earth - Air"}, {"name": "Bornite", "category": "Abundance & Prosperity", "properties": "Abundance - Happiness - Joy", "zodiac": "Cancer", "planet": "Venus", "element": "Water"}, {"name": "Carnelian", "category": "Confidence & Creativity", "properties": "Motivation - Creativity - Courage - Vitality - Taking action", "zodiac": "Aries - Leo - Virgo", "planet": "Mars - Sun", "element": "Fire"}, {"name": "Celestite", "category": "Intuition & Psychic Development", "properties": "Angelic communication - Dream work - Inner peace - Higher realms", "zodiac": "Gemini - Libra", "planet": "Neptune - Venus", "element": "Air"}, {"name": "Chrysocolla", "category": "Healing & Wellness", "properties": "Feminine empowerment - Calming - Communication - Releasing guilt", "zodiac": "Gemini - Taurus - Virgo", "planet": "Venus - Mercury", "element": "Water - Earth"}, {"name": "Chrysoprase", "category": "Abundance & Prosperity", "properties": "Joy - Optimism - Abundance - Healing a broken heart - Self-acceptance", "zodiac": "Taurus - Gemini - Libra", "planet": "Venus", "element": "Earth"}, {"name": "Citrine", "category": "Abundance & Prosperity", "properties": "Manifestation - Abundance - Positivity - Confidence - The merchant's stone", "zodiac": "Aries - Gemini - Leo - Libra", "planet": "Sun - Jupiter", "element": "Fire"}, {"name": "Clear Quartz", "category": "Healing & Wellness", "properties": "Master healer - Amplifying intentions - Clarity - Energy programming", "zodiac": "All signs", "planet": "Sun - Moon", "element": "All elements"}, {"name": "Danburite", "category": "Spiritual Connection", "properties": "High vibration - Angelic realms - Emotional healing - Heart opening", "zodiac": "Scorpio - Leo", "planet": "Venus", "element": "Air - Fire"}, {"name": "Desert Rose Selenite", "category": "Protection & Grounding", "properties": "Mental clarity - Dissolving self-imposed limitations - Grounding", "zodiac": "Taurus - Scorpio", "planet": "Moon - Saturn", "element": "Earth"}, {"name": "Emerald", "category": "Love & Relationships", "properties": "Loyalty - Unconditional love - Abundance - Memory - Heart healing", "zodiac": "Taurus - Gemini - Cancer", "planet": "Venus", "element": "Earth"}, {"name": "Fire Opal", "category": "Confidence & Creativity", "properties": "Passion - Creativity - Releasing inhibitions - Personal power - Spontaneity", "zodiac": "Aries - Leo - Sagittarius", "planet": "Sun - Mars", "element": "Fire"}, {"name": "Fluorite", "category": "Intuition & Psychic Development", "properties": "Mental clarity - Focus - Absorbing negative energy - Learning - Psychic shielding", "zodiac": "Capricorn - Pisces - Aquarius", "planet": "Mercury - Neptune", "element": "Air - Water"}, {"name": "Fuchsite", "category": "Healing & Wellness", "properties": "Emotional recovery - Resilience - Nature connection - Accessing healing wisdom", "zodiac": "Aquarius - Scorpio", "planet": "Mercury - Venus", "element": "Earth"}, {"name": "Garnet", "category": "Love & Relationships", "properties": "Passion - Devotion - Sensuality - Commitment", "zodiac": "Aries - Leo - Virgo - Capricorn", "planet": "Mars", "element": "Fire - Earth"}, {"name": "Gold Sheen Obsidian", "category": "Abundance & Prosperity", "properties": "Releasing ego - Connecting to divine will - Abundance - Power", "zodiac": "Sagittarius - Scorpio", "planet": "Sun - Pluto", "element": "Fire - Earth"}, {"name": "Goldstone", "category": "Confidence & Creativity", "properties": "Ambition - Drive - Positive energy - Confidence", "zodiac": "Sagittarius", "planet": "Sun - Jupiter", "element": "Fire"}, {"name": "Green Aventurine", "category": "Abundance & Prosperity", "properties": "Luck - Opportunity - Growth - Prosperity - The stone of opportunity", "zodiac": "Aries - Leo - Virgo", "planet": "Mercury - Venus", "element": "Earth"}, {"name": "Green Calcite", "category": "Healing & Wellness", "properties": "Emotional balance - Releasing old patterns - Heart healing - Mental clarity", "zodiac": "Cancer - Virgo", "planet": "Moon - Venus", "element": "Water - Earth"}, {"name": "Hawk's Eye", "category": "Intuition & Psychic Development", "properties": "Psychic vision - Perspective - Protection - Grounding intuition", "zodiac": "Scorpio - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Hematite", "category": "Protection & Grounding", "properties": "Grounding - Strength - Focus - Calming anxiety - Energetic boundaries", "zodiac": "Aries - Aquarius", "planet": "Mars - Saturn", "element": "Earth - Fire"}, {"name": "Howlite", "category": "Healing & Wellness", "properties": "Calming rage - Patience - Sleep aid - Emotional expression - Reducing stress", "zodiac": "Gemini - Scorpio", "planet": "Moon", "element": "Air - Water"}, {"name": "Iolite", "category": "Intuition & Psychic Development", "properties": "Inner vision - Guidance - Releasing discord - Shamanic journeying", "zodiac": "Sagittarius - Libra - Taurus", "planet": "Saturn - Jupiter", "element": "Air - Water"}, {"name": "Jade", "category": "Healing & Wellness", "properties": "Health - Longevity - Harmony - Heart healing - Luck", "zodiac": "Taurus - Libra - Virgo", "planet": "Venus", "element": "Earth"}, {"name": "Jasper (Red)", "category": "Protection & Grounding", "properties": "Grounding - Stability - Physical strength - Endurance - Slow steady energy", "zodiac": "Aries - Scorpio - Taurus", "planet": "Mars", "element": "Earth - Fire"}, {"name": "Jasper (Ocean)", "category": "Healing & Wellness", "properties": "Joy - Optimism - Creativity - Releasing worry - Connecting to nature", "zodiac": "Cancer - Scorpio - Pisces", "planet": "Neptune - Moon", "element": "Water"}, {"name": "Jet", "category": "Protection & Grounding", "properties": "Purification - Grief support - Psychic protection", "zodiac": "Capricorn", "planet": "Saturn", "element": "Earth"}, {"name": "Kunzite", "category": "Love & Relationships", "properties": "Opening the heart - Unconditional love - Releasing heartache - Emotional healing", "zodiac": "Taurus - Leo - Libra", "planet": "Venus - Pluto", "element": "Water"}, {"name": "Kyanite (Blue)", "category": "Spiritual Connection", "properties": "Aligning chakras - Calming - Communication - Never needs cleansing", "zodiac": "Aries - Taurus - Libra", "planet": "Venus - Saturn", "element": "Air"}, {"name": "Labradorite", "category": "Intuition & Psychic Development", "properties": "Magic - Transformation - Psychic ability - Aura protection", "zodiac": "Leo - Scorpio - Sagittarius", "planet": "Uranus - Neptune", "element": "Water"}, {"name": "Lapis Lazuli", "category": "Intuition & Psychic Development", "properties": "Third eye activation - Wisdom - Truth - Clairvoyance", "zodiac": "Sagittarius - Pisces", "planet": "Jupiter - Neptune", "element": "Air - Water"}, {"name": "Larimar", "category": "Healing & Wellness", "properties": "Cooling anger - Relaxation - Feminine energy - Ocean energy - Stress relief", "zodiac": "Leo - Pisces", "planet": "Neptune - Moon", "element": "Water"}, {"name": "Lepidolite", "category": "Healing & Wellness", "properties": "Anxiety relief - Transition support - Emotional balance - Sleep - Contains lithium", "zodiac": "Libra - Pisces", "planet": "Jupiter - Neptune", "element": "Water - Air"}, {"name": "Malachite", "category": "Love & Relationships", "properties": "Transformation in love - Releasing toxic patterns - Emotional risk-taking", "zodiac": "Taurus - Scorpio - Capricorn", "planet": "Venus - Pluto", "element": "Earth"}, {"name": "Moldavite", "category": "Spiritual Connection", "properties": "Rapid transformation - Cosmic connection - Accelerating spiritual growth", "zodiac": "All signs", "planet": "Uranus - Neptune", "element": "Fire - Earth"}, {"name": "Moonstone", "category": "Intuition & Psychic Development", "properties": "Intuition - Feminine energy - Lunar cycles - Emotional balance - New beginnings", "zodiac": "Cancer - Libra - Scorpio", "planet": "Moon", "element": "Water"}, {"name": "Morganite", "category": "Love & Relationships", "properties": "Divine love - Compassion - Emotional healing - Attracting a soulmate", "zodiac": "Taurus - Libra - Pisces", "planet": "Venus", "element": "Water"}, {"name": "Moss Agate", "category": "Abundance & Prosperity", "properties": "Nature connection - New beginnings - Abundance - Growth - Gardening", "zodiac": "Virgo - Gemini", "planet": "Mercury - Earth", "element": "Earth"}, {"name": "Nuummite", "category": "Protection & Grounding", "properties": "Personal magic - Deep shadow work - Self-mastery - Protection", "zodiac": "Scorpio - Sagittarius", "planet": "Pluto", "element": "Earth - Fire"}, {"name": "Obsidian", "category": "Protection & Grounding", "properties": "Deep protection - Truth-revealing - Releasing trauma - Psychic shielding", "zodiac": "Scorpio - Sagittarius", "planet": "Pluto - Saturn", "element": "Earth - Fire"}, {"name": "Orange Calcite", "category": "Confidence & Creativity", "properties": "Creativity - Emotional release - Energizing - Sexual energy", "zodiac": "Cancer - Leo", "planet": "Sun - Moon", "element": "Fire"}, {"name": "Peridot", "category": "Abundance & Prosperity", "properties": "Abundance - Success - Releasing jealousy - Positivity", "zodiac": "Leo - Virgo - Scorpio", "planet": "Sun - Venus", "element": "Earth - Fire"}, {"name": "Phenacite", "category": "Spiritual Connection", "properties": "High vibration - Third eye activation - Accessing higher dimensions", "zodiac": "Gemini - Sagittarius", "planet": "Uranus", "element": "Fire - Spirit"}, {"name": "Prehnite", "category": "Healing & Wellness", "properties": "Healing the healer - Prophetic dreams - Unconditional love - Decluttering", "zodiac": "Libra - Capricorn", "planet": "Venus - Saturn", "element": "Earth - Water"}, {"name": "Pyrite", "category": "Abundance & Prosperity", "properties": "Wealth attraction - Willpower - Ambition - Blocking negative energy", "zodiac": "Leo - Aries", "planet": "Mars - Sun", "element": "Earth - Fire"}, {"name": "Rainbow Moonstone", "category": "Intuition & Psychic Development", "properties": "Psychic protection - Divine feminine - Joy - New beginnings - Deflecting negativity", "zodiac": "Cancer - Libra", "planet": "Moon", "element": "Water"}, {"name": "Rhodochrosite", "category": "Love & Relationships", "properties": "Self-worth - Attracting a soulmate - Inner child healing", "zodiac": "Leo - Scorpio", "planet": "Mars - Venus", "element": "Fire"}, {"name": "Rhodonite", "category": "Love & Relationships", "properties": "Healing heartbreak - Forgiveness - Compassion - Balancing emotions", "zodiac": "Taurus - Leo", "planet": "Venus - Mars", "element": "Earth"}, {"name": "Rose Quartz", "category": "Love & Relationships", "properties": "Unconditional love - Self-love - Attracting romance - Emotional healing", "zodiac": "Taurus - Libra", "planet": "Venus", "element": "Water"}, {"name": "Ruby", "category": "Confidence & Creativity", "properties": "Life force energy - Passion - Courage - Leadership - Prosperity", "zodiac": "Aries - Leo - Cancer - Sagittarius", "planet": "Mars - Sun", "element": "Fire"}, {"name": "Ruby Zoisite", "category": "Healing & Wellness", "properties": "Joy - Vitality - Healing grief - Connecting heart and mind", "zodiac": "Aries - Cancer", "planet": "Mars - Venus", "element": "Earth - Fire"}, {"name": "Rutilated Quartz", "category": "Spiritual Connection", "properties": "Amplifying intentions - Clearing blockages - Angelic access - Manifestation", "zodiac": "Gemini - Leo", "planet": "Sun - Mercury", "element": "Fire - Air"}, {"name": "Sapphire", "category": "Intuition & Psychic Development", "properties": "Wisdom - Loyalty - Psychic activation - Focus - Mental discipline", "zodiac": "Virgo - Libra - Sagittarius", "planet": "Saturn - Jupiter", "element": "Air - Water"}, {"name": "Selenite", "category": "Healing & Wellness", "properties": "Cleansing other stones - Mental clarity - Angelic energy - High vibration", "zodiac": "Taurus - Cancer", "planet": "Moon", "element": "Water - Air"}, {"name": "Shungite", "category": "Protection & Grounding", "properties": "EMF protection - Purification - Grounding - Ancient healing energy", "zodiac": "Scorpio - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Smoky Quartz", "category": "Protection & Grounding", "properties": "Transmuting negative energy - Grounding - Stress relief - Clarity", "zodiac": "Scorpio - Sagittarius - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Sodalite", "category": "Confidence & Creativity", "properties": "Rational thinking - Communication - Self-trust - Calming", "zodiac": "Sagittarius", "planet": "Jupiter - Mercury", "element": "Air - Water"}, {"name": "Spirit Quartz", "category": "Spiritual Connection", "properties": "Community - Harmony - Ancestral healing - Amplifying energy", "zodiac": "Virgo - Capricorn - Aquarius - Pisces", "planet": "Uranus - Neptune", "element": "Air - Spirit"}, {"name": "Sugilite", "category": "Spiritual Connection", "properties": "Spiritual love - Protection for sensitives - Overcoming despair - Psychic development", "zodiac": "Virgo - Sagittarius", "planet": "Jupiter - Pluto", "element": "Fire - Water"}, {"name": "Sunstone", "category": "Confidence & Creativity", "properties": "Personal power - Joy - Independence - Leadership - Optimism", "zodiac": "Leo - Libra", "planet": "Sun", "element": "Fire"}, {"name": "Super Seven", "category": "Spiritual Connection", "properties": "Combines seven minerals - Universal connection - Psychic gifts - Healing", "zodiac": "All signs", "planet": "All planets", "element": "All elements"}, {"name": "Tanzanite", "category": "Intuition & Psychic Development", "properties": "Spiritual awakening - Linking heart and mind - Compassionate communication", "zodiac": "Gemini - Libra - Sagittarius", "planet": "Saturn - Jupiter", "element": "Air"}, {"name": "Tiger's Eye", "category": "Abundance & Prosperity", "properties": "Courage - Focus - Practical decision-making - Attracting good luck", "zodiac": "Capricorn - Leo", "planet": "Sun - Mars", "element": "Earth - Fire"}, {"name": "Tourmalinated Quartz", "category": "Protection & Grounding", "properties": "Combining protection and clarity - Dissolving tension - Grounding light", "zodiac": "Scorpio - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Turquoise", "category": "Healing & Wellness", "properties": "Protection - Communication - Healing - Luck - Ancient spiritual use across cultures", "zodiac": "Sagittarius - Pisces - Scorpio", "planet": "Jupiter - Neptune", "element": "Earth - Air"}, {"name": "Unakite", "category": "Love & Relationships", "properties": "Emotional balance - Rebirthing - Grounding after spiritual work - Patience", "zodiac": "Scorpio - Taurus", "planet": "Venus - Mars", "element": "Earth"}, {"name": "Vanadinite", "category": "Confidence & Creativity", "properties": "Energy - Focus - Willpower - Creativity - Connecting to earth energy", "zodiac": "Virgo - Aries", "planet": "Mars - Mercury", "element": "Earth - Fire"}, {"name": "Zircon", "category": "Abundance & Prosperity", "properties": "Prosperity - Honor - Wisdom - Grounding spiritual energy into physical reality", "zodiac": "Sagittarius - Leo - Virgo", "planet": "Jupiter - Sun", "element": "Fire - Earth"}],
-  herbs: [{"name": "Angelica", "properties": "Protection - Healing - Visions - Warding off evil - Connecting to angels", "zodiac": "Leo - Aquarius", "planet": "Sun - Venus", "element": "Fire"}, {"name": "Basil", "properties": "Love - Prosperity - Protection - Exorcism - Harmony in relationships", "zodiac": "Scorpio - Aries", "planet": "Mars - Venus", "element": "Fire"}, {"name": "Bay Laurel", "properties": "Psychic power - Wishes - Protection - Victory - Wisdom - Divination", "zodiac": "Leo - Aries", "planet": "Sun - Jupiter", "element": "Fire"}, {"name": "Blue Lotus", "properties": "Psychic visions - Lucid dreaming - Meditation - Spiritual enlightenment", "zodiac": "Pisces - Aquarius", "planet": "Neptune - Moon", "element": "Water"}, {"name": "Calendula", "properties": "Protection - Legal matters - Psychic dreams - Success - Joy", "zodiac": "Leo - Cancer", "planet": "Sun - Moon", "element": "Fire"}, {"name": "Catnip", "properties": "Love - Happiness - Animal magic - Beauty - Luck", "zodiac": "Cancer - Taurus", "planet": "Venus - Moon", "element": "Water"}, {"name": "Cayenne", "properties": "Banishing - Hex breaking - Speeding up spells - Courage - Protection", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"name": "Chamomile", "properties": "Calm - Sleep - Luck - Purification - Attracting money", "zodiac": "Cancer - Virgo", "planet": "Moon - Mercury", "element": "Water"}, {"name": "Cinnamon", "properties": "Prosperity - Love - Protection - Raising vibration - Psychic enhancement", "zodiac": "Aries - Scorpio", "planet": "Sun - Mars", "element": "Fire"}, {"name": "Clove", "properties": "Banishing - Protection - Love - Memory - Courage", "zodiac": "Aries - Scorpio", "planet": "Jupiter - Mars", "element": "Fire"}, {"name": "Comfrey", "properties": "Safe travel - Healing - Protection - Stability", "zodiac": "Capricorn - Cancer", "planet": "Saturn", "element": "Earth - Water"}, {"name": "Dandelion", "properties": "Wishes - Divination - Calling spirits - Psychic power", "zodiac": "Sagittarius - Pisces", "planet": "Jupiter - Moon", "element": "Air"}, {"name": "Dill", "properties": "Protection - Love - Luck - Money - Mental clarity", "zodiac": "Gemini - Cancer", "planet": "Mercury - Moon", "element": "Air"}, {"name": "Elder Flower", "properties": "Protection - Healing - Faerie magic - Sleep - Prosperity", "zodiac": "Scorpio - Libra", "planet": "Venus - Saturn", "element": "Water"}, {"name": "Eucalyptus", "properties": "Healing - Purification - Protection - Clearing negative energy", "zodiac": "Aquarius", "planet": "Uranus - Saturn", "element": "Air"}, {"name": "Feverfew", "properties": "Protection - Travel safety - Ward off accidents - Healing", "zodiac": "Aries - Taurus", "planet": "Venus", "element": "Earth"}, {"name": "Frankincense Resin", "properties": "Spiritual elevation - Purification - Protection - Consecration", "zodiac": "Aries - Leo", "planet": "Sun", "element": "Fire"}, {"name": "Garlic", "properties": "Protection - Banishing - Healing - Courage - Anti-evil", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"name": "Ginger", "properties": "Success - Power - Love - Money - Courage", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"name": "Hawthorn", "properties": "Faerie magic - Protection - Hope - Marriage - Fertility", "zodiac": "Aries - Taurus", "planet": "Mars - Venus", "element": "Fire"}, {"name": "Hibiscus", "properties": "Love - Lust - Divination - Dreams - Attracting desire", "zodiac": "Libra - Scorpio", "planet": "Venus", "element": "Water"}, {"name": "High John Root", "properties": "Strength - Luck - Success - Confidence - Overcoming obstacles", "zodiac": "Leo - Aries", "planet": "Mars - Jupiter", "element": "Fire"}, {"name": "Holy Basil (Tulsi)", "properties": "Spiritual protection - Purification - Love - Clarity - Sacred offerings", "zodiac": "Scorpio - Sagittarius", "planet": "Jupiter - Mars", "element": "Fire"}, {"name": "Hyssop", "properties": "Purification - Protection - Forgiveness - Cleansing negative energy", "zodiac": "Cancer - Pisces", "planet": "Jupiter - Moon", "element": "Water"}, {"name": "Lavender", "properties": "Peace - Love - Purification - Sleep - Psychic protection", "zodiac": "Virgo - Gemini", "planet": "Mercury - Moon", "element": "Air"}, {"name": "Lemon Balm", "properties": "Love - Success - Healing - Psychic development - Happiness", "zodiac": "Cancer - Gemini", "planet": "Moon - Mercury", "element": "Water"}, {"name": "Licorice Root", "properties": "Control - Fidelity - Passion - Commanding energy", "zodiac": "Scorpio - Taurus", "planet": "Venus - Pluto", "element": "Water"}, {"name": "Lotus", "properties": "Spiritual enlightenment - Purity - Rebirth - Meditation - Divine connection", "zodiac": "Pisces - Cancer", "planet": "Moon - Neptune", "element": "Water"}, {"name": "Mandrake", "properties": "Protection - Prosperity - Fertility - Banishing", "zodiac": "Scorpio - Taurus", "planet": "Saturn - Mercury", "element": "Earth"}, {"name": "Meadowsweet", "properties": "Love - Peace - Happiness - Divination - Harmony", "zodiac": "Gemini - Libra", "planet": "Jupiter - Venus", "element": "Air"}, {"name": "Mint (General)", "properties": "Money - Luck - Healing - Psychic ability - Protection", "zodiac": "Gemini - Virgo", "planet": "Mercury - Venus", "element": "Air"}, {"name": "Mistletoe", "properties": "Protection - Love - Fertility - Healing", "zodiac": "Scorpio - Cancer", "planet": "Sun - Jupiter", "element": "Air"}, {"name": "Motherwort", "properties": "Feminine power - Protection - Confidence - Inner strength", "zodiac": "Cancer - Leo", "planet": "Venus - Moon", "element": "Water"}, {"name": "Mugwort", "properties": "Psychic visions - Lucid dreaming - Astral travel - Divination - Protection", "zodiac": "Taurus - Libra - Sagittarius", "planet": "Moon - Venus", "element": "Earth"}, {"name": "Mullein", "properties": "Protection - Courage - Banishing spirits - Divination", "zodiac": "Aries", "planet": "Saturn", "element": "Fire - Earth"}, {"name": "Myrrh Resin", "properties": "Protection - Healing - Spirituality - Consecration - Purification", "zodiac": "Capricorn - Aries", "planet": "Saturn - Moon", "element": "Earth - Water"}, {"name": "Nettle", "properties": "Protection - Healing - Banishing - Breaking curses", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"name": "Nutmeg", "properties": "Luck - Money - Health - Fidelity - Psychic awareness", "zodiac": "Sagittarius", "planet": "Jupiter", "element": "Fire"}, {"name": "Oak Bark", "properties": "Strength - Protection - Luck - Healing - Wisdom - Longevity", "zodiac": "Sagittarius - Leo", "planet": "Sun - Jupiter", "element": "Fire"}, {"name": "Orange Peel", "properties": "Joy - Love - Luck - Abundance - Sun energy", "zodiac": "Leo - Sagittarius", "planet": "Sun", "element": "Fire"}, {"name": "Oregano", "properties": "Joy - Strength - Vitality - Protection - Letting go", "zodiac": "Aries - Taurus", "planet": "Venus - Mars", "element": "Fire"}, {"name": "Palo Santo", "properties": "Deep purification - Raising vibration - Clearing negative energy - Spiritual connection", "zodiac": "Scorpio - Sagittarius", "planet": "Sun - Jupiter", "element": "Fire"}, {"name": "Passionflower", "properties": "Peace - Sleep - Friendship - Calming anxiety - Harmony", "zodiac": "Libra - Pisces", "planet": "Venus - Neptune", "element": "Water"}, {"name": "Pennyroyal", "properties": "Protection - Peace - Travel safety - Strength", "zodiac": "Aries - Taurus", "planet": "Mars - Venus", "element": "Earth"}, {"name": "Peppermint", "properties": "Purification - Healing - Psychic ability - Love - Energy", "zodiac": "Gemini - Aquarius", "planet": "Mercury - Venus", "element": "Air"}, {"name": "Plantain", "properties": "Healing - Protection - Strength - Warding", "zodiac": "Capricorn - Virgo", "planet": "Saturn - Venus", "element": "Earth"}, {"name": "Rose", "properties": "Love - Psychic power - Healing - Protection - Divination", "zodiac": "Taurus - Libra", "planet": "Venus", "element": "Water"}, {"name": "Rosemary", "properties": "Protection - Purification - Memory - Healing - Fidelity", "zodiac": "Aries - Leo - Virgo", "planet": "Sun - Mars", "element": "Fire"}, {"name": "Rue", "properties": "Protection - Banishing - Clearing hexes - Mental clarity - Blessing", "zodiac": "Aries - Leo", "planet": "Mars - Saturn", "element": "Fire"}, {"name": "Saffron", "properties": "Love - Healing - Happiness - Psychic power", "zodiac": "Leo - Pisces", "planet": "Sun - Moon", "element": "Fire"}, {"name": "Sage (Common)", "properties": "Wisdom - Purification - Protection - Longevity - Wishes", "zodiac": "Aries - Taurus - Sagittarius", "planet": "Jupiter - Mercury", "element": "Air - Earth"}, {"name": "Sage (White)", "properties": "Powerful cleansing - Removing negative energy - Purification - Sacred space", "zodiac": "Sagittarius - Aries", "planet": "Moon - Jupiter", "element": "Air"}, {"name": "St. Johns Wort", "properties": "Protection - Strength - Happiness - Banishing evil - Courage", "zodiac": "Leo", "planet": "Sun", "element": "Fire"}, {"name": "Star Anise", "properties": "Psychic power - Luck - Protection - Calling spirits - Purification", "zodiac": "Pisces - Sagittarius", "planet": "Jupiter - Moon", "element": "Air - Water"}, {"name": "Thyme", "properties": "Courage - Purification - Protection - Psychic power - Sleep", "zodiac": "Aries - Libra", "planet": "Venus - Mars", "element": "Air"}, {"name": "Valerian", "properties": "Sleep - Love - Protection - Purification - Harmony", "zodiac": "Virgo - Scorpio", "planet": "Venus - Saturn", "element": "Water"}, {"name": "Vervain", "properties": "Protection - Purification - Love - Inspiration - Peace", "zodiac": "Gemini - Virgo", "planet": "Venus - Mercury", "element": "Earth"}, {"name": "Yarrow", "properties": "Courage - Love - Psychic awareness - Healing - Divination", "zodiac": "Aries - Libra", "planet": "Venus - Saturn", "element": "Water"}],
-  oils: [{"name": "Bergamot", "properties": "Confidence - Uplifting energy - Attracting success - Releasing anxiety", "zodiac": "Aries - Leo", "planet": "Sun - Mercury", "element": "Fire"}, {"name": "Black Pepper", "properties": "Protection - Banishing negativity - Courage - Mental clarity", "zodiac": "Aries - Scorpio", "planet": "Mars", "element": "Fire"}, {"name": "Cedarwood", "properties": "Grounding - Strength - Wisdom - Spiritual protection - Connecting to ancient energy", "zodiac": "Aries - Scorpio", "planet": "Saturn - Sun", "element": "Earth"}, {"name": "Chamomile", "properties": "Peace - Calm - Sleep - Purification - Attracting luck", "zodiac": "Cancer - Virgo", "planet": "Moon - Mercury", "element": "Water"}, {"name": "Cinnamon", "properties": "Prosperity - Protection - Love - Psychic enhancement - Raising vibration", "zodiac": "Aries - Scorpio", "planet": "Sun - Mars", "element": "Fire"}, {"name": "Clary Sage", "properties": "Intuition - Dream work - Clarity - Euphoria - Opening the third eye", "zodiac": "Sagittarius - Aquarius", "planet": "Moon - Saturn", "element": "Air"}, {"name": "Clove", "properties": "Protection - Banishing - Prosperity - Memory - Courage", "zodiac": "Aries - Scorpio", "planet": "Mars - Jupiter", "element": "Fire"}, {"name": "Cypress", "properties": "Comfort in grief - Transition - Past life work - Ancestral connection", "zodiac": "Scorpio - Capricorn", "planet": "Saturn - Pluto", "element": "Earth"}, {"name": "Eucalyptus", "properties": "Purification - Healing - Protection - Clearing negative energy", "zodiac": "Aquarius", "planet": "Saturn - Uranus", "element": "Air"}, {"name": "Frankincense", "properties": "Spiritual elevation - Protection - Consecration - Connecting to the divine - Meditation", "zodiac": "Aries - Leo - Capricorn", "planet": "Sun - Pluto", "element": "Fire"}, {"name": "Geranium", "properties": "Love - Fertility - Protection - Balancing feminine energy - Lifting depression", "zodiac": "Taurus - Cancer - Libra", "planet": "Venus - Moon", "element": "Water"}, {"name": "Ginger", "properties": "Courage - Success - Prosperity - Warming energy - Empowerment", "zodiac": "Aries - Scorpio", "planet": "Mars - Sun", "element": "Fire"}, {"name": "Helichrysum", "properties": "Healing deep wounds - Past life work - Transformation - Inner strength", "zodiac": "Scorpio - Pisces", "planet": "Neptune - Pluto", "element": "Water"}, {"name": "Jasmine", "properties": "Love - Sensuality - Psychic dreams - Moon magic - Attracting abundance", "zodiac": "Cancer - Pisces - Scorpio", "planet": "Moon - Venus", "element": "Water"}, {"name": "Juniper Berry", "properties": "Protection - Purification - Banishing - Healing - Breaking hexes", "zodiac": "Aries - Sagittarius", "planet": "Jupiter - Sun", "element": "Fire"}, {"name": "Lavender", "properties": "Purification - Peace - Love - Sleep - Psychic protection - Calming", "zodiac": "Virgo - Gemini - Libra", "planet": "Mercury - Moon", "element": "Air"}, {"name": "Lemon", "properties": "Purification - Mental clarity - Uplifting - Lunar energy - Friendship", "zodiac": "Gemini - Cancer", "planet": "Moon - Mercury", "element": "Water - Air"}, {"name": "Lemongrass", "properties": "Psychic awareness - Clearing obstacles - Mental clarity - Purification", "zodiac": "Gemini - Aquarius", "planet": "Mercury - Uranus", "element": "Air"}, {"name": "Lime", "properties": "Purification - Protection - Uplifting energy - Clarity", "zodiac": "Gemini - Aries", "planet": "Sun - Mercury", "element": "Fire - Air"}, {"name": "Myrrh", "properties": "Spirituality - Protection - Healing - Consecration - Ancestral work", "zodiac": "Capricorn - Aries", "planet": "Saturn - Moon", "element": "Earth - Water"}, {"name": "Neroli", "properties": "Joy - Peace - Confidence - Attracting love - Easing grief", "zodiac": "Libra - Cancer", "planet": "Venus - Moon", "element": "Water"}, {"name": "Patchouli", "properties": "Abundance - Grounding - Sensuality - Earth magic - Manifestation", "zodiac": "Taurus - Capricorn - Scorpio", "planet": "Saturn - Venus", "element": "Earth"}, {"name": "Peppermint", "properties": "Purification - Mental clarity - Psychic enhancement - Protection - Energy", "zodiac": "Gemini - Virgo - Aquarius", "planet": "Mercury - Venus", "element": "Air"}, {"name": "Pine", "properties": "Cleansing - Grounding - Prosperity - Protection - Strength", "zodiac": "Capricorn - Sagittarius", "planet": "Mars - Saturn", "element": "Earth"}, {"name": "Rose", "properties": "Love - Self-love - Psychic ability - Healing the heart - Divine feminine", "zodiac": "Taurus - Libra - Cancer", "planet": "Venus - Moon", "element": "Water"}, {"name": "Rosemary", "properties": "Memory - Protection - Purification - Mental clarity - Fidelity", "zodiac": "Aries - Leo - Virgo", "planet": "Sun - Mars", "element": "Fire"}, {"name": "Sandalwood", "properties": "Meditation - Spiritual connection - Purification - Manifestation - Protection", "zodiac": "Leo - Virgo - Capricorn", "planet": "Moon - Saturn", "element": "Earth"}, {"name": "Spearmint", "properties": "Mental clarity - Luck - Protection - Love - Healing", "zodiac": "Cancer - Gemini", "planet": "Venus - Moon", "element": "Water - Air"}, {"name": "Tea Tree", "properties": "Purification - Protection - Healing - Cleansing negative energy", "zodiac": "Scorpio - Aquarius", "planet": "Uranus - Mars", "element": "Air - Fire"}, {"name": "Thyme", "properties": "Courage - Purification - Protection - Psychic power - Healing", "zodiac": "Aries - Libra", "planet": "Venus - Mars", "element": "Air"}, {"name": "Vetiver", "properties": "Grounding - Protection - Ancestral connection - Stability - Prosperity", "zodiac": "Taurus - Capricorn - Virgo", "planet": "Saturn", "element": "Earth"}, {"name": "Ylang Ylang", "properties": "Love - Sensuality - Peace - Confidence - Attracting abundance", "zodiac": "Taurus - Scorpio - Libra", "planet": "Venus", "element": "Water"}, {"name": "_x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000__x0000_", "properties": "nan", "zodiac": "nan", "planet": "nan", "element": "nan"}],
-  deities: {"Greek & Roman Pantheon": [{"name": "Hecate", "domain": "perhaps the most popular goddess in modern witchcraft; goddess of magic, crossroads, the moon, and witchcraft"}, {"name": "Aphrodite/Venus", "domain": "love, beauty, sexuality, relationships"}, {"name": "Artemis/Diana", "domain": "the hunt, the moon, independence, feminine power"}, {"name": "Hermes/Mercury", "domain": "communication, travel, magic, trickery, messages"}, {"name": "Apollo", "domain": "sun, music, prophecy, healing, truth"}, {"name": "Persephone", "domain": "the underworld, transformation, seasons, rebirth"}, {"name": "Demeter/Ceres", "domain": "earth, harvest, fertility, abundance"}, {"name": "Zeus/Jupiter", "domain": "sky, power, justice, authority"}, {"name": "Hephaestus/Vulcan", "domain": "fire, craftsmanship, transformation"}, {"name": "Dionysus/Bacchus", "domain": "ecstasy, wine, altered states, liberation"}, {"name": "Athena/Minerva", "domain": "wisdom, strategy, crafts, justice"}, {"name": "Poseidon/Neptune", "domain": "sea, intuition, storms, the unconscious"}], "Egyptian Pantheon": [{"name": "Isis", "domain": "arguably the most universally worshipped goddess in history; magic, healing, motherhood, protection"}, {"name": "Osiris", "domain": "death, resurrection, the afterlife, judgment"}, {"name": "Thoth", "domain": "wisdom, writing, magic, the moon, knowledge"}, {"name": "Ra/AmunRa", "domain": "the sun, creation, kingship, power"}, {"name": "Anubis", "domain": "death, the afterlife, protection of the dead, guidance"}, {"name": "Bastet", "domain": "cats, home, protection, fertility, pleasure"}, {"name": "Sekhmet", "domain": "healing, war, destruction, fierce protection"}, {"name": "Hathor", "domain": "love, beauty, music, joy, motherhood"}, {"name": "Horus", "domain": "sky, kingship, protection, the sun and moon"}, {"name": "Set", "domain": "chaos, storms, the desert, transformation through conflict"}, {"name": "Ma'at", "domain": "truth, justice, balance, cosmic order"}], "Norse Pantheon": [{"name": "Odin", "domain": "wisdom, magic, war, death, poetry, runes"}, {"name": "Freya", "domain": "love, fertility, war, magic (seidr), beauty, gold"}, {"name": "Thor", "domain": "thunder, strength, protection, working people"}, {"name": "Loki", "domain": "trickery, transformation, chaos, cleverness"}, {"name": "Frigg", "domain": "marriage, motherhood, foresight, domesticity"}, {"name": "Tyr", "domain": "justice, law, sacrifice, honor"}, {"name": "Heimdall", "domain": "watchfulness, the rainbow bridge, protection"}, {"name": "Skadi", "domain": "winter, mountains, hunting, independence"}, {"name": "Brigid (also Celtic)", "domain": "fire, healing, poetry, smithcraft"}, {"name": "Morrigan (Celtic/Norse overlap)", "domain": "fate, war, transformation, prophecy"}], "Celtic Pantheon": [{"name": "The Morrigan", "domain": "sovereignty, fate, war, shapeshifting, prophecy"}, {"name": "Brigid", "domain": "healing, fire, poetry, smithcraft, the home"}, {"name": "Cernunnos", "domain": "the horned god, nature, animals, fertility, the wild"}, {"name": "Danu", "domain": "the mother goddess, earth, rivers, abundance"}, {"name": "Lugh", "domain": "sun, skill, craftsmanship, many talents"}, {"name": "The Dagda", "domain": "fertility, agriculture, wisdom, protection"}, {"name": "Arawn", "domain": "the underworld, death, justice, hunting"}, {"name": "Rhiannon", "domain": "horses, the otherworld, sovereignty, birds"}], "Hindu Deities": [{"name": "Ganesha", "domain": "removing obstacles, new beginnings, wisdom, success probably the most widely invoked Hindu deity globally"}, {"name": "Lakshmi", "domain": "wealth, abundance, fortune, beauty, prosperity"}, {"name": "Saraswati", "domain": "knowledge, arts, music, learning, creativity"}, {"name": "Kali", "domain": "destruction of ego, fierce transformation, time, liberation"}, {"name": "Durga", "domain": "protection, war, strength, feminine power"}, {"name": "Shiva", "domain": "destruction and creation, transformation, meditation, yoga"}, {"name": "Vishnu", "domain": "preservation, protection, balance, cosmic order"}, {"name": "Krishna", "domain": "love, devotion, joy, divine play"}, {"name": "Parvati", "domain": "love, fertility, devotion, the divine feminine"}, {"name": "Hanuman", "domain": "devotion, strength, loyalty, service"}], "Yoruba / AfroCaribbean Orishas": [{"name": "Oshun", "domain": "love, rivers, fertility, beauty, sweetness, abundance"}, {"name": "Yemaya", "domain": "the ocean, motherhood, protection, the unconscious"}, {"name": "Shango", "domain": "thunder, lightning, justice, strength, passion"}, {"name": "Elegba/Eshu", "domain": "crossroads, communication, beginnings, trickster energy"}, {"name": "Obatala", "domain": "wisdom, purity, peace, creation, clarity"}, {"name": "Oya", "domain": "storms, change, death, transformation, wind"}, {"name": "Ogun", "domain": "iron, war, labor, the wilderness, protection"}], "Mesopotamian / Sumerian": [{"name": "Inanna/Ishtar", "domain": "love, war, beauty, political power, descent and return"}, {"name": "Enki/Ea", "domain": "wisdom, water, magic, creation, crafts"}, {"name": "Nanna/Sin", "domain": "the moon, wisdom, cattle, time"}, {"name": "Ereshkigal", "domain": "the underworld, shadow work, grief, transformation"}], "Celtic / Arthurian Archetypes": [{"name": "The Green Man", "domain": "nature, rebirth, the cycle of seasons"}, {"name": "The Triple Goddess", "domain": "Maiden/Mother/Crone as phases of the feminine divine (and the moon)"}, {"name": "The Horned God", "domain": "masculine counterpart in Wicca, nature and the hunt"}], "How People Work With Deities": [{"name": "Hard polytheism", "domain": "believing each deity is a fully distinct, literal being"}, {"name": "Soft polytheism", "domain": "seeing all gods as aspects of one divine source"}, {"name": "Archetypal approach", "domain": "working with deities as powerful psychological symbols without literal belief"}, {"name": "Devotional practice", "domain": "building an ongoing relationship through altar work, offerings, prayer, and ritual"}, {"name": "Invocation", "domain": "calling a deity's energy into yourself during ritual"}, {"name": "Evocation", "domain": "calling a deity's presence into a space outside yourself"}]}
-};
-
-var CANDLE_HEX = {"White": "#f5f5f5", "Black": "#1a1a1a", "Red": "#c0392b", "Pink": "#e91e8c", "Orange": "#e67e22", "Yellow": "#f1c40f", "Green": "#27ae60", "Light Blue": "#5dade2", "Dark Blue / Indigo": "#2c3e7a", "Purple / Violet": "#7d3c98", "Brown": "#7d5a3c", "Gold": "#c9a84c", "Silver": "#aab7b8", "Lavender": "#c39bd3", "Magenta": "#d63384", "Gray": "#7f8c8d"};
-
-var currentRefTab = 'candles';
-
-function switchRefTab(tab, btn) {
-  currentRefTab = tab;
-  document.querySelectorAll('.ref-tab').forEach(function(b) { b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  document.getElementById('refSearch').value = '';
-  renderRefTab();
-}
-
-function renderRefTab() {
-  if (!REF_DATA || !REF_DATA.candles) return;
-  var refContentEl = document.getElementById('refContent');
-  if (!refContentEl) return;
-  var searchEl = document.getElementById('refSearch');
-  var q = searchEl ? searchEl.value.toLowerCase().trim() : '';
-  var html = '';
-
-  if (currentRefTab === 'candles') {
-    var items = q ? REF_DATA.candles.filter(function(c) {
-      return c.color.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q) || c.element.toLowerCase().includes(q);
-    }) : REF_DATA.candles;
-    html = '<div class="candle-grid">' + items.map(function(c) {
-      var hex = CANDLE_HEX[c.color] || '#888';
-      var props = c.properties.split(' - ').join(' Â· ');
-      return '<div class="candle-card" onclick="openRefModal(' + JSON.stringify(c).replace(/"/g,'&quot;') + ', \'candle\')">'
-        + '<div class="candle-swatch" style="background:' + hex + '"></div>'
-        + '<div class="candle-name">' + c.color + '</div>'
-        + '<div class="candle-props">' + props + '</div>'
-        + '</div>';
-    }).join('') + '</div>';
-
-  } else if (currentRefTab === 'crystals') {
-    var items = q ? REF_DATA.crystals.filter(function(c) {
-      return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q) || c.category.toLowerCase().includes(q);
-    }) : REF_DATA.crystals;
-    html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'crystal');
-    }).join('') + '</div>';
-
-  } else if (currentRefTab === 'herbs') {
-    var items = q ? REF_DATA.herbs.filter(function(c) {
-      return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q);
-    }) : REF_DATA.herbs;
-    html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'herb');
-    }).join('') + '</div>';
-
-  } else if (currentRefTab === 'oils') {
-    var items = q ? REF_DATA.oils.filter(function(c) {
-      return c.name.toLowerCase().includes(q) || c.properties.toLowerCase().includes(q);
-    }) : REF_DATA.oils;
-    html = '<div class="ref-grid">' + items.map(function(c) {
-      return refCard(c, 'oil');
-    }).join('') + '</div>';
-
-  } else if (currentRefTab === 'deities') {
-    var sections = Object.keys(REF_DATA.deities);
-    html = sections.map(function(pantheon) {
-      var deities = REF_DATA.deities[pantheon];
-      var filtered = q ? deities.filter(function(d) {
-        return d.name.toLowerCase().includes(q) || d.domain.toLowerCase().includes(q);
-      }) : deities;
-      if (filtered.length === 0) return '';
-      return '<div class="deity-pantheon">'
-        + '<div class="deity-pantheon-title">' + pantheon + '</div>'
-        + '<div class="deity-grid">' + filtered.map(function(d) {
-          return '<div class="deity-card">'
-            + '<div class="deity-name">' + d.name + '</div>'
-            + '<div class="deity-domain">' + d.domain + '</div>'
-            + '</div>';
-        }).join('') + '</div></div>';
-    }).join('');
-  }
-
-  if (!html || html.replace(/<[^>]*>/g,'').trim() === '') {
-    html = '<div style="text-align:center;color:var(--gold-dim);font-style:italic;padding:40px">No results found.</div>';
-  }
-
-  refContentEl.innerHTML = html;
-}
-
-function refCard(item, type) {
-  var name = item.name;
-  var cat = item.category || '';
-  var props = item.properties.split(' - ').join(' Â· ');
-  var meta = '';
-  if (item.element && item.element !== 'nan') meta += '<span class="ref-meta-pill">ðŸœ ' + item.element + '</span>';
-  if (item.planet && item.planet !== 'nan') meta += '<span class="ref-meta-pill">â˜½ ' + item.planet + '</span>';
-  if (item.zodiac && item.zodiac !== 'nan') meta += '<span class="ref-meta-pill">âœ¦ ' + item.zodiac.split(' - ')[0] + '</span>';
-  var itemJson = JSON.stringify(item).replace(/"/g,'&quot;');
-  return '<div class="ref-card" onclick="openRefModal(' + itemJson + ', \'item\')">'
-    + '<div class="ref-card-name">' + name + '</div>'
-    + (cat ? '<div class="ref-card-cat">' + cat + '</div>' : '')
-    + '<div class="ref-card-props">' + props + '</div>'
-    + '<div class="ref-card-meta">' + meta + '</div>'
-    + '</div>';
-}
-
-function openRefModal(item, type) {
-  if (typeof item === 'string') item = JSON.parse(item);
-  var name = item.color || item.name;
-  var cat = item.category || '';
-  var props = item.properties || item.domain || '';
-  var el = document.getElementById('refModalBox');
-
-  var metaHtml = '';
-  if (item.element && item.element !== 'nan')
-    metaHtml += '<div class="ref-modal-meta-item"><label>Element</label><span>' + item.element + '</span></div>';
-  if (item.planet && item.planet !== 'nan')
-    metaHtml += '<div class="ref-modal-meta-item"><label>Planet</label><span>' + item.planet + '</span></div>';
-  if (item.zodiac && item.zodiac !== 'nan')
-    metaHtml += '<div class="ref-modal-meta-item"><label>Zodiac</label><span>' + item.zodiac + '</span></div>';
-
-  var swatchHtml = '';
-  if (type === 'candle') {
-    var hex = CANDLE_HEX[name] || '#888';
-    swatchHtml = '<div class="candle-swatch" style="width:50px;height:50px;background:' + hex + ';margin-bottom:14px"></div>';
-  }
-
-  el.innerHTML = '<button class="modal-close" onclick="closeRefModal()">X</button>'
-    + swatchHtml
-    + '<h2>' + name + '</h2>'
-    + (cat ? '<div class="ref-modal-cat">' + cat + '</div>' : '')
-    + '<div class="ref-modal-props">' + props + '</div>'
-    + (metaHtml ? '<div class="ref-modal-meta">' + metaHtml + '</div>' : '');
-
-  document.getElementById('refModal').classList.add('open');
-}
-
-function closeRefModal() {
-  document.getElementById('refModal').classList.remove('open');
-}
-
-setTimeout(function() {
-  fetchAllCards().then(function(cards) { allCards = cards; }).catch(function() {});
-}, 800);
-</script>
-
-<div class="ref-modal-overlay" id="refModal">
-  <div class="ref-modal-box" id="refModalBox"></div>
-</div>
+  <footer>
+    <div style="margin-bottom:16px">
+      The Veil · Tarot and Astrology · Downloadable home-screen web app · For entertainment and personal reflection only
+    </div>
+    <div style="margin-bottom:10px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold-dim)">
+      SUPPORT THE VEIL
+    </div>
+    <div class="support-links">
+      <a href="https://cash.app/$toyz4me" target="_blank" rel="noopener">✦ CashApp</a>
+      <a href="https://venmo.com/u/the_funko_deity" target="_blank" rel="noopener">✦ Venmo</a>
+      <a href="https://www.paypal.me/thefunkodeity" target="_blank" rel="noopener">✦ PayPal</a>
+    </div>
+  </footer>
+
+  <script src="./astrology.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
