@@ -1,4 +1,4 @@
-name: Download Tarot Card Images
+name: Download Tarot Card Images 
 
 on:
   workflow_dispatch:
