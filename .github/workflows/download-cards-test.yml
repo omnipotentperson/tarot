@@ -1,0 +1,36 @@
+name: Download Tarot Card Images (test run)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y curl python3
+
+      - name: Make downloader executable
+        run: |
+          chmod +x scripts/download-cards.sh
+
+      - name: Run downloader script
+        run: |
+          ./scripts/download-cards.sh
+          echo "Downloaded files summary:"
+          ls -1 assets/cards | head -n 30 || true
+          echo "Mapping file preview:"
+          head -n 50 data/card-images.json || true
+
+      - name: Upload card-images.json for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: card-images-json
+          path: data/card-images.json
