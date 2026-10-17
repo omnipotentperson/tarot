@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 outdir=assets/cards
 mkdir -p "$outdir" data
 tmpmap="$(mktemp)"
@@ -41,6 +42,13 @@ slugify() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-|-$//g'
 }
 
+# download helper: returns 0 on success
+download_file() {
+  local url="$1" outpath="$2"
+  curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "$outpath" "$url"
+  return $?
+}
+
 while IFS='|' read -r card file; do
   if [ -z "$card" ]; then continue; fi
   counter=$((counter+1))
@@ -53,9 +61,10 @@ PY
 "$file")
   url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
   echo "Downloading: $card -> $url"
-  if curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "${outdir}/${outName}" "$url"; then
+  if download_file "$url" "${outdir}/${outName}"; then
     esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
     printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+    echo "  saved ${outName}"
   else
     echo "  failed for $card"
   fi
@@ -78,9 +87,10 @@ PY
 "$file")
     url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
     echo "Downloading: $card -> $url"
-    if curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "${outdir}/${outName}" "$url"; then
+    if download_file "$url" "${outdir}/${outName}"; then
       esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
-      printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+      printf '  "%s": \"%s\",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+      echo "  saved ${outName}"
     else
       echo "  failed for $card"
     fi
@@ -88,6 +98,7 @@ PY
   done
 done
 
+# finish json - remove trailing comma safely
 sed -e '$ s/,$//' "$tmpmap" > "$tmpmap.tmp"
 echo "}" >> "$tmpmap.tmp"
 mv "$tmpmap.tmp" data/card-images.json
