@@ -22,108 +22,128 @@ jobs:
           persist-credentials: true
           fetch-depth: 0
 
-      - name: Setup Node 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Prepare directories
+      - name: Prepare environment
         run: |
-          mkdir -p assets/cards data scripts
+          sudo apt-get update -y
+          sudo apt-get install -y curl wget
 
-      - name: Create CommonJS downloader script
+      - name: Create shell downloader
         run: |
-          cat > scripts/download-cards.js <<'NODE'
-          // CommonJS downloader — safe for GitHub Actions runners
-          // Saves images to assets/cards/* and emits data/card-images.json
-          const fs = require('fs').promises;
-          const path = require('path');
+          cat > scripts/download-cards.sh <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          outdir=assets/cards
+          mkdir -p "$outdir" data
+          tmpmap="$(mktemp)"
+          echo "{" > "$tmpmap"
+          counter=0
 
-          (async () => {
-            const outDir = path.resolve('assets','cards');
-            await fs.mkdir(outDir, { recursive: true });
+          # Majors (explicit)
+          read -r -d '' MAJORS <<'MAJ' || true
+          The Fool|Pictorial Key to the Tarot 00 The Fool.jpg
+          The Magician|Pictorial Key to the Tarot 01 The Magician.jpg
+          The High Priestess|Pictorial Key to the Tarot 02 The High Priestess.jpg
+          The Empress|Pictorial Key to the Tarot 03 The Empress.jpg
+          The Emperor|Pictorial Key to the Tarot 04 The Emperor.jpg
+          The Hierophant|Pictorial Key to the Tarot 05 The Hierophant.jpg
+          The Lovers|Pictorial Key to the Tarot 06 The Lovers.jpg
+          The Chariot|Pictorial Key to the Tarot 07 The Chariot.jpg
+          Strength|Pictorial Key to the Tarot 08 Strength.jpg
+          The Hermit|Pictorial Key to the Tarot 09 The Hermit.jpg
+          Wheel of Fortune|Pictorial Key to the Tarot 10 Wheel of Fortune.jpg
+          Justice|Pictorial Key to the Tarot 11 Justice.jpg
+          The Hanged Man|Pictorial Key to the Tarot 12 The Hanged Man.jpg
+          Death|Pictorial Key to the Tarot 13 Death.jpg
+          Temperance|Pictorial Key to the Tarot 14 Temperance.jpg
+          The Devil|Pictorial Key to the Tarot 15 The Devil.jpg
+          The Tower|Pictorial Key to the Tarot 16 The Tower.jpg
+          The Star|Pictorial Key to the Tarot 17 The Star.jpg
+          The Moon|Pictorial Key to the Tarot 18 The Moon.jpg
+          The Sun|Pictorial Key to the Tarot 19 The Sun.jpg
+          Judgement|Pictorial Key to the Tarot 20 Judgement.jpg
+          Judgment|Pictorial Key to the Tarot 20 Judgement.jpg
+          The World|Pictorial Key to the Tarot 21 The World.jpg
+          MAJ
 
-            const major = {
-              "The Fool":"Pictorial Key to the Tarot 00 The Fool.jpg",
-              "The Magician":"Pictorial Key to the Tarot 01 The Magician.jpg",
-              "The High Priestess":"Pictorial Key to the Tarot 02 The High Priestess.jpg",
-              "The Empress":"Pictorial Key to the Tarot 03 The Empress.jpg",
-              "The Emperor":"Pictorial Key to the Tarot 04 The Emperor.jpg",
-              "The Hierophant":"Pictorial Key to the Tarot 05 The Hierophant.jpg",
-              "The Lovers":"Pictorial Key to the Tarot 06 The Lovers.jpg",
-              "The Chariot":"Pictorial Key to the Tarot 07 The Chariot.jpg",
-              "Strength":"Pictorial Key to the Tarot 08 Strength.jpg",
-              "The Hermit":"Pictorial Key to the Tarot 09 The Hermit.jpg",
-              "Wheel of Fortune":"Pictorial Key to the Tarot 10 Wheel of Fortune.jpg",
-              "Justice":"Pictorial Key to the Tarot 11 Justice.jpg",
-              "The Hanged Man":"Pictorial Key to the Tarot 12 The Hanged Man.jpg",
-              "Death":"Pictorial Key to the Tarot 13 Death.jpg",
-              "Temperance":"Pictorial Key to the Tarot 14 Temperance.jpg",
-              "The Devil":"Pictorial Key to the Tarot 15 The Devil.jpg",
-              "The Tower":"Pictorial Key to the Tarot 16 The Tower.jpg",
-              "The Star":"Pictorial Key to the Tarot 17 The Star.jpg",
-              "The Moon":"Pictorial Key to the Tarot 18 The Moon.jpg",
-              "The Sun":"Pictorial Key to the Tarot 19 The Sun.jpg",
-              "Judgement":"Pictorial Key to the Tarot 20 Judgement.jpg",
-              "Judgment":"Pictorial Key to the Tarot 20 Judgement.jpg",
-              "The World":"Pictorial Key to the Tarot 21 The World.jpg"
-            };
+          # Rank names and corresponding filenames for minors
+          ranks=(Ace Two Three Four Five Six Seven Eight Nine Ten Page Knight Queen King)
+          ranknum=(01 02 03 04 05 06 07 08 09 10 11 12 13 14)
+          suits=(Wands Cups Swords Pentacles)
 
-            const rankMap = {Ace:'01',Two:'02',Three:'03',Four:'04',Five:'05',Six:'06',Seven:'07',Eight:'08',Nine:'09',Ten:'10',Page:'11',Knight:'12',Queen:'13',King:'14'};
-            const suits = ['Wands','Cups','Swords','Pentacles'];
+          # helper: slugify
+          slugify() {
+            printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-|-$//g'
+          }
 
-            const map = Object.assign({}, major);
-            Object.keys(rankMap).forEach(rank => {
-              suits.forEach(suit => {
-                map[`${rank} of ${suit}`] = `Pictorial Key to the Tarot ${suit} ${rankMap[rank]}.jpg`;
-              });
-            });
+          # iterate majors
+          while IFS='|' read -r card file; do
+            if [ -z "$card" ]; then continue; fi
+            counter=$((counter+1))
+            slug=$(slugify "$card")
+            outName=$(printf "%02d-%s.jpg" "$counter" "$slug")
+            # encode filename using python3 URL encode (safe on runner)
+            enc=$(python3 - <<PY
+import sys, urllib.parse
+print(urllib.parse.quote(sys.argv[1], safe=''))
+PY
+"$file")
+            url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
+            echo "Downloading: $card -> $url"
+            if curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "${outdir}/${outName}" "$url"; then
+              echo "  saved ${outName}"
+              esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
+              printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+            else
+              echo "  failed for $card"
+            fi
+            sleep 0.12
+          done <<< "$MAJ"
 
-            const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-            const outMap = {};
-            let counter = 0;
+          # minors generated programmatically
+          for i in "${!ranks[@]}"; do
+            rank="${ranks[$i]}"
+            num="${ranknum[$i]}"
+            for suit in "${suits[@]}"; do
+              card="${rank} of ${suit}"
+              file="Pictorial Key to the Tarot ${suit} ${num}.jpg"
+              counter=$((counter+1))
+              slug=$(slugify "$card")
+              outName=$(printf "%02d-%s.jpg" "$counter" "$slug")
+              enc=$(python3 - <<PY
+import sys, urllib.parse
+print(urllib.parse.quote(sys.argv[1], safe=''))
+PY
+"$file")
+              url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
+              echo "Downloading: $card -> $url"
+              if curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "${outdir}/${outName}" "$url"; then
+                echo "  saved ${outName}"
+                esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
+                printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+              else
+                echo "  failed for $card"
+              fi
+              sleep 0.12
+            done
+          done
 
-            for (const [cardName, fileName] of Object.entries(map)) {
-              counter += 1;
-              const slug = slugify(cardName);
-              const outName = `${String(counter).padStart(2,'0')}-${slug}.jpg`;
-              const outPath = path.join(outDir, outName);
+          # finish json - remove trailing comma safely
+          # write temp final JSON
+          sed -e '$ s/,$//' "$tmpmap" > "$tmpmap.tmp"
+          echo "}" >> "$tmpmap.tmp"
+          mv "$tmpmap.tmp" data/card-images.json
+          rm -f "$tmpmap"
+          echo "Wrote data/card-images.json ($(wc -l < data/card-images.json) lines)."
+          SH
+          chmod +x scripts/download-cards.sh
 
-              // encode filename and request a reasonable width to keep size small
-              const encoded = encodeURIComponent(fileName);
-              const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${encoded}?width=360`;
-
-              try {
-                const res = await fetch(url);
-                if (!res.ok) {
-                  console.warn(`Failed to download ${cardName}: ${res.status}`);
-                  continue;
-                }
-                const buf = Buffer.from(await res.arrayBuffer());
-                await fs.writeFile(outPath, buf);
-                outMap[cardName] = `assets/cards/${outName}`;
-                console.log(`Saved ${cardName} → ${outMap[cardName]}`);
-                // polite throttle between requests
-                await new Promise(r => setTimeout(r, 120));
-              } catch (err) {
-                console.warn(`Error downloading ${cardName}: ${err && err.message}`);
-              }
-            }
-
-            await fs.mkdir(path.resolve('data'), { recursive: true });
-            await fs.writeFile(path.resolve('data','card-images.json'), JSON.stringify(outMap, null, 2));
-            console.log('Wrote data/card-images.json with', Object.keys(outMap).length, 'entries');
-          })();
-          NODE
-
-      - name: Run downloader
+      - name: Run downloader script
         run: |
-          node scripts/download-cards.js
-          echo "Downloaded files size (summary):"
+          ./scripts/download-cards.sh
           du -sh assets/cards || true
           ls -1 assets/cards | wc -l || true
 
-      - name: "Commit and push generated files (safe: rebase/merge or create PR)"
+      - name: Commit and push generated files (safe: rebase/merge or create PR)
         env:
           TARGET_BRANCH: ${{ github.event.inputs.branch || 'main' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -142,28 +162,20 @@ jobs:
 
           git commit -m "Add local tarot card images (generated by workflow)"
 
-          # Fetch latest remote target branch and try to rebase to avoid non-fast-forward
           git fetch origin "${TARGET_BRANCH}" || true
           if git rev-parse --verify "origin/${TARGET_BRANCH}" >/dev/null 2>&1; then
-            echo "Attempting rebase onto origin/${TARGET_BRANCH}"
             if git rebase "origin/${TARGET_BRANCH}"; then
               echo "Rebase completed"
             else
-              echo "Rebase failed, aborting rebase and trying merge"
               git rebase --abort || true
               git merge --no-edit "origin/${TARGET_BRANCH}" || true
             fi
-          else
-            echo "No remote branch origin/${TARGET_BRANCH} found, will push new branch"
           fi
 
-          # Try normal push to TARGET_BRANCH
           if git push origin "HEAD:refs/heads/${TARGET_BRANCH}"; then
             echo "Pushed changes directly to ${TARGET_BRANCH}"
             exit 0
           fi
-
-          echo "Direct push failed (branch protection or non-fast-forward). Creating a feature branch and opening a PR."
 
           BRANCH_NAME="images/generated-$(date +%s)"
           git push origin "HEAD:refs/heads/${BRANCH_NAME}"
@@ -171,7 +183,6 @@ jobs:
           PR_TITLE="Add generated tarot card images"
           PR_BODY="This pull request adds generated local tarot card images and the mapping file (created by workflow). Please review and merge to populate main."
 
-          # create PR using GITHUB_TOKEN
           curl -s -X POST \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
