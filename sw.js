@@ -1,4 +1,4 @@
-const CACHE = 'the-veil-v2';
+const CACHE = 'the-veil-v3';
 const ASSETS = [
   './',
   './index.html',

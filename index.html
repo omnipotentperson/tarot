@@ -13,6 +13,9 @@
   <meta property="og:title" content="The Veil — Tarot & Astrology" />
   <meta property="og:description" content="An installable tarot and astrology app with readings, birth charts, seasonal themes, sigils, and a spiritual reference library." />
   <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The Veil — Tarot & Astrology" />
+  <meta name="twitter:description" content="An installable tarot and astrology app with readings, birth charts, seasonal themes, sigils, and a spiritual reference library." />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,7 +190,7 @@
           <input type="date" id="bcDate" />
         </div>
         <div class="form-group">
-          <label for="bcTime">Time of Birth</label>
+          <label for="bcTime">Time of Birth <span class="meta-copy">(optional)</span></label>
           <input type="time" id="bcTime" />
         </div>
         <div class="form-group">
@@ -199,6 +202,14 @@
       <div id="bcError" class="center meta-copy" style="margin-top:12px;color:#ffb8b8"></div>
       <div id="bcResult" class="hidden">
         <p class="center meta-copy" id="bcTimeNote"></p>
+        <div id="bcRisingWrap" class="hidden" style="max-width:560px;margin:0 auto 24px">
+          <div class="reading-panel-title" style="justify-content:center">✦ Possible Rising Signs</div>
+          <p class="center meta-copy" style="margin-bottom:12px">Find your birth time below — your rising sign is next to it. Times are approximate.</p>
+          <table class="planet-table" aria-label="Possible rising signs by birth time">
+            <thead><tr><th>Birth time</th><th>Rising sign</th></tr></thead>
+            <tbody id="bcRisingRows"></tbody>
+          </table>
+        </div>
         <div class="dominant-row" id="bcDominants"></div>
         <div class="chart-tabs">
           <button class="tab-btn active" data-bc-tab="chart">Chart Wheel</button>

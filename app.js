@@ -73,14 +73,8 @@ async function init(){
 async function loadReferenceData(){
   const refRes = await fetch('./data/reference.json');
   APP.data = await refRes.json();
-  try {
-    const tarotRes = await fetch('https://tarotapi.dev/api/v1/cards');
-    const tarotJson = await tarotRes.json();
-    const cards = tarotJson.cards || tarotJson.data || [];
-    APP.tarotDeck = cards.map(normalizeCard);
-  } catch (e) {
-    APP.tarotDeck = buildFullFallbackDeck().map(normalizeCard);
-  }
+  // Full 78-card deck bundled locally — no network dependency, works offline.
+  APP.tarotDeck = (APP.data.fullDeck || APP.data.fallbackDeck || []).map(normalizeCard);
 }
 function normalizeCard(card){
   const name = card.name;
@@ -135,27 +129,6 @@ function commonsImage(fileName){
 }
 
 
-function buildFullFallbackDeck(){
-  const major = (APP.data?.fallbackDeck || []).map(c => ({...c, arcana:'Major'}));
-  const suits = ['wands','cups','swords','pentacles'];
-  const ranks = ['Ace','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Page','Knight','Queen','King'];
-  const minors = [];
-  suits.forEach(suit => {
-    ranks.forEach(rank => {
-      const titleSuit = suit.charAt(0).toUpperCase()+suit.slice(1);
-      minors.push({
-        name: `${rank} of ${titleSuit}`,
-        suit,
-        arcana: 'Minor',
-        meaning_up: `${rank} of ${titleSuit} upright meaning.`,
-        meaning_rev: `${rank} of ${titleSuit} reversed meaning.`,
-        desc: `A ${suit} card representing ${rank.toLowerCase()} energy.`,
-        image: ''
-      });
-    });
-  });
-  return major.concat(minors);
-}
 
 function bindEvents(){
   $('#mainNav').addEventListener('click', e => {
@@ -214,6 +187,7 @@ function bindEvents(){
 function showSection(id, btn){
   $$('.section').forEach(s => s.classList.toggle('visible', s.id===id));
   $$('.nav-btn').forEach(b => b.classList.toggle('active', b===btn || b.dataset.section===id));
+  if(id === 'fan' && !$('#fanWrapper').children.length) buildInitialFan();
   sectionEl(id).scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -292,7 +266,9 @@ function relationshipContextSummary(context){
 function tarotSynthesis(spreadType, draws, intention, relationshipContext=null){
   const names = draws.map(d=>d.card.name).join(', ');
   const revs = draws.filter(d=>d.reversed).length;
-  const tone = revs > draws.length/2 ? 'The reading leans toward clearing blockages before pushing forward.' : 'The reading favors movement, clarity, and deliberate action.';
+  const revNote = revs > draws.length/2
+    ? 'Reversals dominate here — read this as a clearing first and an advance second.'
+    : (revs > 0 ? `Note the ${revs} reversal${revs>1?'s':''}: friction worth naming, not fearing.` : 'All cards upright: the current is with you.');
   const spreadMap = {
     single:'Let this card be a lantern, not a verdict. Read its image, suit, and orientation as one focused instruction for the next step.',
     three:'Read the spread as a thread: the first card names the root, the second names the living moment, and the third names the gate opening ahead.',
@@ -302,7 +278,7 @@ function tarotSynthesis(spreadType, draws, intention, relationshipContext=null){
     yesno: revs >= 3 ? 'The answer leans no or not yet. Name the condition that would need to change before the gate opens.' : 'The answer leans yes. Name the action that keeps the path clean and honest.'
   };
   const linked = relationshipContext ? ' The linked reading IDs are part of the relationship field and should be treated as background weather, not as proof or fate.' : '';
-  return `${spreadMap[spreadType] || tone} ${tone}${linked} Cards present: ${names}. ${intention ? 'Keep the stated intention in the center and choose the most embodied next step.' : 'Let the reading end with one grounded practice or choice.'}`;
+  return `${spreadMap[spreadType] || 'Read each card in its position, then weave them into one counsel.'} ${revNote}${linked} Cards present: ${names}. ${intention ? 'Keep the stated intention in the center and choose the most embodied next step.' : 'Let the reading end with one grounded practice or choice.'}`;
 }
 
 async function enhanceTarotReading(reading){
@@ -390,20 +366,24 @@ function buildInitialFan(){
   const deck = shuffle(APP.tarotDeck).slice(0, Math.min(APP.tarotDeck.length || 78, 78));
   const wrap = $('#fanWrapper');
   wrap.innerHTML = '';
+  // Container-relative layout: fits mobile, tablet, and desktop without overflow.
+  const availW = Math.min(window.innerWidth - 48, wrap.parentElement?.clientWidth || window.innerWidth - 48, 800);
   const isMobile = window.matchMedia('(max-width: 720px)').matches;
-  const cardWidth = isMobile ? 54 : 70;
-  const angleSpan = isMobile ? 118 : 96;
-  const radius = isMobile ? 160 : 520;
+  const cardW = isMobile ? 54 : 70;
+  const n = deck.length;
+  const spreadW = Math.max(120, Math.min(availW - cardW - 16, (n - 1) * 17));
+  const angleSpan = Math.min(110, 36 + spreadW / 14);
   deck.forEach((card, i) => {
-    const angle = -angleSpan/2 + (i * (angleSpan / Math.max(deck.length - 1, 1)));
-    const angleRad = angle * Math.PI / 180;
-    const x = isMobile ? Math.sin(angleRad) * radius : i * 17;
-    const y = isMobile ? (Math.cos(angleRad) * radius) - 80 : 0;
+    const t = n > 1 ? i / (n - 1) : 0.5;
+    const x = (t - 0.5) * spreadW;
+    const angle = (t - 0.5) * angleSpan;
+    const lift = Math.sin(t * Math.PI) * (isMobile ? 22 : 30);
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'fan-card';
-    btn.style.left = isMobile ? `calc(50% - ${cardWidth/2}px + ${x}px)` : `calc(50% - 35px + ${x - ((deck.length-1)*8.5)}px)`;
-    btn.style.bottom = isMobile ? `${Math.max(10, y)}px` : '0';
+    btn.style.width = cardW + 'px';
+    btn.style.left = `calc(50% - ${cardW / 2}px + ${x}px)`;
+    btn.style.bottom = `${(isMobile ? 30 : 6) + lift}px`;
     btn.style.transform = `rotate(${angle}deg)`;
     btn.setAttribute('aria-label', `Fan card ${i+1}`);
     btn.addEventListener('click', () => revealFanCard(card));
@@ -413,6 +393,14 @@ function buildInitialFan(){
   $('#fanReadingPanel').classList.add('hidden');
   $('#printFanBtn').classList.add('hidden');
 }
+let __fanResizeT = null;
+window.addEventListener('resize', () => {
+  clearTimeout(__fanResizeT);
+  __fanResizeT = setTimeout(() => {
+    // Re-lay the fan on rotation/resize only when no card is currently revealed.
+    if ($('#fanReadingPanel').classList.contains('hidden')) buildInitialFan();
+  }, 300);
+});
 function revealFanCard(card){
   const draw = { card, reversed: Math.random() < 0.33 };
   $('#fanRevealArea').innerHTML = buildCardMarkup(draw, 'Chosen Card');
@@ -491,23 +479,84 @@ function loadHoroscope(){
 function signToLongitude(sign){
   const order = AstrologyEngine.SIGNS.indexOf(sign); return order*30 + 15;
 }
+function dayOfYear(date=new Date()){
+  return Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
+}
+function horoscopeAstroLine(){
+  // Built from the real sky, so it is never the same two days running.
+  const now = new Date();
+  const set = AstrologyEngine.getPlanetSet(now);
+  const moon = set.find(p=>p.name==='Moon');
+  const mars = set.find(p=>p.name==='Mars');
+  const phase = AstrologyEngine.moonPhase(now);
+  return `<p><strong>Sky note:</strong> The Moon moves through ${moon.sign} under a ${phase.name.toLowerCase()}, while Mars in ${mars.sign} colors the drive of the day.</p>`;
+}
 function horoscopeText(sign, tab){
-  const moods = {
-    daily:`<p><strong>${sign}</strong>, today favors one clean decision over scattered motion. Follow the signal that makes your body feel steadier, not noisier.</p><p>Watch for a useful coincidence, a direct message, or a timing window that opens briefly and asks for a response.</p>`,
-    weekly:`<p><strong>${sign}</strong>, this week is about pattern recognition. What repeats is the real message. What drains you repeatedly needs a boundary.</p><p>Leave room for one brave act and one practical act; the best progress uses both.</p>`,
-    monthly:`<p><strong>${sign}</strong>, the month asks for alignment between values and habits. Big ideas only matter if your calendar and energy support them.</p><p>Choose the commitment that keeps paying you back in clarity, time, or peace.</p>`
+  const variants = {
+    daily: [
+      `<p><strong>{s}</strong>, the day rewards one clean decision made early. Notice what steadies your body — follow that signal, not the loudest voice in the room.</p>`,
+      `<p>Something small wants your attention today, <strong>{s}</strong>. A message, a timing window, a useful coincidence — respond before it passes.</p>`,
+      `<p>Guard your energy budget today, <strong>{s}</strong>. Say the clear no early so the real yes has room later.</p>`,
+      `<p><strong>{s}</strong>, today is a listening day. What you need arrives sideways — an offhand remark, a pattern you almost miss.</p>`
+    ],
+    weekly: [
+      `<p><strong>{s}</strong>, this week is about pattern recognition. What repeats is the message; what drains you repeatedly needs a boundary.</p>`,
+      `<p>Leave room for one brave act and one practical act this week, <strong>{s}</strong>. The best progress uses both.</p>`,
+      `<p><strong>{s}</strong>, a conversation this week rearranges something you thought was settled. Let it.</p>`,
+      `<p>This week asks <strong>{s}</strong> to finish one old thing before starting anything new. The clearing is the magic.</p>`
+    ],
+    monthly: [
+      `<p><strong>{s}</strong>, the month asks for alignment between values and habits. Big ideas only matter if your calendar supports them.</p>`,
+      `<p>Choose the commitment that keeps paying you back in clarity, time, or peace, <strong>{s}</strong> — then protect it.</p>`,
+      `<p><strong>{s}</strong>, this month compounds. Small consistent moves now become obvious wins later. Skip the dramatic play.</p>`,
+      `<p>A longer cycle closes for <strong>{s}</strong> this month. Name what it taught you out loud, then travel lighter.</p>`
+    ]
   };
-  return moods[tab];
+  const list = variants[tab] || variants.daily;
+  const signIdx = AstrologyEngine.SIGNS.indexOf(sign);
+  const tabIdx = {daily:0, weekly:1, monthly:2}[tab] || 0;
+  const pick = (dayOfYear() * 31 + signIdx * 7 + tabIdx * 13) % list.length;
+  return list[pick].replaceAll('{s}', sign) + horoscopeAstroLine();
 }
 
 async function generateBirthChart(){
   $('#bcError').textContent = '';
+  $('#bcRisingWrap')?.classList.add('hidden');
   try {
-    const result = await AstrologyEngine.generateChart({ dateStr: $('#bcDate').value, timeStr: $('#bcTime').value, city: $('#bcCity').value.trim() });
+    const dateStr = $('#bcDate').value;
+    const timeStr = $('#bcTime').value;
+    const city = $('#bcCity').value.trim();
+    if(!timeStr){
+      // Unknown birth time: show possible rising signs across the day + time-independent planets.
+      const rising = await AstrologyEngine.risingByTime({ dateStr, city });
+      const result = await AstrologyEngine.generateChart({ dateStr, timeStr: '', city });
+      result.publicId = createReadingId();
+      APP.currentChart = result;
+      $('#bcResult').classList.remove('hidden');
+      $('#bcChartView').classList.add('hidden');
+      const locNote = rising.location ? `Location matched: ${rising.location.displayName}.` : 'No city match found — times shown in your local timezone.';
+      const tzNote = rising.iana ? ` Timezone: ${rising.iana}.` : '';
+      $('#bcTimeNote').textContent = `Chart ID ${result.publicId}. No birth time entered — the wheel needs a time, so here are your possible rising signs by birth time. Planets below do not need a birth time.${locNote}${tzNote}`;
+      $('#bcRisingRows').innerHTML = rising.rows.map(r =>
+        `<tr><td>${escapeHtml(r.window)}</td><td><span class="planet-symbol">${r.symbol}</span>${escapeHtml(r.sign)}</td></tr>`
+      ).join('');
+      $('#bcRisingWrap').classList.remove('hidden');
+      $('#bcAiText').innerHTML = planetsOnlyInterpretation(result.natal);
+      $('#bcTransitText').innerHTML = `<p><strong>Transit note:</strong> ${escapeHtml(result.transitSummary)}</p><p><strong>Today's energy:</strong> ${escapeHtml(result.today.text)}</p>${transitAspectList(result.aspects)}`;
+      const sun = result.natal.find(p=>p.name==='Sun');
+      const moon = result.natal.find(p=>p.name==='Moon');
+      $('#bcDominants').innerHTML = `<span class="dominant-pill">Sun ${escapeHtml(sun.sign)}</span><span class="dominant-pill">Moon ${escapeHtml(moon.sign)}</span><span class="dominant-pill">Rising unknown</span>`;
+      renderPlanetTable(result);
+      return;
+    }
+    const result = await AstrologyEngine.generateChart({ dateStr, timeStr, city });
     result.publicId = createReadingId();
     APP.currentChart = result;
     $('#bcResult').classList.remove('hidden');
-    $('#bcTimeNote').textContent = result.location ? `Chart ID ${result.publicId}. Location matched: ${result.location.displayName}. Timezone estimated from longitude for a browser-only chart.` : `Chart ID ${result.publicId}. No city match found. The chart used your entered date and time with a neutral location fallback.`;
+    $('#bcChartView').classList.remove('hidden');
+    const locNote = result.location ? `Location matched: ${result.location.displayName}.` : 'No city match found — used neutral location.';
+    const tzNote = result.iana ? ` Timezone: ${result.iana} (daylight saving handled).` : '';
+    $('#bcTimeNote').textContent = `Chart ID ${result.publicId}. ${locNote}${tzNote}`;
     $('#bcWheel').innerHTML = result.wheelSvg;
     $('#bcAiText').innerHTML = result.interpretation;
     $('#bcTransitText').innerHTML = `<p><strong>Transit note:</strong> ${escapeHtml(result.transitSummary)}</p><p><strong>Today's energy:</strong> ${escapeHtml(result.today.text)}</p>${transitAspectList(result.aspects)}`;
@@ -521,6 +570,15 @@ async function generateBirthChart(){
     console.error(e);
     $('#bcError').textContent = e.message || 'Could not generate chart. Please try again.';
   }
+}
+function planetsOnlyInterpretation(natal){
+  const sun = natal.find(p=>p.name==='Sun');
+  const moon = natal.find(p=>p.name==='Moon');
+  const counts = {};
+  natal.forEach(p => { const el = ({Aries:'Fire',Taurus:'Earth',Gemini:'Air',Cancer:'Water',Leo:'Fire',Virgo:'Earth',Libra:'Air',Scorpio:'Water',Sagittarius:'Fire',Capricorn:'Earth',Aquarius:'Air',Pisces:'Water'})[p.sign]; counts[el] = (counts[el]||0)+1; });
+  const element = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const elMeaning = {Fire:'initiative, passion, and visible momentum',Earth:'practicality, embodiment, and consistency',Air:'ideas, conversation, and pattern-making',Water:'intuition, sensitivity, and emotional depth'}[element];
+  return `<p><strong>Sun in ${escapeHtml(sun.sign)}</strong> (${sun.degree.toFixed(1)}°) marks your core drive; <strong>Moon in ${escapeHtml(moon.sign)}</strong> (${moon.degree.toFixed(1)}°) shapes your emotional weather.</p><p>Without a birth time the rising sign and houses stay unknown — but your planetary placements lean <strong>${element}</strong>: ${elMeaning}.</p><p>Check the table above for which rising sign matches your birth time, or enter a time and cast again.</p>`;
 }
 function transitAspectList(aspects=[]){
   if(!aspects.length) return '';

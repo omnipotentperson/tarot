@@ -1,0 +1,10 @@
+# Security headers for Cloudflare Pages (and any static host that honors _headers).
+# Note: script-src includes 'unsafe-inline' because the print/PDF popup is built
+# with document.write and uses inline handlers. All user content rendered into
+# pages is HTML-escaped in app.js, which keeps the practical XSS risk minimal.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://commons.wikimedia.org; connect-src 'self' https://nominatim.openstreetmap.org https://timeapi.io; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()

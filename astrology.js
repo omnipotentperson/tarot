@@ -12,7 +12,7 @@
   function atan2(y,x){ return Math.atan2(y,x)*RAD; }
   function asin(v){ return Math.asin(v)*RAD; }
 
-  function daysSinceJ2000(date){ return (date.getTime()/86400000) - 10957.5; }
+  function daysSinceJ2000(date){ return (date.getTime()/86400000) - 10956; } // d = days since 2000 Jan 0.0 (the epoch these orbital elements use)
   function julianDay(date){ return date.getTime()/86400000 + 2440587.5; }
   function kepler(M,e){
     let E = M + e*RAD*sin(M)*(1 + e*cos(M));
@@ -51,7 +51,7 @@
   }
   function sunPosition(d){
     const earth = heliocentric('Earth', d);
-    const lon = fixAngle(atan2(earth.y, earth.x) + 180);
+    const lon = fixAngle(atan2(earth.y, earth.x)); // Earth's w includes the 180° flip; no extra rotation
     return {lon, symbol:'☉'};
   }
   function moonPosition(d){
@@ -88,8 +88,8 @@
     if(name==='Moon') return moonPosition(d).lon;
     const earth = heliocentric('Earth', d);
     const p = heliocentric(name, d);
-    const xg = p.x - earth.x;
-    const yg = p.y - earth.y;
+    const xg = p.x + earth.x; // earth vector points sunward in this convention
+    const yg = p.y + earth.y;
     return fixAngle(atan2(yg, xg));
   }
   function signOf(lon){
@@ -105,16 +105,15 @@
   function ascendant(dateUTC, lat, lon){
     const eps = 23.4393 - 3.563E-7 * daysSinceJ2000(dateUTC);
     const LST = localSidereal(dateUTC, lon);
-    const y = -cos(LST);
-    const x = sin(LST)*cos(eps) + Math.tan(lat*DEG)*sin(eps);
+    const y = cos(LST);
+    const x = -(sin(LST)*cos(eps) + Math.tan(lat*DEG)*sin(eps));
     return fixAngle(atan2(y, x));
   }
   function mc(dateUTC, lon){
     const eps = 23.4393 - 3.563E-7 * daysSinceJ2000(dateUTC);
     const LST = localSidereal(dateUTC, lon);
-    return fixAngle(atan2(Math.tan(LST), cos(eps)));
+    return fixAngle(atan2(sin(LST), cos(LST)*cos(eps))); // full-quadrant MC
   }
-  function estimateTimezoneOffset(lon){ return Math.round(lon/15); }
   async function geocodeCity(query){
     if(!query || !query.trim()) return null;
     try {
@@ -125,15 +124,46 @@
       return {
         lat: Number(data[0].lat),
         lon: Number(data[0].lon),
-        displayName: data[0].display_name,
-        tzOffset: estimateTimezoneOffset(Number(data[0].lon))
+        displayName: data[0].display_name
       };
     } catch(e){ return null; }
   }
-  function combineLocalToUTC(dateStr,timeStr,tzOffsetHours){
+  async function timezoneNameFor(lat, lon){
+    // Real IANA timezone for the coordinates (handles political boundaries & DST).
+    try {
+      const res = await fetch(`https://timeapi.io/api/timezone/coordinate?latitude=${lat}&longitude=${lon}`);
+      const data = await res.json();
+      if(data && data.timeZone) return data.timeZone;
+    } catch(e){}
+    return null;
+  }
+  const __dtfCache = {};
+  function zoneOffsetMinutes(iana, dateUTC){
+    // UTC offset (minutes) of an IANA zone at a specific instant — DST-aware.
+    let dtf = __dtfCache[iana];
+    if(!dtf){
+      dtf = new Intl.DateTimeFormat('en-US', { timeZone: iana, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+      __dtfCache[iana] = dtf;
+    }
+    const parts = {};
+    dtf.formatToParts(dateUTC).forEach(p => { parts[p.type] = p.value; });
+    const asUTC = Date.UTC(+parts.year, +parts.month - 1, +parts.day, (+parts.hour) % 24, +parts.minute, +parts.second);
+    return Math.round((asUTC - dateUTC.getTime()) / 60000);
+  }
+  function zonedLocalToUTC(dateStr, timeStr, iana){
+    // Convert a wall-clock time in an IANA zone to a UTC Date (iterated for DST transitions).
     const [y,m,d] = dateStr.split('-').map(Number);
     const [hh,mm] = (timeStr || '12:00').split(':').map(Number);
-    return new Date(Date.UTC(y, m-1, d, hh - (tzOffsetHours||0), mm || 0, 0));
+    let guess = Date.UTC(y, m-1, d, hh, mm || 0, 0);
+    for(let i=0;i<3;i++){
+      const off = zoneOffsetMinutes(iana, new Date(guess));
+      guess = Date.UTC(y, m-1, d, hh, mm || 0, 0) - off*60000;
+    }
+    return new Date(guess);
+  }
+  function viewerTimezone(){
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || null; }
+    catch(e){ return null; }
   }
   function getPlanetSet(dateUTC){
     const d = daysSinceJ2000(dateUTC);
@@ -229,13 +259,20 @@
     const strongest = aspects[0];
     return `The strongest current aspect is transiting ${strongest.transit} ${strongest.aspect.toLowerCase()} natal ${strongest.natal}, a pattern of ${strongest.tone} with a ${strongest.orb.toFixed(1)}° orb.`;
   }
+  function themeGold(){
+    try {
+      const v = getComputedStyle(document.body).getPropertyValue('--gold').trim();
+      return v || '#c9a84c';
+    } catch(e){ return '#c9a84c'; }
+  }
   function wheelSvg(natal, transits, ascLon){
+    const gold = themeGold();
     const size = 420, c = size/2, rOuter = 190, rInner = 120;
     const zodiac = Array.from({length:12}).map((_,i)=>{
       const angle = -90 + i*30;
       const x = c + Math.cos((angle+15)*DEG) * 155;
       const y = c + Math.sin((angle+15)*DEG) * 155;
-      return `<g><line x1="${c}" y1="${c}" x2="${c + Math.cos(angle*DEG)*rOuter}" y2="${c + Math.sin(angle*DEG)*rOuter}" stroke="rgba(201,168,76,0.16)" stroke-width="1"/><text x="${x}" y="${y}" fill="rgba(201,168,76,0.9)" font-size="22" text-anchor="middle" dominant-baseline="middle">${SIGN_SYMBOLS[i]}</text></g>`;
+      return `<g><line x1="${c}" y1="${c}" x2="${c + Math.cos(angle*DEG)*rOuter}" y2="${c + Math.sin(angle*DEG)*rOuter}" stroke="${gold}" stroke-opacity="0.16" stroke-width="1"/><text x="${x}" y="${y}" fill="${gold}" fill-opacity="0.9" font-size="22" text-anchor="middle" dominant-baseline="middle">${SIGN_SYMBOLS[i]}</text></g>`;
     }).join('');
     const houses = Array.from({length:12}).map((_,i)=>{
       const angle = ascLon + i*30 - 90;
@@ -249,30 +286,57 @@
         return `<g><circle cx="${x}" cy="${y}" r="11" fill="${color}" opacity="0.95"/><text x="${x}" y="${y+1}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#0d0a12">${p.symbol}</text></g>`;
       }).join('');
     }
-    return `<svg viewBox="0 0 ${size} ${size}" aria-label="Birth chart wheel"><circle cx="${c}" cy="${c}" r="${rOuter}" fill="#130d1e" stroke="rgba(201,168,76,0.35)" stroke-width="2"/><circle cx="${c}" cy="${c}" r="${rInner}" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="1.5"/>${zodiac}${houses}${plot(transits, 112, 'rgba(78,190,200,0.95)')}${plot(natal, 72, 'rgba(201,168,76,0.95)')}<text x="${c}" y="${c}" text-anchor="middle" fill="rgba(245,237,224,0.7)" font-size="12">ASC ${signOf(ascLon).symbol}</text></svg>`;
+    return `<svg viewBox="0 0 ${size} ${size}" aria-label="Birth chart wheel"><circle cx="${c}" cy="${c}" r="${rOuter}" fill="#130d1e" stroke="${gold}" stroke-opacity="0.35" stroke-width="2"/><circle cx="${c}" cy="${c}" r="${rInner}" fill="none" stroke="${gold}" stroke-opacity="0.2" stroke-width="1.5"/>${zodiac}${houses}${plot(transits, 112, 'rgba(78,190,200,0.95)')}${plot(natal, 72, gold)}<text x="${c}" y="${c}" text-anchor="middle" fill="rgba(245,237,224,0.7)" font-size="12">ASC ${signOf(ascLon).symbol}</text></svg>`;
+  }
+  function windowLabel(h){
+    const fmt = (x) => { const hh = ((x%24)+24)%24; const ap = hh < 12 ? 'AM' : 'PM'; const h12 = hh % 12 === 0 ? 12 : hh % 12; return `${h12} ${ap}`; };
+    return `${fmt(h)} – ${fmt(h+2)}`;
+  }
+  async function risingByTime({dateStr, city}){
+    // For unknown birth times: possible rising signs in 2-hour windows across the birth date.
+    if(!dateStr) throw new Error('Please enter a birth date.');
+    const location = await geocodeCity(city);
+    const lat = location?.lat ?? 0;
+    const lon = location?.lon ?? 0;
+    const iana = (lat || lon) ? await timezoneNameFor(lat, lon) : viewerTimezone();
+    const rows = [];
+    for(let h=0; h<24; h+=2){
+      const mid = `${String(h+1).padStart(2,'0')}:00`;
+      let utc;
+      if(iana){ utc = zonedLocalToUTC(dateStr, mid, iana); }
+      else { utc = new Date(Date.UTC(+dateStr.slice(0,4), +dateStr.slice(5,7)-1, +dateStr.slice(8,10), h+1, 0, 0)); }
+      const sign = signOf(ascendant(utc, lat, lon));
+      rows.push({ window: windowLabel(h), sign: sign.name, symbol: sign.symbol });
+    }
+    return { location, iana, rows };
   }
   async function generateChart({dateStr,timeStr,city}){
     if(!dateStr) throw new Error('Please enter a birth date.');
     const location = await geocodeCity(city);
     const lat = location?.lat ?? 0;
     const lon = location?.lon ?? 0;
-    const tzOffset = location?.tzOffset ?? (-new Date().getTimezoneOffset()/60);
-    const birthUTC = combineLocalToUTC(dateStr, timeStr || '12:00', tzOffset);
+    const iana = (lat || lon) ? await timezoneNameFor(lat, lon) : viewerTimezone();
+    const hasTime = Boolean(timeStr && timeStr.trim());
+    const birthUTC = iana
+      ? zonedLocalToUTC(dateStr, hasTime ? timeStr : '12:00', iana)
+      : new Date(Date.UTC(+dateStr.slice(0,4), +dateStr.slice(5,7)-1, +dateStr.slice(8,10), 12, 0, 0));
     const natal = getPlanetSet(birthUTC);
     const transits = getPlanetSet(new Date());
     const aspects = transitAspects(natal, transits);
-    const ascLon = ascendant(birthUTC, lat, lon);
-    const mcLon = mc(birthUTC, lon);
+    const ascLon = hasTime ? ascendant(birthUTC, lat, lon) : null;
+    const mcLon = hasTime ? mc(birthUTC, lon) : null;
     return {
       location,
+      iana,
+      hasTime,
       birthUTC,
       natal,
       transits,
       aspects,
       ascLon,
       mcLon,
-      wheelSvg: wheelSvg(natal, transits, ascLon),
-      interpretation: buildInterpretation(natal, ascLon),
+      wheelSvg: hasTime ? wheelSvg(natal, transits, ascLon) : null,
+      interpretation: hasTime ? buildInterpretation(natal, ascLon) : null,
       today: todayEnergy(transits),
       transitSummary: aspectSummary(natal, transits)
     };
@@ -284,5 +348,5 @@
     ];
     return ranges.find(([,s,e]) => (m>s[0] || (m===s[0] && d>=s[1])) && (m<e[0] || (m===e[0] && d<=e[1])))[0];
   }
-  window.AstrologyEngine = { generateChart, zodiacFromDate, moonPhase, signOf, PLANETS, SIGNS, todayEnergy, getPlanetSet, transitAspects, angularSeparation, julianDay };
+  window.AstrologyEngine = { generateChart, risingByTime, zodiacFromDate, moonPhase, signOf, PLANETS, SIGNS, todayEnergy, getPlanetSet, transitAspects, angularSeparation, julianDay };
 })();
