@@ -1,4 +1,4 @@
-name: Download Tarot Card Images 
+name: Download Tarot Card Images
 
 on:
   workflow_dispatch:
@@ -123,7 +123,7 @@ jobs:
           du -sh assets/cards || true
           ls -1 assets/cards | wc -l || true
 
-      - name: Commit and push generated files (safe: rebase/merge or create PR)
+      - name: "Commit and push generated files (safe: rebase/merge or create PR)"
         env:
           TARGET_BRANCH: ${{ github.event.inputs.branch || 'main' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
