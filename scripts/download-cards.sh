@@ -8,7 +8,7 @@ echo "{" > "$tmpmap"
 counter=0
 
 # Majors (explicit)
-read -r -d '' MAJORS <<'MAJ' || true
+read -r -d '' MAJ <<'MAJ' || true
 The Fool|Pictorial Key to the Tarot 00 The Fool.jpg
 The Magician|Pictorial Key to the Tarot 01 The Magician.jpg
 The High Priestess|Pictorial Key to the Tarot 02 The High Priestess.jpg
@@ -49,6 +49,7 @@ download_file() {
   return $?
 }
 
+# download majors
 while IFS='|' read -r card file; do
   if [ -z "$card" ]; then continue; fi
   counter=$((counter+1))
@@ -71,6 +72,7 @@ PY
   sleep 0.12
 done <<< "$MAJ"
 
+# download minors
 for i in "${!ranks[@]}"; do
   rank="${ranks[$i]}"
   num="${ranknum[$i]}"
@@ -89,7 +91,7 @@ PY
     echo "Downloading: $card -> $url"
     if download_file "$url" "${outdir}/${outName}"; then
       esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
-      printf '  "%s": \"%s\",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
+      printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
       echo "  saved ${outName}"
     else
       echo "  failed for $card"
