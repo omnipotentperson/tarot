@@ -42,34 +42,40 @@ slugify() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-|-$//g'
 }
 
-# download helper: returns 0 on success
+# download helper: fail fast and return non-zero on HTTP errors
 download_file() {
   local url="$1" outpath="$2"
-  curl -s -L --retry 3 --retry-delay 2 --max-time 60 -o "$outpath" "$url"
+  # connect timeout 10s, max time 30s, follow redirects, show errors on failure
+  curl -S -L --connect-timeout 10 --max-time 30 --retry 2 --retry-delay 2 --fail -o "$outpath" "$url"
   return $?
 }
 
-# download majors
+log_and_append() {
+  local card="$1" path="$2"
+  local esc_card
+  esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
+  printf '  "%s": "%s",\n' "$esc_card" "$path" >> "$tmpmap"
+}
+
+# iterate majors
 while IFS='|' read -r card file; do
   if [ -z "$card" ]; then continue; fi
   counter=$((counter+1))
   slug=$(slugify "$card")
   outName=$(printf "%02d-%s.jpg" "$counter" "$slug")
-  # use python -c so sys.argv[1] is reliable
   enc=$(python3 -c "import sys,urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=''))" "$file")
   url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
   echo "Downloading: $card -> $url"
   if download_file "$url" "${outdir}/${outName}"; then
-    esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
-    printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
     echo "  saved ${outName}"
+    log_and_append "$card" "${outdir}/${outName}"
   else
-    echo "  failed for $card"
+    echo "  failed for $card (skipping after timeout/error)"
   fi
   sleep 0.12
 done <<< "$MAJ"
 
-# download minors
+# iterate minors
 for i in "${!ranks[@]}"; do
   rank="${ranks[$i]}"
   num="${ranknum[$i]}"
@@ -83,17 +89,16 @@ for i in "${!ranks[@]}"; do
     url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
     echo "Downloading: $card -> $url"
     if download_file "$url" "${outdir}/${outName}"; then
-      esc_card=$(printf '%s' "$card" | sed 's/"/\\"/g')
-      printf '  "%s": "%s",\n' "$esc_card" "${outdir}/${outName}" >> "$tmpmap"
       echo "  saved ${outName}"
+      log_and_append "$card" "${outdir}/${outName}"
     else
-      echo "  failed for $card"
+      echo "  failed for $card (skipping after timeout/error)"
     fi
     sleep 0.12
   done
 done
 
-# finish json - remove trailing comma safely
+# finish json - remove trailing comma safely and write
 sed -e '$ s/,$//' "$tmpmap" > "$tmpmap.tmp"
 echo "}" >> "$tmpmap.tmp"
 mv "$tmpmap.tmp" data/card-images.json
