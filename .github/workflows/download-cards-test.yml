@@ -24,9 +24,9 @@ jobs:
       - name: Run downloader script
         run: |
           ./scripts/download-cards.sh
-          echo "Downloaded files summary:"
+          echo "Downloaded files summary (first 30):"
           ls -1 assets/cards | head -n 30 || true
-          echo "Mapping file preview:"
+          echo "Mapping file preview (first 50 lines):"
           head -n 50 data/card-images.json || true
 
       - name: Upload card-images.json for inspection
