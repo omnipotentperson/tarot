@@ -55,11 +55,8 @@ while IFS='|' read -r card file; do
   counter=$((counter+1))
   slug=$(slugify "$card")
   outName=$(printf "%02d-%s.jpg" "$counter" "$slug")
-  enc=$(python3 - <<PY
-import sys, urllib.parse
-print(urllib.parse.quote(sys.argv[1], safe=''))
-PY
-"$file")
+  # use python -c so sys.argv[1] is reliable
+  enc=$(python3 -c "import sys,urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=''))" "$file")
   url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
   echo "Downloading: $card -> $url"
   if download_file "$url" "${outdir}/${outName}"; then
@@ -82,11 +79,7 @@ for i in "${!ranks[@]}"; do
     counter=$((counter+1))
     slug=$(slugify "$card")
     outName=$(printf "%02d-%s.jpg" "$counter" "$slug")
-    enc=$(python3 - <<PY
-import sys, urllib.parse
-print(urllib.parse.quote(sys.argv[1], safe=''))
-PY
-"$file")
+    enc=$(python3 -c "import sys,urllib.parse; print(urllib.parse.quote(sys.argv[1], safe=''))" "$file")
     url="https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=360"
     echo "Downloading: $card -> $url"
     if download_file "$url" "${outdir}/${outName}"; then
