@@ -2,7 +2,7 @@
   "name": "The Veil \u2014 Tarot & Astrology",
   "short_name": "The Veil",
   "description": "Tarot readings, astrology, and divination",
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0d0a12",
   "theme_color": "#c9a84c",
