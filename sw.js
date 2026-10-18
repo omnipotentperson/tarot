@@ -1,7 +1,6 @@
 const CACHE = 'the-veil-v3';
 const ASSETS = [
   './',
-  './index.html',
   './styles.css',
   './app.js',
   './astrology.js',
@@ -23,6 +22,6 @@ self.addEventListener('fetch', event => {
       const clone = res.clone();
       caches.open(CACHE).then(cache => cache.put(event.request, clone)).catch(() => {});
       return res;
-    }).catch(() => caches.match('./index.html')))
+    }).catch(() => caches.match('./')))
   );
 });
