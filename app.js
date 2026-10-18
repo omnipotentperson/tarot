@@ -1,14 +1,27 @@
-/* Full app.js replacement */
-const APP = APP || {};
+/* app.js - full replacement
+   - Loads reference data and optional local card image map (data/card-images.json)
+   - Prefers local images (assets/cards/*) when present
+   - Provides generateBirthChart() stub (replace computeChartFromInputs with your real logic)
+   - Converts rising rows (#bcRisingRows) into clickable links and observes future changes
+   - Uses event delegation so clicks always work
+*/
+
+const APP = window.APP || {};
 
 function $(sel){ return document.querySelector(sel); }
 function $$(sel){ return Array.from(document.querySelectorAll(sel)); }
-function escapeHtml(s=''){ return String(s).replace(/[&<>\"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'})[m]; }); }
+function escapeHtml(s=''){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
 
 async function loadReferenceData(){
-  const refRes = await fetch('./data/reference.json');
-  APP.data = await refRes.json();
+  try {
+    const refRes = await fetch('./data/reference.json');
+    if(refRes.ok) APP.data = await refRes.json();
+    else APP.data = {};
+  } catch(e){
+    APP.data = {};
+  }
 
+  // load local card image map if present
   try {
     const imgRes = await fetch('./data/card-images.json');
     APP.cardImageMap = imgRes.ok ? await imgRes.json() : {};
@@ -20,11 +33,7 @@ async function loadReferenceData(){
 }
 
 function normalizeCard(c){
-  return {
-    name: c.name || c.title || '',
-    suit: c.suit || '',
-    rank: c.rank || ''
-  };
+  return { name: c.name || c.title || '', suit: c.suit || '', rank: c.rank || '' };
 }
 
 function commonsImage(fileName){
@@ -34,9 +43,8 @@ function commonsImage(fileName){
 
 function publicDomainRwsImage(cardName=''){
   if (APP && APP.cardImageMap && APP.cardImageMap[cardName]) {
-    return APP.cardImageMap[cardName];
+    return APP.cardImageMap[cardName]; // use local path like assets/cards/01-the-fool.jpg
   }
-
   const major = {
     'The Fool':'Pictorial Key to the Tarot 00 The Fool.jpg',
     'The Magician':'Pictorial Key to the Tarot 01 The Magician.jpg',
@@ -63,17 +71,15 @@ function publicDomainRwsImage(cardName=''){
     'The World':'Pictorial Key to the Tarot 21 The World.jpg'
   };
   if(major[cardName]) return commonsImage(major[cardName]);
-
   const match = cardName.match(/^(Ace|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Page|Knight|Queen|King) of (Wands|Cups|Swords|Pentacles)$/i);
   if(!match) return '';
-
   const rankMap = {Ace:'01',Two:'02',Three:'03',Four:'04',Five:'05',Six:'06',Seven:'07',Eight:'08',Nine:'09',Ten:'10',Page:'11',Knight:'12',Queen:'13',King:'14'};
-  const suitMap = {Wands:'Wands',Cups:'Cups',Swords:'Swords',Pentacles:'Pentacles'};
   const rank = match[1].charAt(0).toUpperCase()+match[1].slice(1).toLowerCase();
   const suit = match[2].charAt(0).toUpperCase()+match[2].slice(1).toLowerCase();
-  return commonsImage(`Pictorial Key to the Tarot ${suitMap[suit]} ${rankMap[rank]}.jpg`);
+  return commonsImage(`Pictorial Key to the Tarot ${suit} ${rankMap[rank]}.jpg`);
 }
 
+/* Render a card element (example usage) */
 function renderCardElement(card){
   const imgSrc = publicDomainRwsImage(card.name || '');
   return `<div class="tarot-card" role="img" aria-label="${escapeHtml(card.name || '')}">
@@ -82,45 +88,120 @@ function renderCardElement(card){
   </div>`;
 }
 
-async function generateBirthChart(){
-  const date = $('#bcDate').value || '';
-  const city = $('#bcPlace').value || '';
-  const time = $('#bcTime').value || '';
-
-  const result = await computeChartFromInputs({date, city, time});
-
-  if (!time) {
-    $('#bcRisingRows').innerHTML = result.rising.rows.map((r, idx) => {
-      const midpointHour = String((idx * 2 + 1)).padStart(2, '0') + ':00';
-      return `<tr>
-        <td><a href="#" class="rising-link" role="button" aria-label="Set birth time to ${midpointHour}" data-time="${midpointHour}">${escapeHtml(r.window)}</a></td>
-        <td><span class="planet-symbol">${escapeHtml(r.symbol || '')}</span>${escapeHtml(r.sign || '')}</td>
-      </tr>`;
-    }).join('');
-    $('#bcRisingWrap').classList.remove('hidden');
-
-    $$('.rising-link').forEach(a => {
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.__risingSelected = true;
-        const timeVal = a.dataset.time || '';
-        $('#bcTime').value = timeVal;
-        generateBirthChart();
-        setTimeout(() => { window.__risingSelected = false; }, 100);
-      });
-    });
-  } else {
-    $('#bcRisingWrap').classList.add('hidden');
+/* MUTATION + CLICK HANDLING for rising links
+   - Converts the first TD in each rising row into an <a.data-time>
+   - Uses event delegation so it works even if rows are added later
+*/
+(function risingLinkInstaller(){
+  function convertRowCell(td){
+    if(!td || td._risingConverted) return;
+    var text = td.textContent || td.innerText || '';
+    var m = text.match(/\b(\d{1,2}:\d{2})\b/);
+    var time = m ? m[1].padStart(5,'0') : null;
+    if(!time) return;
+    var a = document.createElement('a');
+    a.href = '#';
+    a.className = 'rising-link';
+    a.setAttribute('data-time', time);
+    a.setAttribute('role', 'button');
+    a.setAttribute('aria-label', 'Set birth time to ' + time);
+    a.innerHTML = td.innerHTML;
+    td.innerHTML = '';
+    td.appendChild(a);
+    td._risingConverted = true;
   }
 
-  $('#bcWheel').innerHTML = result.chartHtml || '';
+  function scanAll(){
+    var rows = document.querySelectorAll('#bcRisingRows td:first-child');
+    rows.forEach(convertRowCell);
+  }
 
-  if (window.__risingSelected) {
-    $('#bcTimeNote').textContent = ( $('#bcTimeNote').textContent || '' ) + ' (approximate — chart uses the midpoint of the selected 2-hour window)';
+  // event delegation for clicks on rising links
+  document.addEventListener('click', function(e){
+    var el = e.target;
+    while(el && el !== document){
+      if(el.classList && el.classList.contains('rising-link')) break;
+      el = el.parentNode;
+    }
+    if(!el || el === document) return;
+    e.preventDefault();
+    var time = el.getAttribute('data-time') || (el.textContent.match(/\d{1,2}:\d{2}/)||[])[0] || '';
+    if(!time) return;
+    var timeInput = document.querySelector('#bcTime');
+    if(timeInput) timeInput.value = time;
+    var submit = document.querySelector('#bcSubmit');
+    if(submit) submit.click();
+    else if(typeof generateBirthChart === 'function') generateBirthChart();
+  }, false);
+
+  // observe #bcRisingRows for changes (rows inserted later)
+  function observeRoot(){
+    var root = document.querySelector('#bcRisingRows');
+    if(!root) return;
+    scanAll();
+    var mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        Array.from((m.addedNodes||[])).forEach(function(n){
+          if(n.nodeType !== 1) return;
+          if(n.matches && n.matches('tr')) {
+            var td = n.querySelector('td:first-child');
+            convertRowCell(td);
+          } else {
+            scanAll();
+          }
+        });
+      });
+    });
+    mo.observe(root, { childList: true, subtree: true });
+  }
+
+  // try to observe now; if not present, try again after short delay
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', observeRoot);
+  } else {
+    observeRoot();
+  }
+})();
+
+/* generateBirthChart - replaces previous UI behavior.
+   This function should call your existing astrology computation.
+   computeChartFromInputs() is a placeholder you should replace with your real call.
+*/
+async function generateBirthChart(){
+  const date = $('#bcDate') ? $('#bcDate').value || '' : '';
+  const place = $('#bcPlace') ? $('#bcPlace').value || '' : '';
+  const time = $('#bcTime') ? $('#bcTime').value || '' : '';
+
+  const result = await computeChartFromInputs({ date, place, time });
+
+  // If no time provided, show rising rows (the code that populates #bcRisingRows must exist)
+  if(!time){
+    if(result && result.rising && result.rising.rows){
+      var html = result.rising.rows.map(r=>{
+        const window = escapeHtml(r.window || '');
+        const sign = escapeHtml(r.sign || '');
+        const symbol = escapeHtml(r.symbol || '');
+        return `<tr><td>${window}</td><td><span class="planet-symbol">${symbol}</span>${sign}</td></tr>`;
+      }).join('');
+      var wrap = $('#bcRisingRows');
+      if(wrap) wrap.innerHTML = html;
+      $('#bcRisingWrap') && $('#bcRisingWrap').classList.remove('hidden');
+    }
+  } else {
+    $('#bcRisingWrap') && $('#bcRisingWrap').classList.add('hidden');
+  }
+
+  // render the wheel area
+  $('#bcWheel') && ($('#bcWheel').innerHTML = result.chartHtml || '');
+  // add approximate note handling if needed
+  if(window.__risingSelected){
+    $('#bcTimeNote') && ($('#bcTimeNote').textContent = ($('#bcTimeNote').textContent || '') + ' (approximate — midpoint of selected window)');
   }
 }
 
+/* Placeholder — replace with your real astrological computation or API call */
 async function computeChartFromInputs(inputs){
+  // return shape: { rising: { rows: [{window:'00:00 - 02:00', sign:'Aries', symbol:'☉'}, ...] }, chartHtml: '<svg>..</svg>' }
   const rows = [];
   for(let i=0;i<12;i++){
     rows.push({
@@ -129,9 +210,10 @@ async function computeChartFromInputs(inputs){
       symbol: ['☉','☾','☿','♀','♂','♃','♄','♅','♆','♇','⚷','⚸'][i%12]
     });
   }
-  return { rising: { rows }, chartHtml: '<div class=\"chart-placeholder\">[Chart would render here]</div>' };
+  return { rising: { rows }, chartHtml: '<div class="chart-placeholder">[Chart renders here]</div>' };
 }
 
+/* init wiring */
 async function init(){
   await loadReferenceData();
   if($('#bcSubmit')) $('#bcSubmit').addEventListener('click', (e)=>{ e.preventDefault(); generateBirthChart(); });
