@@ -320,5 +320,37 @@
 
   <script src="./astrology.js"></script>
   <script src="./app.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    // find each rising row first cell and convert to a clickable link if it contains a time
+    document.querySelectorAll('#bcRisingRows td:first-child').forEach(function(td){
+      var text = td.textContent || td.innerText || '';
+      var m = text.match(/\b(\d{2}:\d{2})\b/);
+      var time = m ? m[1] : null;
+      if(!time) return;
+      var a = document.createElement('a');
+      a.href = '#';
+      a.className = 'rising-link';
+      a.setAttribute('data-time', time);
+      a.setAttribute('role', 'button');
+      a.setAttribute('aria-label', 'Set birth time to ' + time);
+      a.innerHTML = td.innerHTML;
+      td.innerHTML = '';
+      td.appendChild(a);
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var timeInput = document.querySelector('#bcTime');
+        if(timeInput) timeInput.value = time;
+        var submit = document.querySelector('#bcSubmit');
+        if(submit) submit.click();
+        else if(typeof generateBirthChart === 'function') generateBirthChart();
+      });
+    });
+  } catch(e){
+    console.warn('Rising-link script error', e);
+  }
+});
+  </script>
 </body>
 </html>
