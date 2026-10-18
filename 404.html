@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Veil — Threshold Lost (404)</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0a12;
+      --card-bg: #130d1e;
+      --gold: #c9a84c;
+      --gold-light: #e8c97e;
+      --text: #f5ede0;
+      --muted: rgba(245, 237, 224, 0.6);
+      --border: rgba(201, 168, 76, 0.3);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .container {
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 24px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    }
+    .symbol {
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+    h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      letter-spacing: 0.08em;
+    }
+    p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .btn-return {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      color: #130d1e;
+      background: var(--gold);
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-return:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main">
+    <div class="symbol" aria-hidden="true">☽ ✧ ☾</div>
+    <h1>The Veil is Impassable</h1>
+    <p>
+      The path you sought has shifted into shadow. No card, star, or sigil dwells at this threshold.
+    </p>
+    <a href="/" class="btn-return">Return to the Sanctuary</a>
+  </main>
+</body>
+</html>
