@@ -57,7 +57,7 @@ export async function onRequestPost(context) {
     return Response.json({ error: 'Bad request.' }, { status: 400 });
   }
 
-  const model = env.OPENAI_MODEL || 'gpt-4.1-nano';
+  const model = env.OPENAI_MODEL || 'gpt-5-nano';
 
   let apiRes;
   try {
